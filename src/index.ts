@@ -198,8 +198,8 @@ class Pine {
    * @param {array} argv
    */
   run(argv: Array<any>) {
-    const name = argv[0];
-    const args = parseArgv(argv.slice(1));
+    const args = parseArgv(argv);
+    const name = args._.shift();
 
     this.registerGlobal();
 
@@ -221,15 +221,18 @@ class Pine {
     }
 
     if (!this.module) {
-      throw new Error('Pinefile not found');
+      console.error('Pinefile not found');
+      return;
     }
 
     if (!name) {
-      throw new Error('No task provided');
+      console.error('No task provided');
+      return;
     }
 
     if (!this.module[name]) {
-      throw new Error(`Task ${name} not found`);
+      console.error(`Task ${name} not found`);
+      return;
     }
 
     this.execute(name, args);

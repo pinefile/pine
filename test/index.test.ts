@@ -14,7 +14,7 @@ describe('pine', () => {
 
   it('should run basic pinefile', () => {
     const pine = new Pine();
-    pine.run(['build', `--file=${__dirname}/fixtures/pinefile.basic.js`]);
+    pine.run([`--file=${__dirname}/fixtures/pinefile.basic.js`, 'build']);
     expect(console.log).toHaveBeenCalledWith('Building...');
     expect(console.log).toHaveBeenCalledTimes(1);
   });
