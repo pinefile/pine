@@ -192,6 +192,11 @@ class Pine {
     }
   }
 
+  /**
+   * Run tasks or show help.
+   *
+   * @param {array} argv
+   */
   run(argv: Array<any>) {
     const name = argv[0];
     const args = parseArgv(argv.slice(1));
