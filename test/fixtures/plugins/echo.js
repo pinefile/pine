@@ -1,3 +1,3 @@
 module.exports = {
-  echo: (m) => console.log(m),
+  echo: console.log,
 };

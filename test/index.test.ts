@@ -49,4 +49,13 @@ describe('pine', () => {
     expect(console.log).toHaveBeenCalledWith('Building...');
     expect(console.log).toHaveBeenCalledTimes(1);
   });
+
+  it('should run pinefile with npm plugin and test command', () => {
+    const pine = new Pine();
+    pine.run(['test', `--file=${__dirname}/fixtures/pinefile.npm.js`]);
+    expect(console.log).toHaveBeenCalledWith(
+      expect.stringContaining('Testing...')
+    );
+    expect(console.log).toHaveBeenCalledTimes(1);
+  });
 });

@@ -1,0 +1,7 @@
+{
+  "name": "fixtures",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Testing...\""
+  }
+}
