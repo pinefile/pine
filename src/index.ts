@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { parseArgv } from './argv';
+import { flattenArray } from './utils';
 
 const globalAny = global as any;
 
@@ -115,7 +116,8 @@ class Pine {
       this._before[before] = [];
     }
 
-    this._before[before] = this._before[before].concat(after);
+    this._before[before] = this._before[before].concat(flattenArray(after));
+    this._before[before] = [...new Set(this._before[before])];
   }
 
   /**
@@ -132,7 +134,8 @@ class Pine {
       this._after[after] = [];
     }
 
-    this._after[after].push(before);
+    this._after[after] = this._after[after].concat(flattenArray(before));
+    this._after[after] = [...new Set(this._after[after])];
   }
 
   /**

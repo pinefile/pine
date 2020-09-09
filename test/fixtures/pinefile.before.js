@@ -10,4 +10,10 @@ exports.write = function (argv) {
   console.log('Write...');
 };
 
-before('build', 'compile', 'write');
+before('build', 'compile', 'write', 'compile');
+
+exports.array = function (argv) {
+  console.log('Array...');
+};
+
+before('array', ['compile']);
