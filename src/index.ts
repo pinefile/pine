@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import Parse from './argv';
+import { parseArgv } from './argv';
+
+const globalAny = global as any;
 
 /*
 function pine() {
@@ -13,19 +15,19 @@ class Pine {
   private _after: any = {};
   private _before: any = {};
 
-  private execute(name: string, argv: any) {
+  private execute(name: string, args: any) {
     if (this._before[name]) {
-      this._before[name].forEach((name: string) => this.execute(name, argv));
+      this._before[name].forEach((name: string) => this.execute(name, args));
     }
 
-    this.module[name](argv);
+    this.module[name](args);
 
     if (this._after[name]) {
-      this._after[name].forEach((name: string) => this.execute(name, argv));
+      this._after[name].forEach((name: string) => this.execute(name, args));
     }
   }
 
-  private filePath(argv: any): string {
+  private filePath(args: any): string {
     if (fs.existsSync(path.resolve('Pinefile'))) {
       return path.resolve('Pinefile');
     }
@@ -34,11 +36,16 @@ class Pine {
       return path.resolve('pinefile.js');
     }
 
-    if (argv.file) {
-      return path.resolve(argv.file);
+    if (args.file) {
+      return path.resolve(args.file);
     }
 
     throw new Error('Pinefile not found');
+  }
+
+  private registerGlobal() {
+    globalAny.before = this.before.bind(this);
+    globalAny.after = this.after.bind(this);
   }
 
   before(before: string, after: string) {
@@ -57,21 +64,23 @@ class Pine {
     this._after[after].push(before);
   }
 
-  run() {
-    const name = process.argv[2];
-    const argv = Parse(process.argv.slice(3));
+  run(argv: Array<any>) {
+    const name = argv[0];
+    const args = parseArgv(argv.slice(1));
+
+    this.registerGlobal();
 
     if (!name) {
       throw new Error('No task provided');
     }
 
-    this.module = require(this.filePath(argv));
+    this.module = require(this.filePath(args));
 
     if (!this.module[name]) {
       throw new Error(`Task ${name} not found`);
     }
 
-    this.execute(name, argv);
+    this.execute(name, args);
   }
 }
 

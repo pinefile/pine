@@ -1,8 +1,8 @@
-const argv = require('../src/argv');
+const { parseArgv } = require('../src/argv');
 
 describe('argv', () => {
   it('should parse argv', () => {
-    const out = argv([1, 2, '--flag']);
+    const out = parseArgv([1, 2, '--flag']);
 
     expect(out.flag).toBeTruthy();
     expect(out.get(0)).toBe(1);

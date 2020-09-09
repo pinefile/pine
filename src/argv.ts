@@ -1,6 +1,6 @@
 const minimist = require('minimist');
 
-const Parse = (argv: Array<any>) => {
+export const parseArgv = (argv: Array<any>) => {
   const obj: any = minimist(argv);
 
   obj.get = function (key: any) {
@@ -15,5 +15,3 @@ const Parse = (argv: Array<any>) => {
 
   return obj;
 };
-
-export default Parse;

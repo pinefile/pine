@@ -1,10 +1,5 @@
 #!/usr/bin/env node
 
-const Pine = require("../").default;
-
+const Pine = require("../");
 const pine = new Pine();
-
-globalThis.before = pine.before.bind(pine);
-globalThis.after = pine.after.bind(pine);
-
-pine.run();
+pine.run(process.argv.slice(2));
