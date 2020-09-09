@@ -1,9 +1,22 @@
+load({
+  npm: (c) => {
+    const { execSync } = require('child_process');
+    execSync(`npm ${c}`);
+  },
+});
+
+load('./plugins/echo.js');
+
 exports.build = function (argv) {
-  console.log('Building...');
+  echo('Building...');
 };
 
 exports.done = function (argv) {
-  console.log('All done');
+  echo('All done');
+};
+
+exports.test = function (argv) {
+  npm('test');
 };
 
 after('build', 'done');
