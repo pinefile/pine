@@ -5,7 +5,9 @@ describe('pine', () => {
     console.log = jest.fn();
     const pine = new Pine();
     pine.run(['build', `--file=${__dirname}/fixtures/pinefile.js`]);
-    expect((console.log as any).mock.calls[0][0]).toBe('Building...');
+    expect((console.log as any).mock.calls[0][0]).toBe('Compiling...');
+    expect((console.log as any).mock.calls[1][0]).toBe('Write...');
+    expect((console.log as any).mock.calls[2][0]).toBe('Building...');
   });
 
   it('should run pinefile with echo plugin', () => {

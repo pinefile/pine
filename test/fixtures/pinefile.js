@@ -2,8 +2,12 @@ exports.build = function (argv) {
   console.log('Building...');
 };
 
-exports.done = function (argv) {
-  console.log('All done');
+exports.compile = function (argv) {
+  console.log('Compiling...');
 };
 
-after('build', 'done');
+exports.write = function (argv) {
+  console.log('Write...');
+};
+
+before('build', 'compile', 'write');

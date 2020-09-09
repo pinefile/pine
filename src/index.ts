@@ -104,24 +104,30 @@ class Pine {
   /**
    * Register task that should be runned before a task.
    *
-   * @param {string} before
-   * @param {string} after
+   * Example
+   *   before('build', 'compile', 'write')
    */
-  before(before: string, after: string) {
+  before() {
+    const before = arguments[0];
+    const after = Array.prototype.slice.call(arguments, 1);
+
     if (!this._before[before]) {
       this._before[before] = [];
     }
 
-    this._before[before].push(after);
+    this._before[before] = this._before[before].concat(after);
   }
 
   /**
    * Register task that should be runned after a task.
    *
-   * @param {string} after
-   * @param {string} before
+   * Example
+   *   after('build', 'publish', 'log')
    */
-  after(after: string, before: string) {
+  after() {
+    const after = arguments[0];
+    const before = Array.prototype.slice.call(arguments, 1);
+
     if (!this._after[after]) {
       this._after[after] = [];
     }
