@@ -36,9 +36,16 @@ describe('pine', () => {
     expect(console.log).toHaveBeenCalledTimes(2);
   });
 
-  it('should run pinefile with echo plugin', () => {
+  it('should run pinefile with echo with plugin file', () => {
     const pine = new Pine();
     pine.run(['build', `--file=${__dirname}/fixtures/pinefile.echo.js`]);
+    expect(console.log).toHaveBeenCalledWith('Building...');
+    expect(console.log).toHaveBeenCalledTimes(1);
+  });
+
+  it('should run pinefile with echo with plugin object', () => {
+    const pine = new Pine();
+    pine.run(['build', `--file=${__dirname}/fixtures/pinefile.load.js`]);
     expect(console.log).toHaveBeenCalledWith('Building...');
     expect(console.log).toHaveBeenCalledTimes(1);
   });
