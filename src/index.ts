@@ -107,6 +107,7 @@ class Pine {
    *
    * Example
    *   before('build', 'compile', 'write')
+   *   before('build', ['compile', 'write'])
    */
   before() {
     const before = arguments[0];
@@ -125,6 +126,7 @@ class Pine {
    *
    * Example
    *   after('build', 'publish', 'log')
+   *   after('build', ['publish', 'log'])
    */
   after() {
     const after = arguments[0];
