@@ -38,14 +38,20 @@ describe('pine', () => {
 
   it('should run pinefile with core plugins', () => {
     const pine = new Pine();
-    pine.run(['build', `--file=${__dirname}/fixtures/pinefile.core.js`]);
+    pine.run([
+      'build',
+      `--file=${__dirname}/fixtures/pinefile.plugins.core.js`,
+    ]);
     expect(console.log).toHaveBeenCalledWith('Building 1.0.0...');
     expect(console.log).toHaveBeenCalledTimes(1);
   });
 
   it('should run pinefile with echo with plugin file', () => {
     const pine = new Pine();
-    pine.run(['build', `--file=${__dirname}/fixtures/pinefile.echo.js`]);
+    pine.run([
+      'build',
+      `--file=${__dirname}/fixtures/pinefile.plugins.custom.js`,
+    ]);
     expect(console.log).toHaveBeenCalledWith('Building...');
     expect(console.log).toHaveBeenCalledTimes(1);
   });
@@ -59,7 +65,10 @@ describe('pine', () => {
 
   it('should run pinefile with npm plugin and test command', () => {
     const pine = new Pine();
-    pine.run(['test', `--file=${__dirname}/fixtures/pinefile.npm.js`]);
+    pine.run([
+      'test',
+      `--file=${__dirname}/fixtures/pinefile.plugins.custom.js`,
+    ]);
     expect(console.log).toHaveBeenCalledWith(
       expect.stringContaining('Testing...')
     );
