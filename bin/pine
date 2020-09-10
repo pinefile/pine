@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
-const Pine = require("../src").default;
+const Pine = require("../");
 const pine = new Pine();
+
 pine.run(process.argv.slice(2));

@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { parseArgv } from './argv';
 import { flattenArray } from './utils';
+import { filePath } from './file';
 
 const globalAny = global as any;
 
@@ -13,13 +14,17 @@ Options:
   --file  Path to Pinefile`);
 }
 
-class Pine {
+export type PineType = {
+  file(args?: any): string;
+};
+
+class Pine implements PineType {
   /**
    * Pinefile that is used.
    *
    * @var {string}
    */
-  private file: string = '';
+  private _file: string = '';
 
   /**
    * Loaded JavaScript file.
@@ -61,6 +66,16 @@ class Pine {
   }
 
   /**
+   * Register global functions.
+   */
+  private registerGlobal() {
+    globalAny.before = this.before.bind(this);
+    globalAny.after = this.after.bind(this);
+    globalAny.load = this.load.bind(this);
+    this.load(require('./plugins/core'));
+  }
+
+  /**
    * Find Pinefile to load.
    *
    * Order:
@@ -70,36 +85,13 @@ class Pine {
    *
    * @param {object} args
    */
-  private filePath(args: any): string {
-    if (this.file) {
-      return this.file;
+  file(args: any = {}): string {
+    if (this._file) {
+      return this._file;
     }
 
-    let file = '';
-
-    if (fs.existsSync(path.resolve('Pinefile'))) {
-      file = path.resolve('Pinefile');
-    } else if (fs.existsSync(path.resolve('pinefile.js'))) {
-      file = path.resolve('pinefile.js');
-    } else if (args.file) {
-      file = path.resolve(args.file);
-    }
-
-    if (file) {
-      this.file = file;
-      return file;
-    }
-
-    throw new Error('Pinefile not found');
-  }
-
-  /**
-   * Register global functions.
-   */
-  private registerGlobal() {
-    globalAny.before = this.before.bind(this);
-    globalAny.after = this.after.bind(this);
-    globalAny.load = this.load.bind(this);
+    this._file = filePath(args);
+    return this._file;
   }
 
   /**
@@ -109,7 +101,7 @@ class Pine {
    *   before('build', 'compile', 'write')
    *   before('build', ['compile', 'write'])
    */
-  before() {
+  private before() {
     const before = arguments[0];
     const after = Array.prototype.slice.call(arguments, 1);
 
@@ -128,7 +120,7 @@ class Pine {
    *   after('build', 'publish', 'log')
    *   after('build', ['publish', 'log'])
    */
-  after() {
+  private after() {
     const after = arguments[0];
     const before = Array.prototype.slice.call(arguments, 1);
 
@@ -161,7 +153,7 @@ class Pine {
    *
    * @param {array|object|plugins} plugins
    */
-  load(plugins: any) {
+  private load(plugins: any) {
     if (Array.isArray(plugins)) {
       plugins.map(this.load);
       return;
@@ -179,7 +171,7 @@ class Pine {
           if (fs.existsSync(plugins)) {
             file = plugins;
           } else {
-            file = path.join(path.dirname(this.file), plugins);
+            file = path.join(path.dirname(this.file()), plugins);
           }
 
           const obj = require(file);
@@ -204,8 +196,13 @@ class Pine {
     this.registerGlobal();
 
     try {
-      this.module = require(this.filePath(args));
-    } catch (err) {}
+      this.module = require(this.file(args));
+    } catch (err) {
+      if (!args.help) {
+        console.error(err);
+        return;
+      }
+    }
 
     if (args.help) {
       help();
