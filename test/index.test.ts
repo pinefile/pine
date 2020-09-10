@@ -1,4 +1,5 @@
-const Pine = require('../src/index').default;
+import fs from 'fs';
+import Pine from '../src';
 
 describe('pine', () => {
   const log = console.log;
@@ -38,13 +39,48 @@ describe('pine', () => {
 
   it('should run pinefile with core plugins', () => {
     const pine = new Pine();
-    pine.run([
-      'build',
-      `--file=${__dirname}/fixtures/pinefile.plugins.core.js`,
-    ]);
-    expect(console.log).toHaveBeenCalledWith('Building 1.0.0 using pkg...');
-    expect(console.log).toHaveBeenCalledWith('Building 1.0.0 using json...');
-    expect(console.log).toHaveBeenCalledTimes(2);
+    const logTimes = 2;
+    const tests = [
+      {
+        task: 'pkg',
+        test: () => {
+          expect(console.log).toHaveBeenCalledWith('pkg: 1.0.0');
+        },
+      },
+      {
+        task: 'readJSON',
+        test: () => {
+          expect(console.log).toHaveBeenCalledWith('readJSON: 1.0.0');
+        },
+      },
+      {
+        task: 'writeJSON',
+        run: () => {
+          const spy = jest.spyOn(fs, 'writeFileSync');
+          pine.run([
+            'writeJSON',
+            `--file=${__dirname}/fixtures/pinefile.plugins.core.js`,
+          ]);
+          expect(fs.writeFileSync).toHaveBeenCalledTimes(1);
+          spy.mockReset();
+          spy.mockRestore();
+        },
+      },
+    ];
+
+    tests.forEach((test) => {
+      if (test.run) {
+        test.run();
+      } else {
+        pine.run([
+          test.task,
+          `--file=${__dirname}/fixtures/pinefile.plugins.core.js`,
+        ]);
+        test.test();
+      }
+    });
+
+    expect(console.log).toHaveBeenCalledTimes(logTimes);
   });
 
   it('should run pinefile with echo with plugin file', () => {

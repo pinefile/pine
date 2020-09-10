@@ -1,4 +1,3 @@
-// sync for testing.
 const { execSync } = require('child_process');
 module.exports = {
   npm: (c) => {
