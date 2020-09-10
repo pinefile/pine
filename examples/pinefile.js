@@ -8,7 +8,7 @@ load({
 load('./plugins/echo.js');
 
 exports.build = function (argv) {
-  echo('Building...');
+  echo(`Building ${pkg().version}...`);
 };
 
 exports.done = function (argv) {
