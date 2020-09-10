@@ -42,8 +42,9 @@ describe('pine', () => {
       'build',
       `--file=${__dirname}/fixtures/pinefile.plugins.core.js`,
     ]);
-    expect(console.log).toHaveBeenCalledWith('Building 1.0.0...');
-    expect(console.log).toHaveBeenCalledTimes(1);
+    expect(console.log).toHaveBeenCalledWith('Building 1.0.0 using pkg...');
+    expect(console.log).toHaveBeenCalledWith('Building 1.0.0 using json...');
+    expect(console.log).toHaveBeenCalledTimes(2);
   });
 
   it('should run pinefile with echo with plugin file', () => {
