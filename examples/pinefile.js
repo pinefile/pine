@@ -1,3 +1,4 @@
+// extend with custom plugins
 extend({
   npm: (c) => {
     const { execSync } = require('child_process');
@@ -5,7 +6,10 @@ extend({
   },
 });
 
+// load custom plugins
 load('./plugins/echo.js');
+
+// run tasks after build task
 after('build', 'done');
 
 module.exports = {
