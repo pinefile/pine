@@ -173,7 +173,7 @@ class Pine implements PineType {
           if (fs.existsSync(plugins)) {
             file = plugins;
           } else {
-            file = path.join(path.dirname(this.file()), plugins);
+            file = path.join(process.cwd(), plugins);
           }
 
           const obj = require(file);
