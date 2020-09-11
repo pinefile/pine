@@ -62,6 +62,8 @@ class Pine implements PineType {
    * Register global functions.
    */
   private registerGlobal() {
+    globalAny.pine = this;
+
     ['before', 'after', 'extend'].forEach(name => {
       globalAny[name] = this[name].bind(this);
     });
