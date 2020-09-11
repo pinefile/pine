@@ -8,6 +8,8 @@ Simple Make build tool using JavaScript
 
 Create `Pinefile`
 
+`pkg` function will read `package.json`
+
 ```js
 module.exports = {
   build: () => {
