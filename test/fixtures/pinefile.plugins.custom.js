@@ -1,8 +1,8 @@
 load('./plugins/echo.js');
 load('./plugins/npm.js');
 
-exports.build = function (argv) {
-  echo('Building...');
+exports.echo = function (argv) {
+  echo('Echo...');
 };
 
 exports.test = function (argv) {

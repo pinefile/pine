@@ -100,32 +100,43 @@ describe('pine', () => {
     expect(console.log).toHaveBeenCalledTimes(logTimes);
   });
 
-  it('should run pinefile with echo with plugin file', () => {
+  it('should run pinefile with with custom plugins', () => {
     const pine = new Pine();
-    pine.run([
-      'build',
-      `--file=${__dirname}/fixtures/pinefile.plugins.custom.js`,
-    ]);
-    expect(console.log).toHaveBeenCalledWith('Building...');
-    expect(console.log).toHaveBeenCalledTimes(1);
-  });
+    const logTimes = 3;
+    const tests = [
+      {
+        task: 'echo',
+        file: 'custom',
+        test: () => {
+          expect(console.log).toHaveBeenCalledWith('Echo...');
+        },
+      },
+      {
+        task: 'echo',
+        file: 'object',
+        test: () => {
+          expect(console.log).toHaveBeenCalledWith('Echo...');
+        },
+      },
+      {
+        task: 'test',
+        file: 'custom',
+        test: () => {
+          expect(console.log).toHaveBeenCalledWith(
+            expect.stringContaining('Testing...')
+          );
+        },
+      },
+    ];
 
-  it('should run pinefile with echo with plugin object', () => {
-    const pine = new Pine();
-    pine.run(['build', `--file=${__dirname}/fixtures/pinefile.load.js`]);
-    expect(console.log).toHaveBeenCalledWith('Building...');
-    expect(console.log).toHaveBeenCalledTimes(1);
-  });
+    tests.forEach((test) => {
+      pine.run([
+        test.task,
+        `--file=${__dirname}/fixtures/pinefile.plugins.${test.file}.js`,
+      ]);
+      test.test();
+    });
 
-  it('should run pinefile with npm plugin and test command', () => {
-    const pine = new Pine();
-    pine.run([
-      'test',
-      `--file=${__dirname}/fixtures/pinefile.plugins.custom.js`,
-    ]);
-    expect(console.log).toHaveBeenCalledWith(
-      expect.stringContaining('Testing...')
-    );
-    expect(console.log).toHaveBeenCalledTimes(1);
+    expect(console.log).toHaveBeenCalledTimes(logTimes);
   });
 });
