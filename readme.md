@@ -6,7 +6,7 @@ Simple Make build tool using JavaScript
 
 ## example
 
-Create `Pinefile`
+Create `Pinefile` or `pinefile.js`
 
 ```js
 module.exports = {
