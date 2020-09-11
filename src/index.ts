@@ -3,6 +3,7 @@ import path from 'path';
 import { parseArgv } from './argv';
 import { flattenArray } from './utils';
 import { filePath } from './file';
+import * as corePlugins from './plugins/core';
 
 const globalAny = global as any;
 
@@ -73,7 +74,7 @@ class Pine implements PineType {
     globalAny.after = this.after.bind(this);
     globalAny.load = this.load.bind(this);
     globalAny.extend = this.load.bind(this);
-    this.load(require('./plugins/core'));
+    this.load(corePlugins);
   }
 
   /**
