@@ -13,7 +13,7 @@ Create `Pinefile`
 ```js
 module.exports = {
   build: () => {
-    echo(`Building ${pkg().version}...`);
+    console.log(`Building ${pkg().version}...`);
   },
 };
 ```
