@@ -1,5 +1,5 @@
-load(__dirname + '/plugins/echo.js');
-load(__dirname + '/plugins/npm.js');
+extend(__dirname + '/plugins/echo.js');
+extend(__dirname + '/plugins/npm.js');
 
 exports.echo = function (argv) {
   echo('Echo...');

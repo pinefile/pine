@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { PineType } from '../';
+import { PineType } from '../pine';
 
 export function pkg(this: PineType): any {
   return require(path.join(process.cwd(), 'package.json'));

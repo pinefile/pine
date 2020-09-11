@@ -1,5 +1,5 @@
 import fs from 'fs';
-import Pine from '../src';
+import { run } from '../src';
 
 describe('pine', () => {
   const log = console.log;
@@ -14,15 +14,13 @@ describe('pine', () => {
   });
 
   it('should run basic pinefile', () => {
-    const pine = new Pine();
-    pine.run([`--file=${__dirname}/fixtures/pinefile.basic.js`, 'build']);
+    run([`--file=${__dirname}/fixtures/pinefile.basic.js`, 'build']);
     expect(console.log).toHaveBeenCalledWith('Building...');
     expect(console.log).toHaveBeenCalledTimes(1);
   });
 
   it('should run pinefile with before tasks', () => {
-    const pine = new Pine();
-    pine.run(['build', `--file=${__dirname}/fixtures/pinefile.before.js`]);
+    run(['build', `--file=${__dirname}/fixtures/pinefile.before.js`]);
     expect(console.log).toHaveBeenCalledWith('Compiling...');
     expect(console.log).toHaveBeenCalledWith('Write...');
     expect(console.log).toHaveBeenCalledWith('Building...');
@@ -30,16 +28,14 @@ describe('pine', () => {
   });
 
   it('should run pinefile with before tasks with array', () => {
-    const pine = new Pine();
-    pine.run(['array', `--file=${__dirname}/fixtures/pinefile.before.js`]);
+    run(['array', `--file=${__dirname}/fixtures/pinefile.before.js`]);
     expect(console.log).toHaveBeenCalledWith('Compiling...');
     expect(console.log).toHaveBeenCalledWith('Array...');
     expect(console.log).toHaveBeenCalledTimes(2);
   });
 
   it('should run pinefile with after tasks', () => {
-    const pine = new Pine();
-    pine.run(['build', `--file=${__dirname}/fixtures/pinefile.after.js`]);
+    run(['build', `--file=${__dirname}/fixtures/pinefile.after.js`]);
     expect(console.log).toHaveBeenCalledWith('Building...');
     expect(console.log).toHaveBeenCalledWith('Compiling...');
     expect(console.log).toHaveBeenCalledWith('Write...');
@@ -47,15 +43,13 @@ describe('pine', () => {
   });
 
   it('should run pinefile with after tasks with array', () => {
-    const pine = new Pine();
-    pine.run(['array', `--file=${__dirname}/fixtures/pinefile.after.js`]);
+    run(['array', `--file=${__dirname}/fixtures/pinefile.after.js`]);
     expect(console.log).toHaveBeenCalledWith('Array...');
     expect(console.log).toHaveBeenCalledWith('Compiling...');
     expect(console.log).toHaveBeenCalledTimes(2);
   });
 
   it('should run pinefile with core plugins', () => {
-    const pine = new Pine();
     const logTimes = 2;
     const tests = [
       {
@@ -74,7 +68,7 @@ describe('pine', () => {
         task: 'writeJSON',
         run: () => {
           const spy = jest.spyOn(fs, 'writeFileSync');
-          pine.run([
+          run([
             'writeJSON',
             `--file=${__dirname}/fixtures/pinefile.plugins.core.js`,
           ]);
@@ -90,7 +84,7 @@ describe('pine', () => {
       if (test.run) {
         test.run();
       } else {
-        pine.run([
+        run([
           test.task,
           `--file=${__dirname}/fixtures/pinefile.plugins.core.js`,
         ]);
@@ -102,7 +96,6 @@ describe('pine', () => {
   });
 
   it('should run pinefile with with custom plugins', () => {
-    const pine = new Pine();
     const logTimes = 3;
     const tests = [
       {
@@ -131,7 +124,7 @@ describe('pine', () => {
     ];
 
     tests.forEach((test) => {
-      pine.run([
+      run([
         test.task,
         `--file=${__dirname}/fixtures/pinefile.plugins.${test.file}.js`,
       ]);

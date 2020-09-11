@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-const Pine = require("../");
-const pine = new Pine();
+const { run } = require("../");
 
-pine.run(process.argv.slice(2));
+run(process.argv.slice(2));
