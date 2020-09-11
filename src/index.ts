@@ -72,6 +72,7 @@ class Pine implements PineType {
     globalAny.before = this.before.bind(this);
     globalAny.after = this.after.bind(this);
     globalAny.load = this.load.bind(this);
+    globalAny.extend = this.load.bind(this);
     this.load(require('./plugins/core'));
   }
 

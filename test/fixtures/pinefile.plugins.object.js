@@ -1,4 +1,4 @@
-load({
+extend({
   echo: console.log,
 });
 

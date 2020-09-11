@@ -1,4 +1,4 @@
-load({
+extend({
   npm: (c) => {
     const { execSync } = require('child_process');
     execSync(`npm ${c}`);
