@@ -37,6 +37,23 @@ describe('pine', () => {
     expect(console.log).toHaveBeenCalledTimes(2);
   });
 
+  it('should run pinefile with after tasks', () => {
+    const pine = new Pine();
+    pine.run(['build', `--file=${__dirname}/fixtures/pinefile.after.js`]);
+    expect(console.log).toHaveBeenCalledWith('Building...');
+    expect(console.log).toHaveBeenCalledWith('Compiling...');
+    expect(console.log).toHaveBeenCalledWith('Write...');
+    expect(console.log).toHaveBeenCalledTimes(3);
+  });
+
+  it('should run pinefile with after tasks with array', () => {
+    const pine = new Pine();
+    pine.run(['array', `--file=${__dirname}/fixtures/pinefile.after.js`]);
+    expect(console.log).toHaveBeenCalledWith('Array...');
+    expect(console.log).toHaveBeenCalledWith('Compiling...');
+    expect(console.log).toHaveBeenCalledTimes(2);
+  });
+
   it('should run pinefile with core plugins', () => {
     const pine = new Pine();
     const logTimes = 2;
