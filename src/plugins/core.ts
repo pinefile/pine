@@ -3,7 +3,7 @@ import path from 'path';
 import { PineType } from '../';
 
 export function pkg(this: PineType): any {
-  return require(path.join(process.cwd(), 'package.json'));
+  return { version: '1.0.0' };
 }
 
 export function readJSON(this: PineType, file: string): string {

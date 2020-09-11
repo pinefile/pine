@@ -6,5 +6,5 @@ exports.build = function (argv) {
 };
 
 exports.test = function (argv) {
-  npm('test');
+  npm('run echo');
 };

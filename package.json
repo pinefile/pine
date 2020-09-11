@@ -4,6 +4,7 @@
   "description": "",
   "bin": "bin/pine",
   "scripts": {
+    "echo": "echo \"Testing...\"",
     "build": "rimraf dist && npm run build:types && npm run build:js",
     "build:js": "NODE_ENV=production rollup -c",
     "build:types": "tsc",
