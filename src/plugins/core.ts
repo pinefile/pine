@@ -6,14 +6,12 @@ export function pkg(this: PineType): any {
   return require(path.join(process.cwd(), 'package.json'));
 }
 
-export function readJSON(this: PineType, file: string): string {
+export function readJSON(this: PineType, file: string): any {
   if (!file.startsWith('/')) {
     file = path.join(process.cwd(), file);
   }
 
-  const content = fs.readFileSync(file).toString();
-
-  return JSON.parse(content);
+  return require(file);
 }
 
 export function writeJSON(this: PineType, file: string, content: any): boolean {
