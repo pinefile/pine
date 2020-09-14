@@ -18,7 +18,7 @@ module.exports = {
 };
 ```
 
-`pkg` function will read `package.json`
+`pkg` function will read closest `package.json`
 
 Then run it with
 
