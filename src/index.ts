@@ -1,12 +1,33 @@
 import { parseArgv } from './argv';
 import { flattenArray } from './utils';
-import { filePath } from './file';
+import { findFile } from './file';
 import help from './help';
+
+type PackageType = {
+  pine: {
+    [key: string]: any;
+  };
+};
 
 const _before = {};
 const _after = {};
 let _file = '';
-let _module: any = null;
+let _module: any = {};
+
+/**
+ * Load custom package.json config.
+ *
+ * @param {object} pkg
+ */
+const loadPkgConf = (pkg?: PackageType) => {
+  if (!pkg) return;
+  const pine =
+    typeof pkg.pine === 'object' && !Array.isArray(pkg.pine) ? pkg.pine : {};
+  const req = ((Array.isArray(pine.require)
+    ? pine.require
+    : [pine.require]) as Array<string>).filter((r) => r);
+  req.map((r) => require(findFile(r)));
+};
 
 /**
  * Register task that should be runned before a task.
@@ -79,8 +100,13 @@ export const run = (argv: Array<any>) => {
   }
 
   if (!_file) {
-    _file = filePath(args);
+    _file = findFile(args.file);
   }
+
+  try {
+    const pkg = require(findFile('package.json'));
+    loadPkgConf(pkg);
+  } catch (err) {}
 
   try {
     _module = require(_file);

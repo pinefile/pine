@@ -1,4 +1,6 @@
 dist
 node_modules
+Pinefile
+pinefile.js
 testdata
-test.json
+test.js*

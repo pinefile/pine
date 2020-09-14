@@ -1,26 +1,37 @@
 import fs from 'fs';
 import path from 'path';
-import { parseArgv } from './argv';
 
-export const filePath = (args: any): string => {
-  let file = '';
+const PINE_FILE_ORDER = Object.freeze(['Pinefile', 'pinefile.js']);
 
-  if (fs.existsSync(path.resolve('Pinefile'))) {
-    file = path.resolve('Pinefile');
-  } else if (fs.existsSync(path.resolve('pinefile.js'))) {
-    file = path.resolve('pinefile.js');
-  } else if (args.file) {
-    file = path.resolve(args.file);
-  }
+const isFile = (filePath: string) =>
+  fs.existsSync(filePath) && !fs.lstatSync(filePath).isDirectory();
 
-  if (file) {
-    return file;
-  }
-
-  throw new Error('Pinefile not found');
+export const findFile = (file: string = ''): string => {
+  return resolveFilePathByTraversing(path.resolve('.'), process.cwd(), file);
 };
 
-export const findFile = (): string => {
-  const argv = parseArgv(process.argv.slice(2));
-  return filePath(argv);
+const resolveFilePathByTraversing = (
+  pathToResolve: string,
+  cwd: string,
+  file: string = ''
+): string => {
+  const customFile = path.resolve(pathToResolve, file);
+  if (file && isFile(customFile)) {
+    return customFile;
+  }
+
+  const pineFile = PINE_FILE_ORDER.map((file) =>
+    path.resolve(pathToResolve, file)
+  ).find(isFile);
+  if (pineFile) {
+    return pineFile;
+  }
+
+  // system root
+  if (pathToResolve === path.dirname(pathToResolve)) {
+    throw new Error('Could not find any pinefile.');
+  }
+
+  // go up a level and try it again
+  return resolveFilePathByTraversing(path.dirname(pathToResolve), cwd);
 };

@@ -1,4 +1,4 @@
-const { after, before, pkg } = require('../src')
+const { after, before, pkg, file } = require('../src')
 const { echo } = require('./plugins/echo')
 
 const npm = (c) => {

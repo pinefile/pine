@@ -1,8 +1,9 @@
 import fs from 'fs';
 import path from 'path';
+import { findFile } from '../file';
 
 export function pkg(): any {
-  return require(path.join(process.cwd(), 'package.json'));
+  return require(findFile('package.json'));
 }
 
 export function readJSON(file: string): any {
