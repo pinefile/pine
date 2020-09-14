@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { findFile } from '../file';
+import { findFile } from '../file';
 
 export function pkg(): any {
   return require(findFile('package.json'));

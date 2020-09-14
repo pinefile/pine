@@ -68,7 +68,7 @@ describe('pine', () => {
             `--file=${__dirname}/fixtures/pinefile.plugins.core.js`,
           ]);
           expect(fs.writeFileSync).toHaveBeenCalledTimes(1);
-          fs.unlinkSync('test.json')
+          fs.unlinkSync('test.json');
           spy.mockReset();
           spy.mockRestore();
         },

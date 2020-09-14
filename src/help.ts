@@ -4,6 +4,6 @@ const help = () => {
 Options:
   --help  Show help
   --file  Path to Pinefile`);
-}
+};
 
 export default help;
