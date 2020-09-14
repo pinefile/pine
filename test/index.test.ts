@@ -116,4 +116,18 @@ describe('pine', () => {
       test.test();
     });
   });
+
+  it('should require files before run using package.json config', () => {
+    jest.mock('../package.json', () => {
+      return {
+        pine: {
+          require: ['./test/fixtures/require.js'],
+        },
+      };
+    });
+    run([`--file=${__dirname}/fixtures/pinefile.basic.js`, 'build']);
+    expect(console.log).toHaveBeenCalledWith('Required...');
+    expect(console.log).toHaveBeenCalledWith('Building...');
+    jest.unmock('../package.json');
+  });
 });

@@ -78,7 +78,9 @@ const execute = (name: string, args: any) => {
     _before[name].forEach((name: string) => execute(name, args));
   }
 
-  _module[name](args);
+  if (_module[name]) {
+    _module[name](args);
+  }
 
   if (_after[name]) {
     _after[name].forEach((name: string) => execute(name, args));
@@ -106,7 +108,9 @@ export const run = (argv: Array<any>) => {
   try {
     const pkg = require(findFile('package.json'));
     loadPkgConf(pkg);
-  } catch (err) {}
+  } catch (err) {
+    console.log(err);
+  }
 
   try {
     _module = require(_file);
