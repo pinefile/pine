@@ -1,21 +1,17 @@
 import fs from 'fs';
 import path from 'path';
-import { findFile } from '../file';
+import { isFile, findFile } from '../file';
 
 export function pkg(): any {
-  return require(findFile('package.json'));
+  return readJSON('package.json');
 }
 
 export function readJSON(file: string): any {
-  if (!file.startsWith('/')) {
-    file = path.join(process.cwd(), file);
-  }
-
-  return require(file);
+  return require(findFile(file));
 }
 
 export function writeJSON(file: string, content: any): boolean {
-  if (!file.startsWith('/')) {
+  if (!file.startsWith('/') && isFile(file)) {
     file = path.join(process.cwd(), file);
   }
 

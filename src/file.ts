@@ -3,10 +3,14 @@ import path from 'path';
 
 const PINE_FILE_ORDER = Object.freeze(['Pinefile', 'pinefile.js']);
 
-const isFile = (filePath: string) =>
+export const isFile = (filePath: string) =>
   fs.existsSync(filePath) && !fs.lstatSync(filePath).isDirectory();
 
 export const findFile = (file: string = ''): string => {
+  if (file.startsWith('/') && isFile(file)) {
+    return file;
+  }
+
   return resolveFilePathByTraversing(path.resolve('.'), process.cwd(), file);
 };
 
