@@ -1,13 +1,10 @@
-// extend with custom plugins
-extend({
-  // with function
-  npm: (c) => {
-    const { execSync } = require('child_process');
-    execSync(`npm ${c}`);
-  },
-  // with file
-  echo: require('./plugins/echo.js'),
-});
+const { after, before, pkg } = require('../src')
+const { echo } = require('./plugins/echo')
+
+const npm = (c) => {
+  const { execSync } = require('child_process');
+  execSync(`npm ${c}`);
+}
 
 // run tasks after build task
 after('build', 'done');

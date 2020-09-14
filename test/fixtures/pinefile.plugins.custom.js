@@ -1,5 +1,6 @@
-extend(__dirname + '/plugins/echo.js');
-extend(__dirname + '/plugins/npm.js');
+const { extend } = require('../../src');
+const { echo } = require('./plugins/echo')
+const { npm } = require('./plugins/npm')
 
 exports.echo = function (argv) {
   echo('Echo...');

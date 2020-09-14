@@ -1,22 +1,22 @@
 import fs from 'fs';
-import { run } from '../src';
 
 describe('pine', () => {
   const log = console.log;
+  let run;
 
   beforeEach(() => {
+    jest.resetModules();
     console.log = jest.fn();
+    run = require('../src').run;
   });
 
   afterEach(() => {
     console.log = log;
-    jest.resetModules();
   });
 
   it('should run basic pinefile', () => {
     run([`--file=${__dirname}/fixtures/pinefile.basic.js`, 'build']);
     expect(console.log).toHaveBeenCalledWith('Building...');
-    expect(console.log).toHaveBeenCalledTimes(1);
   });
 
   it('should run pinefile with before tasks', () => {
@@ -24,14 +24,12 @@ describe('pine', () => {
     expect(console.log).toHaveBeenCalledWith('Compiling...');
     expect(console.log).toHaveBeenCalledWith('Write...');
     expect(console.log).toHaveBeenCalledWith('Building...');
-    expect(console.log).toHaveBeenCalledTimes(3);
   });
 
   it('should run pinefile with before tasks with array', () => {
     run(['array', `--file=${__dirname}/fixtures/pinefile.before.js`]);
     expect(console.log).toHaveBeenCalledWith('Compiling...');
     expect(console.log).toHaveBeenCalledWith('Array...');
-    expect(console.log).toHaveBeenCalledTimes(2);
   });
 
   it('should run pinefile with after tasks', () => {
@@ -39,18 +37,15 @@ describe('pine', () => {
     expect(console.log).toHaveBeenCalledWith('Building...');
     expect(console.log).toHaveBeenCalledWith('Compiling...');
     expect(console.log).toHaveBeenCalledWith('Write...');
-    expect(console.log).toHaveBeenCalledTimes(3);
   });
 
   it('should run pinefile with after tasks with array', () => {
     run(['array', `--file=${__dirname}/fixtures/pinefile.after.js`]);
     expect(console.log).toHaveBeenCalledWith('Array...');
     expect(console.log).toHaveBeenCalledWith('Compiling...');
-    expect(console.log).toHaveBeenCalledTimes(2);
   });
 
   it('should run pinefile with core plugins', () => {
-    const logTimes = 2;
     const tests = [
       {
         task: 'pkg',
@@ -91,23 +86,13 @@ describe('pine', () => {
         test.test();
       }
     });
-
-    expect(console.log).toHaveBeenCalledTimes(logTimes);
   });
 
   it('should run pinefile with with custom plugins', () => {
-    const logTimes = 3;
     const tests = [
       {
         task: 'echo',
         file: 'custom',
-        test: () => {
-          expect(console.log).toHaveBeenCalledWith('Echo...');
-        },
-      },
-      {
-        task: 'echo',
-        file: 'object',
         test: () => {
           expect(console.log).toHaveBeenCalledWith('Echo...');
         },
@@ -130,7 +115,5 @@ describe('pine', () => {
       ]);
       test.test();
     });
-
-    expect(console.log).toHaveBeenCalledTimes(logTimes);
   });
 });

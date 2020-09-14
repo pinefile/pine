@@ -1,2 +1,2 @@
 export const flattenArray = (a: Array<any>) =>
-  a.reduce((accumulator: any, value: any) => accumulator.concat(value), []);
+  a.reduce((acc: any, value: any) => acc.concat(value), []);

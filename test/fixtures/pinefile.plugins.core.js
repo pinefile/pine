@@ -1,3 +1,5 @@
+const { before, pkg, readJSON, writeJSON } = require('../../src');
+
 exports.pkg = () => console.log(`pkg: ${pkg().version}`);
 
 exports.readJSON = () =>

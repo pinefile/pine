@@ -1,3 +1,5 @@
+const { after } = require('../../src');
+
 exports.build = function (argv) {
   console.log('Building...');
 };

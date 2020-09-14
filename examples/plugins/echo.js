@@ -1,1 +1,3 @@
-module.exports = console.log
+module.exports = {
+  echo: console.log,
+};

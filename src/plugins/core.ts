@@ -1,12 +1,11 @@
 import fs from 'fs';
 import path from 'path';
-import { PineType } from '../pine';
 
-export function pkg(this: PineType): any {
+export function pkg(): any {
   return require(path.join(process.cwd(), 'package.json'));
 }
 
-export function readJSON(this: PineType, file: string): any {
+export function readJSON(file: string): any {
   if (!file.startsWith('/')) {
     file = path.join(process.cwd(), file);
   }
@@ -14,7 +13,7 @@ export function readJSON(this: PineType, file: string): any {
   return require(file);
 }
 
-export function writeJSON(this: PineType, file: string, content: any): boolean {
+export function writeJSON(file: string, content: any): boolean {
   if (!file.startsWith('/')) {
     file = path.join(process.cwd(), file);
   }
