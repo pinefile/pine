@@ -137,4 +137,5 @@ export const run = (argv: Array<any>) => {
   execute(name, args);
 };
 
-export * from './plugins/core';
+export * from './plugins/file';
+export * from './plugins/shell';

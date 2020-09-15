@@ -45,7 +45,8 @@ describe('pine', () => {
     expect(console.log).toHaveBeenCalledWith('Compiling...');
   });
 
-  it('should run pinefile with core plugins', () => {
+  it('should run pinefile with built in plugins', () => {
+    const file = `--file=${__dirname}/fixtures/pinefile.plugins.builtin.js`;
     const tests = [
       {
         task: 'pkg',
@@ -61,30 +62,29 @@ describe('pine', () => {
       },
       {
         task: 'writeJSON',
-        run: () => {
-          const spy = jest.spyOn(fs, 'writeFileSync');
-          run([
-            'writeJSON',
-            `--file=${__dirname}/fixtures/pinefile.plugins.core.js`,
-          ]);
-          expect(fs.writeFileSync).toHaveBeenCalledTimes(1);
-          fs.unlinkSync('test.json');
-          spy.mockReset();
-          spy.mockRestore();
+        after: () => {
+          fs.unlinkSync(`${__dirname}/fixtures/write.json`);
+        },
+        test: () => {
+          expect(fs.existsSync(`${__dirname}/fixtures/write.json`));
+        },
+      },
+      {
+        task: 'shell',
+        after: () => {
+          fs.rmdirSync(`${__dirname}/fixtures/shell`);
+        },
+        test: () => {
+          expect(fs.existsSync(`${__dirname}/fixtures/shell`)).toBeTruthy();
         },
       },
     ];
 
     tests.forEach((test) => {
-      if (test.run) {
-        test.run();
-      } else {
-        run([
-          test.task,
-          `--file=${__dirname}/fixtures/pinefile.plugins.core.js`,
-        ]);
-        test.test();
-      }
+      run([test.task, file]);
+      test.before && test.before();
+      test.test();
+      test.after && test.after();
     });
   });
 
