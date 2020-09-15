@@ -1,5 +1,4 @@
 dist
 node_modules
-pinefile.js
 testdata
 test.js*
