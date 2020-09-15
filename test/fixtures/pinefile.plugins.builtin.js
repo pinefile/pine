@@ -7,4 +7,7 @@ exports.readJSON = () =>
 
 exports.writeJSON = () => writeJSON(`${__dirname}/write.json`, { version: '1.0.0' });
 
-exports.shell = () => shell('mkdir shell', { cwd: __dirname });
+exports.shell = () => {
+  shell('mkdir shell', { cwd: __dirname });
+  shell('ls', { cwd: __dirname})
+}
