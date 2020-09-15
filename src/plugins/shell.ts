@@ -16,16 +16,20 @@ export const shell = (cmd: string, opts?: ShellOptionsType) => {
     const sp = spawn(cmd, [], { cwd, shell: true });
 
     if (outputStream) {
+      // @ts-ignore
       sp.stdout.pipe(outputStream);
+      // @ts-ignore
       sp.stderr.pipe(outputStream);
     }
 
+    // @ts-ignore
     sp.stdout.on('data', (data: string) => {
       if (!outputStream) {
         stdout += data;
       }
     });
 
+    // @ts-ignore
     sp.stderr.on('data', (data: string) => {
       if (!outputStream) {
         stdout += data;
