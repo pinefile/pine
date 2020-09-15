@@ -69,15 +69,6 @@ describe('pine', () => {
           expect(fs.existsSync(`${__dirname}/fixtures/write.json`));
         },
       },
-      {
-        task: 'shell',
-        after: () => {
-          fs.rmdirSync(`${__dirname}/fixtures/shell`);
-        },
-        test: () => {
-          expect(fs.existsSync(`${__dirname}/fixtures/shell`)).toBeTruthy();
-        },
-      },
     ];
 
     tests.forEach((test) => {

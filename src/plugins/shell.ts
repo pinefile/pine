@@ -2,10 +2,12 @@ import { spawn } from 'child_process';
 
 type ShellOptionsType = {
   cwd: string;
+  outputStream: NodeJS.WriteStream;
 };
 
 export const shell = (cmd: string, opts?: ShellOptionsType) => {
   const cwd = opts?.cwd || process.cwd();
+  const outputStream = opts?.outputStream;
 
   return new Promise((resolve, reject) => {
     let stdout = '';
@@ -13,11 +15,22 @@ export const shell = (cmd: string, opts?: ShellOptionsType) => {
 
     const sp = spawn(cmd, [], { cwd, shell: true });
 
+    if (outputStream) {
+      sp.stdout.pipe(outputStream);
+      sp.stderr.pipe(outputStream);
+    }
+
     sp.stdout.on('data', (data: string) => {
-      stdout += data;
+      if (!outputStream) {
+        stdout += data;
+      }
     });
 
     sp.stderr.on('data', (data: string) => {
+      if (!outputStream) {
+        stdout += data;
+      }
+
       stderr += data;
     });
 
@@ -29,10 +42,7 @@ export const shell = (cmd: string, opts?: ShellOptionsType) => {
       if (code === 0) {
         resolve(stdout.trim());
       } else {
-        const error = new Error(stderr.trim());
-        error.code = code;
-        error.stdout = stdout.trim();
-        reject(error);
+        reject(new Error(stderr.trim()));
       }
     });
   });
