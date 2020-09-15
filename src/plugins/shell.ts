@@ -13,7 +13,14 @@ export const shell = (cmd: string, opts?: ShellOptionsType) => {
     let stdout = '';
     let stderr = '';
 
-    const sp = spawn(cmd, [], { cwd, shell: true });
+    // @ts-ignore
+    process.env.FORCE_COLOR = true;
+
+    const sp = spawn(cmd, [], {
+      cwd,
+      shell: true,
+      env: process.env,
+    });
 
     if (outputStream) {
       // @ts-ignore
