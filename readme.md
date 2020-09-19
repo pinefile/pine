@@ -20,7 +20,7 @@ module.exports = {
 
 `pkg` function will read closest `package.json`
 
-Then run it! It is best to either place `pine` inside a npm run script or run it with npx:
+Then run it! It is best to either place `pine` inside a npm run script or run it with `npx`:
 
 ```
 npx pine build
