@@ -23,7 +23,7 @@ module.exports = {
 Then run it with
 
 ```
-npx pinefile build
+npx pine build
 ```
 
 ## License
