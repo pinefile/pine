@@ -2,7 +2,7 @@
 
 > WIP
 
-Simple Make build tool using JavaScript
+Small task runner for node.js
 
 ## example
 
