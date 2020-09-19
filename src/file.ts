@@ -3,10 +3,10 @@ import path from 'path';
 
 const PINE_FILE_ORDER = Object.freeze(['Pinefile', 'pinefile.js']);
 
-export const isFile = (filePath: string) =>
+export const isFile = (filePath: string): boolean =>
   fs.existsSync(filePath) && !fs.lstatSync(filePath).isDirectory();
 
-export const findFile = (file: string = ''): string => {
+export const findFile = (file = ''): string => {
   if (file.startsWith('/') && isFile(file)) {
     return file;
   }
@@ -17,7 +17,7 @@ export const findFile = (file: string = ''): string => {
 const resolveFilePathByTraversing = (
   pathToResolve: string,
   cwd: string,
-  file: string = ''
+  file = ''
 ): string => {
   const customFile = path.resolve(pathToResolve, file);
   if (file && isFile(customFile)) {

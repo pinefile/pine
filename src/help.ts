@@ -1,4 +1,4 @@
-const help = () => {
+const help = (): void => {
   console.log(`Usage: pine <task>
 
 Options:

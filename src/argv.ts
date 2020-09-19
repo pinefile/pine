@@ -1,4 +1,4 @@
-const minimist = require('minimist');
+import minimist from 'minimist';
 
 type Argv = {
   [key: string]: any;

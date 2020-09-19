@@ -19,7 +19,7 @@ let _module: any = {};
  *
  * @param {object} pkg
  */
-const loadPkgConf = (pkg?: PackageType) => {
+const loadPkgConf = (pkg?: PackageType): void => {
   if (!pkg) return;
   const pine =
     typeof pkg.pine === 'object' && !Array.isArray(pkg.pine) ? pkg.pine : {};
@@ -36,7 +36,7 @@ const loadPkgConf = (pkg?: PackageType) => {
  *   before('build', 'compile', 'write')
  *   before('build', ['compile', 'write'])
  */
-export const before = (...args: any[]) => {
+export const before = (...args: any[]): void => {
   const before = args[0];
   const after = Array.prototype.slice.call(args, 1);
 
@@ -55,7 +55,7 @@ export const before = (...args: any[]) => {
  *   after('build', 'publish', 'log')
  *   after('build', ['publish', 'log'])
  */
-export const after = (...args: any[]) => {
+export const after = (...args: any[]): void => {
   const after = args[0];
   const before = Array.prototype.slice.call(args, 1);
 
@@ -73,7 +73,7 @@ export const after = (...args: any[]) => {
  * @param {string} name
  * @param {object} args
  */
-const execute = (name: string, args: any) => {
+const execute = (name: string, args: any): void => {
   if (_before[name]) {
     _before[name].forEach((name: string) => execute(name, args));
   }
@@ -92,7 +92,7 @@ const execute = (name: string, args: any) => {
  *
  * @param {array} argv
  */
-export const run = (argv: Array<any>) => {
+export const run = (argv: Array<any>): void => {
   const args = parseArgv(argv);
   const name = args._.shift();
 
@@ -106,6 +106,7 @@ export const run = (argv: Array<any>) => {
   }
 
   try {
+    // eslint-disable-next-line
     const pkg = require(findFile('package.json'));
     loadPkgConf(pkg);
   } catch (err) {
@@ -113,6 +114,7 @@ export const run = (argv: Array<any>) => {
   }
 
   try {
+    // eslint-disable-next-line
     _module = require(_file);
   } catch (err) {
     console.error(err);
