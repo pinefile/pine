@@ -9,7 +9,7 @@ Small task runner for node.js
 Create `Pinefile` or `pinefile.js`
 
 ```js
-const { pkg } = require('pinefile');
+const { pkg } = require('@pinefile/pine');
 
 module.exports = {
   build: () => {
