@@ -1,4 +1,4 @@
-# pine
+# pine [![Build Status](https://github.com/pinefile/pine/workflows/build/badge.svg)](https://github.com/pinefile/pine/actions)
 
 > WIP
 
