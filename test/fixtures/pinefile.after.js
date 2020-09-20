@@ -14,7 +14,7 @@ exports.write = function (argv) {
 
 after('build', 'compile', 'write', 'compile');
 
-exports.array = function (argv) {
+exports.array = async function (argv) {
   console.log('Array...');
 };
 

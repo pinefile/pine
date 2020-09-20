@@ -1,10 +1,9 @@
-const { after, before, pkg, file } = require('../src')
+const { after, before, pkg, file, shell } = require('../src')
 const { echo } = require('./plugins/echo')
 
-const npm = (c) => {
-  const { execSync } = require('child_process');
-  execSync(`npm ${c}`);
-}
+const npm = (c) => shell(`npm run ${c}`, {
+  outputStream: process.stdout,
+})
 
 // run tasks after build task
 after('build', 'done');

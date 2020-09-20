@@ -73,13 +73,13 @@ export const after = (...args: any[]): void => {
  * @param {string} name
  * @param {object} args
  */
-const execute = (name: string, args: any): void => {
+const execute = async (name: string, args: any): Promise<void> => {
   if (_before[name]) {
     _before[name].forEach((name: string) => execute(name, args));
   }
 
   if (_module[name]) {
-    _module[name](args);
+    await _module[name](args);
   }
 
   if (_after[name]) {
