@@ -1,4 +1,4 @@
-dist
+packages/*/dist
 node_modules
 testdata
 test.js*
