@@ -1,4 +1,4 @@
-const { after, before, pkg, file, shell } = require('../src')
+const { after, before, pkg, file, shell } = require('@pinefile/pine')
 const { echo } = require('./plugins/echo')
 
 const npm = (c) => shell(`npm run ${c}`, {
