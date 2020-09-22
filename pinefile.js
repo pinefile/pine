@@ -11,5 +11,8 @@ module.exports = {
   },
   test: () => {
     npm('test')
+  },
+  hello: () => {
+    console.log('hello')
   }
 };
