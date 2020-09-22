@@ -9,8 +9,8 @@ describe('shell', () => {
       },
       {
         input: 'ls -la',
-        output: 'total'
-      }
+        output: 'total',
+      },
     ].forEach(async (test) => {
       const output = await shell(test.input);
       expect(output).toContain(test.output);

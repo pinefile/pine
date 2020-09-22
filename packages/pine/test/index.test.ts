@@ -47,7 +47,7 @@ describe('pine', () => {
     jest.mock('../package.json', () => {
       return {
         pine: {
-          require: ['./test/fixtures/require.js'],
+          require: ['./packages/pine/test/fixtures/require.js'],
         },
       };
     });

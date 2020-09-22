@@ -5,7 +5,10 @@ type ShellOptionsType = {
   outputStream: NodeJS.WriteStream;
 };
 
-export const shell = (cmd: string, opts?: ShellOptionsType): Promise<unknown> => {
+export const shell = (
+  cmd: string,
+  opts?: ShellOptionsType
+): Promise<unknown> => {
   const cwd = opts?.cwd || process.cwd();
   const outputStream = opts?.outputStream;
 

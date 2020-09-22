@@ -45,7 +45,7 @@ export const before = (...args: any[]): void => {
   }
 
   _before[before] = _before[before].concat(flattenArray(after));
-  _before[before] = [...new Set(_before[before])];
+  _before[before] = [...Array.from(new Set(_before[before]))];
 };
 
 /**
@@ -64,7 +64,7 @@ export const after = (...args: any[]): void => {
   }
 
   _after[after] = _after[after].concat(flattenArray(before));
-  _after[after] = [...new Set(_after[after])];
+  _after[after] = [...Array.from(new Set(_after[after]))];
 };
 
 /**
