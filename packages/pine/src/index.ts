@@ -2,6 +2,7 @@ import { parseArgv } from './argv';
 import { flattenArray } from './utils';
 import { findFile } from './file';
 import help from './help';
+import * as logger from './log';
 
 type PackageType = {
   pine: {
@@ -79,6 +80,7 @@ const execute = async (name: string, args: any): Promise<void> => {
   }
 
   if (_module[name]) {
+    logger.info(`Starting task ${log.color.cyan(`'${name}'`)}`);
     await _module[name](args);
   }
 
@@ -109,30 +111,28 @@ export const run = (argv: Array<any>): void => {
     // eslint-disable-next-line
     const pkg = require(findFile('package.json'));
     loadPkgConf(pkg);
-  } catch (err) {
-    console.log(err);
-  }
+  } catch (err) {}
 
   try {
     // eslint-disable-next-line
     _module = require(_file);
   } catch (err) {
-    console.error(err);
+    logger.error(err);
     return;
   }
 
   if (!_module) {
-    console.error('Pinefile not found');
+    logger.error('Pinefile not found');
     return;
   }
 
   if (!name) {
-    console.error('No task provided');
+    logger.error('No task provided');
     return;
   }
 
   if (!_module[name]) {
-    console.error(`Task ${name} not found`);
+    logger.error(`Task ${log.color.cyan(`'${name}'`)} not found`);
     return;
   }
 
@@ -141,3 +141,4 @@ export const run = (argv: Array<any>): void => {
 
 export * from './plugins/file';
 export * from './plugins/shell';
+export const log = logger;
