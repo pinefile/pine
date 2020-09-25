@@ -44,7 +44,7 @@ describe('pine', () => {
 
   it('should require files before run using package.json config', () => {
     const spy = jest.spyOn(console, 'log');
-    jest.mock('../package.json', () => {
+    jest.mock('../../../package.json', () => {
       return {
         pine: {
           require: ['./packages/pine/test/fixtures/require.js'],
@@ -54,7 +54,7 @@ describe('pine', () => {
     run([`--file=${__dirname}/fixtures/pinefile.basic.js`, 'build']);
     expect(spy).toHaveBeenCalledWith('Required...');
     expect(spy).toHaveBeenCalledWith('Building...');
-    jest.unmock('../package.json');
+    jest.unmock('../../../package.json');
     spy.mockRestore();
   });
 });
