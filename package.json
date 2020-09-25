@@ -8,9 +8,10 @@
   "scripts": {
     "lerna": "lerna",
     "build": "npm run build:babel && npm run build:types",
-    "build:babel": "lerna exec --parallel -- babel --root-mode upward src -d dist/cjs",
+    "build:babel": "lerna exec --parallel -- babel --root-mode upward src -d dist/cjs --extensions .ts,.tsx",
     "build:types": "lerna exec --parallel -- tsc",
-    "pine": "PINE_ENV=development ts-node --project ./packages/pine/tsconfig.json ./packages/pine/bin/pine",
+    "pine:prod": "./packages/pine/bin/pine",
+    "pine:dev": "PINE_ENV=development ts-node --project ./packages/pine/tsconfig.json ./packages/pine/bin/pine",
     "format": "prettier --write 'packages/**/src/**/*.ts' packages/**/test/**/*.ts",
     "lint": "eslint packages/**/src --ext .ts",
     "prepublish": "lerna run prepublish",
