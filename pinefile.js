@@ -7,11 +7,11 @@ const npm = (c) =>
   });
 
 module.exports = {
-  build: () => {
-    npm('build');
+  build: async () => {
+    await npm('build');
   },
-  test: () => {
-    npm('test');
+  test: async () => {
+    await npm('test');
   },
   hello: () => {
     log.log('hello');
