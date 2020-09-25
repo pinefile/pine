@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "chalk": "^4.1.0",
+    "date-fns": "^2.16.1",
     "minimist": "^1.2.5"
   }
 }

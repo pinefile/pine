@@ -80,8 +80,11 @@ const execute = async (name: string, args: any): Promise<void> => {
   }
 
   if (_module[name]) {
-    logger.info(`Starting task ${log.color.cyan(`'${name}'`)}`);
+    const startTime = Date.now();
+    logger.log(`Starting ${log.color.cyan(`'${name}'`)}`);
     await _module[name](args);
+    const time = Date.now() - startTime
+    logger.log(`Finished ${log.color.cyan(`'${name}'`)} after ${log.color.magenta(time + 'ms')}`);
   }
 
   if (_after[name]) {

@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import format from 'date-fns/format';
 
 export const prefixes = {
   wait: chalk.cyan('wait') + ':  ',
@@ -9,28 +10,22 @@ export const prefixes = {
   event: chalk.magenta('event') + ': ',
 };
 
-export const color = chalk;
+const formatDate = (date:Date) => chalk.gray(format(date, '[kk:mm:ss]'))
+const newDate = () => new Date();
 
-export const wait = (...message: string[]) => {
-  console.log(prefixes.wait, ...message);
-};
-
-export const error = (...message: string[]) => {
-  console.error(prefixes.error, ...message);
-};
+export const log = (...message: string[]) => {
+  const date = formatDate(newDate())
+  console.log(date, ...message);
+}
 
 export const warn = (...message: string[]) => {
-  console.warn(prefixes.warn, ...message);
-};
+  const date = formatDate(newDate())
+  console.warn(date, ...message);
+}
 
-export const ready = (...message: string[]) => {
-  console.log(prefixes.ready, ...message);
-};
+export const error = (...message: string[]) => {
+  const date = formatDate(newDate())
+  console.error(date, ...message);
+}
 
-export const info = (...message: string[]) => {
-  console.log(prefixes.info, ...message);
-};
-
-export const event = (...message: string[]) => {
-  console.log(prefixes.event, ...message);
-};
+export const color = chalk;

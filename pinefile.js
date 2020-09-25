@@ -14,6 +14,6 @@ module.exports = {
     npm('test');
   },
   hello: () => {
-    log.info('hello');
+    log.log('hello');
   },
 };
