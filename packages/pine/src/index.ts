@@ -1,4 +1,4 @@
-import { parseArgv } from './argv';
+import yargs from 'yargs';
 import { flattenArray } from './utils';
 import { findFile } from './file';
 import help from './help';
@@ -12,7 +12,6 @@ type PackageType = {
 
 const _before = {};
 const _after = {};
-let _file = '';
 let _module: any = {};
 
 /**
@@ -83,8 +82,12 @@ const execute = async (name: string, args: any): Promise<void> => {
     const startTime = Date.now();
     logger.log(`Starting ${log.color.cyan(`'${name}'`)}`);
     await _module[name](args);
-    const time = Date.now() - startTime
-    logger.log(`Finished ${log.color.cyan(`'${name}'`)} after ${log.color.magenta(time + 'ms')}`);
+    const time = Date.now() - startTime;
+    logger.log(
+      `Finished ${log.color.cyan(`'${name}'`)} after ${log.color.magenta(
+        time + 'ms'
+      )}`
+    );
   }
 
   if (_after[name]) {
@@ -98,7 +101,10 @@ const execute = async (name: string, args: any): Promise<void> => {
  * @param {array} argv
  */
 export const run = (argv: Array<any>): void => {
-  const args = parseArgv(argv);
+  const args = yargs.options({
+    help: { type: 'boolean', default: false },
+    file: { type: 'string', default: '' },
+  }).parse(argv);
   const name = args._.shift();
 
   if (args.help) {
@@ -106,9 +112,7 @@ export const run = (argv: Array<any>): void => {
     return;
   }
 
-  if (!_file) {
-    _file = findFile(args.file);
-  }
+  const _file = findFile(args.file);
 
   try {
     // eslint-disable-next-line
