@@ -20,9 +20,9 @@
   "author": "Fredrik Forsmo <fredrik.forsmo@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "@babel/cli": "^7.11.6",
-    "@babel/core": "^7.11.6",
-    "@babel/preset-typescript": "^7.10.4",
+    "@babel/cli": "^7.12.0",
+    "@babel/core": "^7.12.0",
+    "@babel/preset-typescript": "^7.12.0",
     "@jitesoft/babel-preset-main": "^2.5.4",
     "@types/jest": "^26.0.13",
     "@typescript-eslint/eslint-plugin": "^4.4.1",
