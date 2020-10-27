@@ -1,10 +1,9 @@
 const isDev = process.env.PINE_ENV === 'development';
-const { shell, log } = require(`./packages/pine${isDev ? '/src' : ''}`);
+const { run, shell, log } = require(`./packages/pine${isDev ? '/src' : ''}`);
 
-const npm = (c) =>
-  shell(`npm run ${c}`, {
-    outputStream: process.stdout,
-  });
+const getLatestCommit = async () => await shell(`git rev-parse --short HEAD`);
+
+const npm = (c) => run(`npm run ${c}`);
 
 module.exports = {
   build: async () => {
@@ -13,7 +12,9 @@ module.exports = {
   test: async () => {
     await npm('test');
   },
-  hello: () => {
-    log.log('hello');
+  hello: async () => {
+    const commit = await getLatestCommit();
+    log.log(`hello ${commit}`);
   },
+  lint: async () => await run(`eslint packages/**/src --ext .ts`),
 };

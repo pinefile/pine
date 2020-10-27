@@ -28,6 +28,7 @@
   "dependencies": {
     "chalk": "^4.1.0",
     "date-fns": "^2.16.1",
+    "execa": "^4.0.3",
     "yargs": "^16.0.3"
   }
 }

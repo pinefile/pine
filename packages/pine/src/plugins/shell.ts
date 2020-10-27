@@ -1,8 +1,9 @@
-import { spawn } from 'child_process';
+import execa from 'execa';
 
 type ShellOptionsType = {
-  cwd: string;
-  outputStream: NodeJS.WriteStream;
+  cwd?: string;
+  stdout?: NodeJS.WriteStream;
+  stderr?: NodeJS.WriteStream;
 };
 
 export const shell = (
@@ -10,54 +11,31 @@ export const shell = (
   opts?: ShellOptionsType
 ): Promise<unknown> => {
   const cwd = opts?.cwd || process.cwd();
-  const outputStream = opts?.outputStream;
+  const s = cmd.split(' ');
 
   return new Promise((resolve, reject) => {
-    let stdout = '';
-    let stderr = '';
-
-    // @ts-ignore
-    process.env.FORCE_COLOR = true;
-
-    const sp = spawn(cmd, [], {
+    const sp = execa(s[0], s.slice(1), {
       cwd,
       shell: true,
-      env: process.env,
     });
 
-    if (outputStream) {
-      // @ts-ignore
-      sp.stdout.pipe(outputStream);
-      // @ts-ignore
-      sp.stderr.pipe(outputStream);
+    if (opts?.stdout) {
+      sp?.stdout?.pipe(opts.stdout);
+      sp?.stderr?.pipe(opts.stderr || opts.stdout);
+    } else {
+      sp.then((r) => resolve(r.stdout)).catch((r) => reject(r.stdout));
     }
 
-    // @ts-ignore
-    sp.stdout.on('data', (data: string) => {
-      if (!outputStream) {
-        stdout += data;
-      }
-    });
-
-    // @ts-ignore
-    sp.stderr.on('data', (data: string) => {
-      if (!outputStream) {
-        stdout += data;
-      }
-
-      stderr += data;
-    });
-
-    sp.on('error', (err: Error) => {
-      reject(err);
-    });
-
     sp.on('close', (code: number) => {
-      if (code === 0) {
-        resolve(stdout.trim());
-      } else {
-        reject(new Error(stderr.trim()));
+      if (opts?.stdout) {
+        resolve();
       }
     });
   });
 };
+
+export const run = (cmd: string, opts?: ShellOptionsType) =>
+  shell(cmd, {
+    stdout: opts?.stdout || process.stdout,
+    ...opts,
+  });
