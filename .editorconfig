@@ -8,10 +8,6 @@ indent_size = 2
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.php]
-indent_style = tab
-indent_size = 4
-
 [*.md]
 trim_trailing_whitespace = false
 
@@ -19,5 +15,5 @@ trim_trailing_whitespace = false
 indent_style = tab
 indent_size = 8
 
-[*.{js,jsx,ts,tsx,vue}]
+[*.{js,jsx,ts,tsx,vue,md}]
 quote_type = single
