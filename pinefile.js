@@ -1,11 +1,19 @@
 const isDev = process.env.PINE_ENV === 'development';
-const { run, shell, log } = require(`./packages/pine${isDev ? '/src' : ''}`);
+const { pkg, run, shell, log } = require(`./packages/pine${isDev ? '/src' : ''}`);
 
 const getLatestCommit = async () => await shell(`git rev-parse --short HEAD`);
 
 const npm = (c) => run(`npm run ${c}`);
 
+let { scripts } = pkg();
+
+Object.keys(scripts).forEach(key => {
+  const cmd = scripts[key];
+  scripts[key] = async () => await run(cmd);
+});
+
 module.exports = {
+  ...scripts,
   build: async () => {
     await npm('build');
   },
@@ -16,5 +24,4 @@ module.exports = {
     const commit = await getLatestCommit();
     log.log(`hello ${commit}`);
   },
-  lint: async () => await run(`eslint packages/**/src --ext .ts`),
 };
