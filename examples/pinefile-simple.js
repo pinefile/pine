@@ -1,9 +1,10 @@
-const { after, before, pkg, file, shell } = require('@pinefile/pine')
-const { echo } = require('./plugins/echo')
+const { after, pkg, shell } = require('@pinefile/pine');
+const { echo } = require('./plugins/echo');
 
-const npm = (c) => shell(`npm run ${c}`, {
-  outputStream: process.stdout,
-})
+const npm = (c) =>
+  shell(`npm run ${c}`, {
+    outputStream: process.stdout,
+  });
 
 // run tasks after build task
 after('build', 'done');
@@ -17,5 +18,5 @@ module.exports = {
   },
   done: () => {
     echo('All done');
-  }
-}
+  },
+};
