@@ -14,7 +14,7 @@
     "pine:dev": "PINE_ENV=development ts-node --project ./packages/pine/tsconfig.json ./packages/pine/bin/pine",
     "format": "prettier --write 'packages/**/src/**/*.ts' packages/**/test/**/*.ts",
     "lint": "eslint packages/**/src --ext .ts",
-    "prepublish": "lerna run prepublish",
+    "prepublish": "npm run build",
     "test": "jest"
   },
   "author": "Fredrik Forsmo <fredrik.forsmo@gmail.com>",
