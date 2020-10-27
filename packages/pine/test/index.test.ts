@@ -5,7 +5,7 @@ describe('pine', () => {
 
   beforeEach(() => {
     jest.resetModules();
-    run = require('../src').run;
+    run = require('../src').runTask;
   });
 
   afterEach(() => {

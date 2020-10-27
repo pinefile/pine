@@ -7,7 +7,7 @@ describe('plugins', () => {
   beforeEach(() => {
     jest.resetModules();
     console.log = jest.fn();
-    run = require('../src').run;
+    run = require('../src').runTask;
   });
 
   afterEach(() => {
@@ -42,7 +42,6 @@ describe('plugins', () => {
 
     tests.forEach(async (test) => {
       await run([test.task, file]);
-      test.before && test.before();
       test.test();
       test.after && test.after();
     });
