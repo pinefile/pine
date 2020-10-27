@@ -17,6 +17,10 @@ export const shell = (
     const sp = execa(s[0], s.slice(1), {
       cwd,
       shell: true,
+      env: {
+        // @ts-ignore
+        FORCE_COLOR: true,
+      },
     });
 
     if (opts?.stdout) {
