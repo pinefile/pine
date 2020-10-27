@@ -41,7 +41,7 @@ export const before = (...args: any): void => {
   const names = args[0];
   const after = Array.prototype.slice.call(args, 1);
 
-  if (!Array.isArray(names) || typeof names !== 'string') {
+  if (!Array.isArray(names) && typeof names !== 'string') {
     throw new Error(
       'First argument of `before` should be array of strings or a string'
     );
@@ -69,7 +69,7 @@ export const after = (...args: any): void => {
   const names = args[0];
   const before = Array.prototype.slice.call(args, 1);
 
-  if (!Array.isArray(names) || typeof names !== 'string') {
+  if (!Array.isArray(names) && typeof names !== 'string') {
     throw new Error(
       'First argument of `after` should be array of strings or a string'
     );
@@ -118,7 +118,7 @@ const execute = async (name: string, args: any): Promise<void> => {
  *
  * @param {array} argv
  */
-export const run = (argv: Array<any>): void => {
+export const runTask = (argv: Array<any>): void => {
   const args = yargs
     .options({
       help: { type: 'boolean', default: false },
