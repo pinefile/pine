@@ -127,7 +127,7 @@ export const runTask = (argv: Array<any>): void => {
     .parse(argv);
   const name = args._.shift();
 
-  if (args.help) {
+  if (!name || args.help) {
     help();
     return;
   }
