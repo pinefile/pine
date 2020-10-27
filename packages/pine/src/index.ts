@@ -35,17 +35,28 @@ const loadPkgConf = (pkg?: PackageType): void => {
  * Example
  *   before('build', 'compile', 'write')
  *   before('build', ['compile', 'write'])
+ *   before(['build', 'compile'], 'notify')
  */
-export const before = (...args: any[]): void => {
-  const before = args[0];
+export const before = (...args: Array<Array<string> | string>): void => {
+  const names = args[0];
   const after = Array.prototype.slice.call(args, 1);
 
-  if (!_before[before]) {
-    _before[before] = [];
+  if (!Array.isArray(names) || typeof names !== 'string') {
+    log.error(
+      'First argument of before should be array of strings or a string'
+    );
+
+    return;
   }
 
-  _before[before] = _before[before].concat(flattenArray(after));
-  _before[before] = [...Array.from(new Set(_before[before]))];
+  (Array.isArray(names) ? names : [names]).forEach((name: string) => {
+    if (!_before[name]) {
+      _before[name] = [];
+    }
+
+    _before[name] = _before[name].concat(flattenArray(after));
+    _before[name] = [...Array.from(new Set(_before[name]))];
+  });
 };
 
 /**
@@ -54,17 +65,20 @@ export const before = (...args: any[]): void => {
  * Example
  *   after('build', 'publish', 'log')
  *   after('build', ['publish', 'log'])
+ *   after(['build', 'compile'], 'publish')
  */
-export const after = (...args: any[]): void => {
-  const after = args[0];
+export const after = (...args: Array<Array<string> | string>): void => {
+  const names = args[0];
   const before = Array.prototype.slice.call(args, 1);
 
-  if (!_after[after]) {
-    _after[after] = [];
-  }
+  (Array.isArray(names) ? names : [names]).forEach((name: string) => {
+    if (!_after[name]) {
+      _after[name] = [];
+    }
 
-  _after[after] = _after[after].concat(flattenArray(before));
-  _after[after] = [...Array.from(new Set(_after[after]))];
+    _after[name] = _after[name].concat(flattenArray(before));
+    _after[name] = [...Array.from(new Set(_after[name]))];
+  });
 };
 
 /**
@@ -101,10 +115,12 @@ const execute = async (name: string, args: any): Promise<void> => {
  * @param {array} argv
  */
 export const run = (argv: Array<any>): void => {
-  const args = yargs.options({
-    help: { type: 'boolean', default: false },
-    file: { type: 'string', default: '' },
-  }).parse(argv);
+  const args = yargs
+    .options({
+      help: { type: 'boolean', default: false },
+      file: { type: 'string', default: '' },
+    })
+    .parse(argv);
   const name = args._.shift();
 
   if (args.help) {
