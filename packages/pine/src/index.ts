@@ -15,6 +15,27 @@ const _after = {};
 let _module: any = {};
 
 /**
+ * Print tasks from Pinefile.
+ *
+ * @param {string} file
+ */
+const printTasks = (file?: string) => {
+  try {
+    const _file = findFile(file);
+    const obj = require(_file);
+    const keys = Object.keys(obj);
+
+    console.log('\nTasks:');
+
+    keys.sort((a, b) => a.localeCompare(b));
+    keys.forEach((key) => {
+      console.log(`  ${key}`);
+    });
+
+  } catch (err) {}
+};
+
+/**
  * Load custom package.json config.
  *
  * @param {object} pkg
@@ -129,6 +150,7 @@ export const runTask = (argv: Array<any>): void => {
 
   if (!name || args.help) {
     help();
+    printTasks(args.file);
     return;
   }
 

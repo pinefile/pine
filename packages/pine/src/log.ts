@@ -10,22 +10,22 @@ export const prefixes = {
   event: chalk.magenta('event') + ': ',
 };
 
-const formatDate = (date:Date) => chalk.gray(format(date, '[kk:mm:ss]'))
+const formatDate = (date: Date) => chalk.gray(format(date, '[kk:mm:ss]'));
 const newDate = () => new Date();
 
 export const log = (...message: string[]) => {
-  const date = formatDate(newDate())
+  const date = formatDate(newDate());
   console.log(date, ...message);
-}
+};
 
 export const warn = (...message: string[]) => {
-  const date = formatDate(newDate())
+  const date = formatDate(newDate());
   console.warn(date, ...message);
-}
+};
 
 export const error = (...message: string[]) => {
-  const date = formatDate(newDate())
+  const date = formatDate(newDate());
   console.error(date, ...message);
-}
+};
 
 export const color = chalk;
