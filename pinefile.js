@@ -18,7 +18,7 @@ module.exports = {
     await npm('build');
   },
   test: async () => {
-    await npm('test');
+    await run('jest');
   },
   hello: async () => {
     const commit = await getLatestCommit();

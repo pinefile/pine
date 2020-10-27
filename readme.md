@@ -7,12 +7,15 @@ Small task runner for node.js
 Create `Pinefile` or `pinefile.js`
 
 ```js
-const { pkg } = require('@pinefile/pine');
+const { pkg, run } = require('@pinefile/pine');
 
 module.exports = {
   build: () => {
     console.log(`Building ${pkg().version}...`);
   },
+  test: async () => {
+    await run('jest');
+  }
 };
 ```
 
