@@ -37,16 +37,14 @@ const loadPkgConf = (pkg?: PackageType): void => {
  *   before('build', ['compile', 'write'])
  *   before(['build', 'compile'], 'notify')
  */
-export const before = (...args: Array<Array<string> | string>): void => {
+export const before = (...args: any): void => {
   const names = args[0];
   const after = Array.prototype.slice.call(args, 1);
 
   if (!Array.isArray(names) || typeof names !== 'string') {
-    log.error(
-      'First argument of before should be array of strings or a string'
+    throw new Error(
+      'First argument of `before` should be array of strings or a string'
     );
-
-    return;
   }
 
   (Array.isArray(names) ? names : [names]).forEach((name: string) => {
@@ -67,9 +65,15 @@ export const before = (...args: Array<Array<string> | string>): void => {
  *   after('build', ['publish', 'log'])
  *   after(['build', 'compile'], 'publish')
  */
-export const after = (...args: Array<Array<string> | string>): void => {
+export const after = (...args: any): void => {
   const names = args[0];
   const before = Array.prototype.slice.call(args, 1);
+
+  if (!Array.isArray(names) || typeof names !== 'string') {
+    throw new Error(
+      'First argument of `after` should be array of strings or a string'
+    );
+  }
 
   (Array.isArray(names) ? names : [names]).forEach((name: string) => {
     if (!_after[name]) {
