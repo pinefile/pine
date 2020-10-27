@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const isDev = process.env.PINE_ENV === 'development';
-const { run } = require(isDev ? '../src' : '../');
+const isDev = process.env.PINE_ENV === "development";
+const { runTask } = require(isDev ? "../src" : "../");
 
-run(process.argv.slice(2));
+runTask(process.argv.slice(2));
