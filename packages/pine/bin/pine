@@ -3,4 +3,10 @@
 const isDev = process.env.PINE_ENV === "development";
 const { runTask } = require(isDev ? "../src" : "../");
 
-runTask(process.argv.slice(2));
+const argv = process.argv.slice(2);
+
+if (argv.includes('--silent')) {
+process.env.LOG_LEVEL = 'silent';
+}
+
+runTask(argv);
