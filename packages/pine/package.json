@@ -9,9 +9,8 @@
   "files": [
     "dist"
   ],
-  "scripts": {},
-  "main": "dist/cjs/index.js",
-  "types": "dist/types",
+  "main": "dist/index.js",
+  "types": "dist",
   "keywords": [
     "build",
     "system",
@@ -22,11 +21,11 @@
   "author": "Fredrik Forsmo <fredrik.forsmo@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "@types/yargs": "^15.0.7",
-    "prettier": "^2.1.1"
+    "@types/yargs": "^15.0.7"
   },
   "dependencies": {
     "chalk": "^4.1.0",
+    "core-js": "^3.6.5",
     "date-fns": "^2.16.1",
     "execa": "^4.0.3",
     "yargs": "^16.0.3"

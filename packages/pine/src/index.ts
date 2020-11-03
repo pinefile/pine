@@ -47,7 +47,7 @@ const loadPkgConf = (pkg?: PackageType): void => {
   const req = ((Array.isArray(pine.require)
     ? pine.require
     : [pine.require]) as Array<string>).filter((r) => r);
-  req.map((r) => require(findFile(r)));
+  req.forEach(r => require(r));
 };
 
 /**
