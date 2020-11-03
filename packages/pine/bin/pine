@@ -6,7 +6,7 @@ const { runTask } = require(isDev ? "../src" : "../");
 const argv = process.argv.slice(2);
 
 if (argv.includes('--silent')) {
-process.env.LOG_LEVEL = 'silent';
+  process.env.LOG_LEVEL = 'silent';
 }
 
 runTask(argv);

@@ -1,5 +1,5 @@
 import yargs from 'yargs';
-import { flattenArray } from './utils';
+import { flattenArray, resolve } from './utils';
 import { findFile } from './file';
 import help from './help';
 import * as logger from './log';
@@ -116,10 +116,11 @@ const execute = async (name: string, args: any): Promise<void> => {
     _before[name].forEach((name: string) => execute(name, args));
   }
 
-  if (_module[name]) {
+  const fn = _module[name] || resolve(name, _module);
+  if (fn) {
     const startTime = Date.now();
     logger.log(`Starting ${log.color.cyan(`'${name}'`)}`);
-    await _module[name](args);
+    await fn(args);
     const time = Date.now() - startTime;
     logger.log(
       `Finished ${log.color.cyan(`'${name}'`)} after ${log.color.magenta(
@@ -188,7 +189,7 @@ export const runTask = (argv: Array<any>): void => {
     return;
   }
 
-  if (!_module[name]) {
+  if (!_module[name] && !resolve(name, _module)) {
     logger.error(`Task ${log.color.cyan(`'${name}'`)} not found`);
     return;
   }
