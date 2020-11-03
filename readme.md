@@ -15,7 +15,7 @@ module.exports = {
   },
   test: async () => {
     await run('jest');
-  }
+  },
 };
 ```
 
@@ -26,6 +26,24 @@ Then run it! It is best to either place `pine` inside a npm run script or run it
 ```
 npx pine build
 ```
+
+## split up tasks
+
+You can split up tasks in more than one file, e.g having all build tasks in one file:
+
+```js
+// tasks/build.js
+module.exports = {
+  css: () => console.log('build:css'),
+};
+
+// pinefile.js
+module.exports = {
+  build: require('./tasks/build.js'),
+};
+```
+
+Then you can run `npx pine build:css`
 
 ## transpilers
 
