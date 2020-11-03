@@ -175,6 +175,7 @@ export const runTask = (argv: Array<any>): void => {
   try {
     // eslint-disable-next-line
     _module = require(_file);
+    _module = _module.default ? _module.default : _module;
   } catch (err) {
     logger.error(err);
     return;
