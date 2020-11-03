@@ -1,5 +1,6 @@
+import 'core-js/stable';
 import yargs from 'yargs';
-import { flattenArray, resolve } from './utils';
+import { resolve } from './utils';
 import { findFile } from './file';
 import help from './help';
 import * as logger from './log';
@@ -72,7 +73,7 @@ export const before = (...args: any): void => {
       _before[name] = [];
     }
 
-    _before[name] = _before[name].concat(flattenArray(after));
+    _before[name] = _before[name].concat(after.flat());
     _before[name] = [...Array.from(new Set(_before[name]))];
   });
 };
@@ -100,7 +101,7 @@ export const after = (...args: any): void => {
       _after[name] = [];
     }
 
-    _after[name] = _after[name].concat(flattenArray(before));
+    _after[name] = _after[name].concat(before.flat());
     _after[name] = [...Array.from(new Set(_after[name]))];
   });
 };
