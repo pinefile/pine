@@ -44,9 +44,9 @@ const loadPkgConf = (pkg?: PackageType): void => {
   if (!pkg) return;
   const pine =
     typeof pkg.pine === 'object' && !Array.isArray(pkg.pine) ? pkg.pine : {};
-  const req = ((Array.isArray(pine.require)
-    ? pine.require
-    : [pine.require]) as Array<string>).filter((r) => r);
+  const req = ((Array.isArray(pine.requires)
+    ? pine.requires
+    : [pine.requires]) as Array<string>).filter((r) => r);
   req.forEach(r => require(r));
 };
 

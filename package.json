@@ -37,10 +37,5 @@
   },
   "semistandard": {
     "parser": "babel-eslint"
-  },
-  "pine": {
-    "require": [
-      "babel-polyfill"
-    ]
   }
 }

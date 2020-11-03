@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-const PINE_FILE_ORDER = Object.freeze(['Pinefile', 'pinefile.js']);
+const PINE_FILE_ORDER = Object.freeze(['Pinefile', 'pinefile.js', 'pinefile.ts']);
 
 export const isFile = (filePath: string): boolean =>
   fs.existsSync(filePath) && !fs.lstatSync(filePath).isDirectory();
