@@ -1,8 +1,8 @@
-# pine [![Build Status](https://github.com/pinefile/pine/workflows/build/badge.svg)](https://github.com/pinefile/pine/actions)
+# Pine [![Build Status](https://github.com/pinefile/pine/workflows/build/badge.svg)](https://github.com/pinefile/pine/actions)
 
 Small task runner for node.js
 
-## example
+## Example
 
 Create `Pinefile` or `pinefile.js`
 
@@ -27,7 +27,7 @@ Then run it! It is best to either place `pine` inside a npm run script or run it
 npx pine build
 ```
 
-## split up tasks
+## Split up tasks
 
 You can split up tasks in more than one file, e.g having all build tasks in one file:
 
@@ -45,7 +45,7 @@ module.exports = {
 
 Then you can run `npx pine build:css`
 
-## transpilers
+## Transpilers
 
 Example of how to use Babel transpiler for your `pinefile.js`
 
