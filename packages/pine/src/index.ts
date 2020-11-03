@@ -47,7 +47,7 @@ const loadPkgConf = (pkg?: PackageType): void => {
   const req = ((Array.isArray(pine.requires)
     ? pine.requires
     : [pine.requires]) as Array<string>).filter((r) => r);
-  req.forEach(r => require(r));
+  req.forEach(require);
 };
 
 /**
@@ -170,7 +170,10 @@ export const runTask = (argv: Array<any>): void => {
     // eslint-disable-next-line
     const pkg = require(findFile('package.json'));
     loadPkgConf(pkg);
-  } catch (err) {}
+  } catch (err) {
+    logger.error(err);
+    return;
+  }
 
   try {
     // eslint-disable-next-line

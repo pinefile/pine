@@ -62,7 +62,7 @@ describe('pine', () => {
     jest.mock('../../../package.json', () => {
       return {
         pine: {
-          require: ['./packages/pine/test/fixtures/require.js'],
+          requires: [`${process.cwd()}/packages/pine/test/fixtures/require.js`],
         },
       };
     });

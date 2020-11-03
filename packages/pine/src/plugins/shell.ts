@@ -1,7 +1,12 @@
 import execa from 'execa';
 
+type EnvType = {
+  [key: string]: any;
+};
+
 type ShellOptionsType = {
   cwd?: string;
+  env?: EnvType;
   stdout?: NodeJS.WriteStream;
   stderr?: NodeJS.WriteStream;
 };
@@ -20,6 +25,7 @@ export const shell = (
       env: {
         // @ts-ignore
         FORCE_COLOR: true,
+        ...opts?.env,
       },
     });
 
