@@ -50,10 +50,12 @@ describe('pine', () => {
 
   it('should run sub commands', async () => {
     const spy = jest.spyOn(console, 'log');
+    runTask('tasks', 'lerna');
     runTask('tasks', 'lerna:build');
     runTask('tasks', 'lerna:string');
-    expect(spy.mock.calls[1][0]).toEqual('lerna:build');
-    expect(spy.mock.calls[3][0]).toEqual('lerna:string');
+    expect(spy.mock.calls[1][0]).toEqual('lerna:default');
+    expect(spy.mock.calls[3][0]).toEqual('lerna:build');
+    expect(spy.mock.calls[5][0]).toEqual('lerna:string');
     spy.mockRestore();
   });
 

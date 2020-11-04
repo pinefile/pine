@@ -117,7 +117,12 @@ const execute = async (name: string, args: any): Promise<void> => {
     _before[name].forEach((name: string) => execute(name, args));
   }
 
-  const fn = _module[name] || resolve(name, _module);
+  let fn = _module[name] || resolve(name, _module);
+
+  if (typeof fn === 'object' && fn.default) {
+    fn = fn.default;
+  }
+
   if (fn) {
     const startTime = Date.now();
     logger.log(`Starting ${log.color.cyan(`'${name}'`)}`);

@@ -35,6 +35,7 @@ You can split up tasks in more than one file, e.g having all build tasks in one 
 // tasks/build.js
 module.exports = {
   css: () => console.log('build:css'),
+  default: () => console.log('build'),
 };
 
 // pinefile.js
@@ -52,9 +53,7 @@ Example of how to use Babel transpiler for your `pinefile.js`
 ```json
 {
   "pine": {
-    "requires": [
-      "@babel/register"
-    ]
+    "requires": ["@babel/register"]
   },
   "babel": {
     "presets": ["env"]
@@ -72,9 +71,7 @@ Example of how to use TypeScript transpiler for your `pinefile.js`
 ```json
 {
   "pine": {
-    "requires": [
-      "ts-node/register"
-    ]
+    "requires": ["ts-node/register"]
   },
   "devDependencies": {
     "ts-node": "^9.0.0",
