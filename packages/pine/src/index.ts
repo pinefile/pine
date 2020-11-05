@@ -106,6 +106,13 @@ export const after = (...args: any): void => {
   });
 };
 
+const getTaskName = (name: string, prefix = ''): string => {
+  const names = name.split(':');
+  const lastName = names.pop();
+  names.push(`${prefix}${lastName}`);
+  return names.join(':');
+};
+
 /**
  * Execute task.
  *
@@ -118,12 +125,17 @@ const execute = async (name: string, args: any): Promise<void> => {
   }
 
   let fn = _module[name] || resolve(name, _module);
+  let fnName = name;
 
   if (typeof fn === 'object' && fn.default) {
     fn = fn.default;
+    fnName = `${name}:default`;
   }
 
   if (fn) {
+    // run pre* tasks.
+    execute(getTaskName(fnName, 'pre'), args);
+
     const startTime = Date.now();
     logger.log(`Starting ${log.color.cyan(`'${name}'`)}`);
     await fn(args);
@@ -133,6 +145,9 @@ const execute = async (name: string, args: any): Promise<void> => {
         time + 'ms'
       )}`
     );
+
+    // run post* tasks.
+    execute(getTaskName(fnName, 'post'), args);
   }
 
   if (_after[name]) {

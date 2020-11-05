@@ -1,4 +1,9 @@
-import fs from 'fs';
+const createObjectTree = function (tree, val) {
+  const key = tree.shift();
+  return {
+    [key]: tree.length ? createObjectTree(tree, val) : val,
+  };
+};
 
 describe('pine', () => {
   let run;
@@ -14,16 +19,24 @@ describe('pine', () => {
   });
 
   const runTask = async (file, task) => {
-    const module = require(`./fixtures/pinefile.${file}.js`);
     await run([task, `--file=${__dirname}/fixtures/pinefile.${file}.js`]);
   };
 
   const testCallOrder = async (file, task, order = []) => {
     const module = require(`./fixtures/pinefile.${file}.js`);
     const callOrder = [];
-    order.forEach(
-      (f) => (module[f] = jest.fn().mockImplementation(() => callOrder.push(f)))
-    );
+    order.forEach((f) => {
+      if (module[f]) {
+        module[f] = jest.fn().mockImplementation(() => callOrder.push(f));
+      } else {
+        f.split(':').reduce((prev, cur) => {
+          if (typeof prev[cur] !== 'object') {
+            prev[cur] = jest.fn().mockImplementation(() => callOrder.push(f));
+          }
+          return prev[cur];
+        }, module);
+      }
+    });
     await run([task, `--file=${__dirname}/fixtures/pinefile.${file}.js`]);
     expect(callOrder).toEqual(order.length ? order : [task]);
   };
@@ -49,14 +62,21 @@ describe('pine', () => {
   });
 
   it('should run sub commands', async () => {
-    const spy = jest.spyOn(console, 'log');
-    runTask('tasks', 'lerna');
-    runTask('tasks', 'lerna:build');
-    runTask('tasks', 'lerna:string');
-    expect(spy.mock.calls[1][0]).toEqual('lerna:default');
-    expect(spy.mock.calls[3][0]).toEqual('lerna:build');
-    expect(spy.mock.calls[5][0]).toEqual('lerna:string');
-    spy.mockRestore();
+    await testCallOrder('tasks', 'lerna:build', [
+      'lerna:prebuild',
+      'lerna:build',
+      'lerna:postbuild',
+    ]);
+    await testCallOrder('tasks', 'lerna', [
+      'lerna:predefault',
+      'lerna:default',
+      'lerna:postdefault',
+    ]);
+    await testCallOrder('tasks', 'lerna:string', [
+      'lerna:prestring',
+      'lerna:string',
+      'lerna:poststring',
+    ]);
   });
 
   it('should require files before run using package.json config', () => {
@@ -68,7 +88,7 @@ describe('pine', () => {
         },
       };
     });
-    run([`--file=${__dirname}/fixtures/pinefile.basic.js`, 'build']);
+    runTask('basic', 'build');
     expect(spy).toHaveBeenCalledWith('Required...');
     expect(spy).toHaveBeenCalledWith('Building...');
     jest.unmock('../../../package.json');
