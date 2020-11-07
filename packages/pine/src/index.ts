@@ -132,7 +132,7 @@ const execute = async (name: string, args: any): Promise<void> => {
     fnName = `${name}:default`;
   }
 
-  if (fn) {
+  if (typeof fn === 'function') {
     // run pre* tasks.
     execute(getTaskName(fnName, 'pre'), args);
 
