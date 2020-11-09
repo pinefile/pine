@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const isDev = process.env.PINE_ENV === "development";
-const { runTask } = require(isDev ? "../src" : "../");
+const { runCLI } = require(isDev ? "../src/cli" : "../dist/cli");
 
 const argv = process.argv.slice(2);
 
@@ -9,4 +9,4 @@ if (argv.includes('--silent')) {
   process.env.LOG_LEVEL = 'silent';
 }
 
-runTask(argv);
+runCLI(argv);
