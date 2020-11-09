@@ -1,5 +1,4 @@
 import 'core-js/stable';
-import yargs from 'yargs';
 import { resolve } from './utils';
 import { findFile } from './file';
 import help from './help';
