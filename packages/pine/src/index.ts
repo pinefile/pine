@@ -4,12 +4,7 @@ import { resolve } from './utils';
 import { findFile } from './file';
 import help from './help';
 import * as logger from './log';
-
-type PackageType = {
-  pine: {
-    [key: string]: any;
-  };
-};
+import { ArgumentsType, PackageType } from './types';
 
 const _before = {};
 const _after = {};
@@ -156,26 +151,11 @@ const execute = async (name: string, args: any): Promise<void> => {
 };
 
 /**
- * Run tasks or show help.
+ * Run pinefile or show help.
  *
- * @param {array} argv
+ * @param {ArgumentsType} args
  */
-export const runTask = (argv: Array<any>): void => {
-  const args = yargs
-    .options({
-      help: { type: 'boolean', default: false, desc: 'Show help' },
-      file: {
-        type: 'string',
-        default: '',
-        desc: 'Path to Pipefile or pipefile.js',
-      },
-      silent: {
-        type: 'boolean',
-        default: false,
-        desc: 'Runs the task in silent mode',
-      },
-    })
-    .parse(argv);
+export const runFile = (args: ArgumentsType): void => {
   const name = args._.shift();
 
   if (!name || args.help) {

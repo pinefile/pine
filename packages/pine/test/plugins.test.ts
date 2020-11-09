@@ -7,7 +7,7 @@ describe('plugins', () => {
   beforeEach(() => {
     jest.resetModules();
     console.log = jest.fn();
-    run = require('../src').runTask;
+    run = require('../src/cli').runCLI;
   });
 
   afterEach(() => {
