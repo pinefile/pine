@@ -1,48 +1,12 @@
 import 'core-js/stable';
-import { resolve } from './utils';
 import { findFile } from './file';
-import help from './help';
 import * as logger from './log';
-import { ArgumentsType, PackageType } from './types';
+import { ArgumentsType } from './types';
+import { resolve } from './utils';
 
 const _before = {};
 const _after = {};
 let _module: any = {};
-
-/**
- * Print tasks from Pinefile.
- *
- * @param {string} file
- */
-const printTasks = (file?: string) => {
-  try {
-    const _file = findFile(file);
-    const obj = require(_file);
-    const keys = Object.keys(obj);
-
-    console.log('\nTasks:');
-
-    keys.sort((a, b) => a.localeCompare(b));
-    keys.forEach((key) => {
-      console.log(`  ${key}`);
-    });
-  } catch (err) {}
-};
-
-/**
- * Load custom package.json config.
- *
- * @param {object} pkg
- */
-const loadPkgConf = (pkg?: PackageType): void => {
-  if (!pkg) return;
-  const pine =
-    typeof pkg.pine === 'object' && !Array.isArray(pkg.pine) ? pkg.pine : {};
-  const req = ((Array.isArray(pine.requires)
-    ? pine.requires
-    : [pine.requires]) as Array<string>).filter((r) => r);
-  req.forEach(require);
-};
 
 /**
  * Register task that should be runned before a task.
@@ -131,14 +95,20 @@ const execute = async (name: string, args: any): Promise<void> => {
     execute(getTaskName(fnName, 'pre'), args);
 
     const startTime = Date.now();
-    logger.log(`Starting ${log.color.cyan(`'${name}'`)}`);
+    if (!logger.isSilent()) {
+      logger.log(`Starting ${log.color.cyan(`'${name}'`)}`);
+    }
+
     await fn(args);
+
     const time = Date.now() - startTime;
-    logger.log(
-      `Finished ${log.color.cyan(`'${name}'`)} after ${log.color.magenta(
-        time + 'ms'
-      )}`
-    );
+    if (!logger.isSilent()) {
+      logger.log(
+        `Finished ${log.color.cyan(`'${name}'`)} after ${log.color.magenta(
+          time + 'ms'
+        )}`
+      );
+    }
 
     // run post* tasks.
     execute(getTaskName(fnName, 'post'), args);
@@ -156,23 +126,7 @@ const execute = async (name: string, args: any): Promise<void> => {
  */
 export const runFile = (args: ArgumentsType): void => {
   const name = args._.shift();
-
-  if (!name || args.help) {
-    help();
-    printTasks(args.file);
-    return;
-  }
-
   const _file = findFile(args.file);
-
-  try {
-    // eslint-disable-next-line
-    const pkg = require(findFile('package.json'));
-    loadPkgConf(pkg);
-  } catch (err) {
-    logger.error(err);
-    return;
-  }
 
   try {
     // eslint-disable-next-line
