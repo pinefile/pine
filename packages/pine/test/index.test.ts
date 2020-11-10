@@ -3,7 +3,7 @@ describe('pine', () => {
 
   beforeEach(() => {
     jest.resetModules();
-    run = require('../src/cli').runCLI;
+    run = require('../src').runCLI;
   });
 
   afterEach(() => {

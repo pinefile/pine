@@ -1,5 +1,5 @@
 import yargs, { Options } from 'yargs';
-import { runFile } from './';
+import { runTask } from './task';
 import { findFile } from './file';
 import * as logger from './log';
 import { ArgumentsType } from './types';
@@ -90,11 +90,13 @@ export const runCLI = (argv: Array<any>) => {
     : [args.requires]) as Array<string>).filter((r) => r);
   req.forEach(require);
 
-  if (!args._.length || args.help) {
+  const name = args._.shift();
+
+  if (!name || args.help) {
     help();
     printTasks(args.file);
     return;
   }
 
-  return runFile(args);
+  return runTask(name, args);
 };
