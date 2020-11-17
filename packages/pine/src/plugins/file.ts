@@ -2,22 +2,15 @@ import fs from 'fs';
 import path from 'path';
 import { isFile, findFile } from '../file';
 
-export function pkg(): any {
+export const pkg = (): any => {
   return readJSON('package.json');
-}
+};
 
-export function readJSON(file: string): any {
-  return require(findFile(file));
-}
+export const readJSON = (filepath: string): any => {
+  return require(findFile(filepath));
+};
 
-export function writeJSON(file: string, content: any): boolean {
-  if (!file.startsWith('/') && isFile(file)) {
-    file = path.join(process.cwd(), file);
-  }
-
+export const writeJSON = (filepath: string, data: any): void => {
   const data = JSON.stringify(content, null, 2);
-
-  fs.writeFileSync(file, data);
-
-  return true;
-}
+  return fs.writeFileSync(filepath, data);
+};
