@@ -1,7 +1,11 @@
 import fs from 'fs';
 import path from 'path';
 
-const PINE_FILE_ORDER = Object.freeze(['Pinefile', 'pinefile.js', 'pinefile.ts']);
+const PINE_FILE_ORDER = Object.freeze([
+  'Pinefile',
+  'pinefile.js',
+  'pinefile.ts',
+]);
 
 export const isFile = (filePath: string): boolean =>
   fs.existsSync(filePath) && !fs.lstatSync(filePath).isDirectory();
@@ -33,7 +37,7 @@ const resolveFilePathByTraversing = (
 
   // system root
   if (pathToResolve === path.dirname(pathToResolve)) {
-    throw new Error('Could not find any pinefile.');
+    throw new Error('Could not find any pinefile');
   }
 
   // go up a level and try it again

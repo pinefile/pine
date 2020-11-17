@@ -1,11 +1,9 @@
-import { findFile } from './file';
 import * as logger from './log';
 import { ArgumentsType } from './types';
 import { resolve } from './utils';
 
 const _before = {};
 const _after = {};
-let _module: any = {};
 
 /**
  * Register task that should be runned before a task.
@@ -73,15 +71,20 @@ const getTaskName = (name: string, prefix = ''): string => {
 /**
  * Execute task.
  *
+ * @param {object} pinefile
  * @param {string} name
  * @param {object} args
  */
-const execute = async (name: string, args: any): Promise<void> => {
+const execute = async (
+  pinefile: any,
+  name: string,
+  args: ArgumentsType
+): Promise<void> => {
   if (_before[name]) {
-    _before[name].forEach((name: string) => execute(name, args));
+    _before[name].forEach((name: string) => execute(pinefile, name, args));
   }
 
-  let fn = _module[name] || resolve(name, _module);
+  let fn = pinefile[name] || resolve(name, pinefile);
   let fnName = name;
 
   if (typeof fn === 'object' && fn.default) {
@@ -91,7 +94,7 @@ const execute = async (name: string, args: any): Promise<void> => {
 
   if (typeof fn === 'function') {
     // run pre* tasks.
-    execute(getTaskName(fnName, 'pre'), args);
+    execute(pinefile, getTaskName(fnName, 'pre'), args);
 
     const startTime = Date.now();
     if (!logger.isSilent()) {
@@ -110,33 +113,23 @@ const execute = async (name: string, args: any): Promise<void> => {
     }
 
     // run post* tasks.
-    execute(getTaskName(fnName, 'post'), args);
+    execute(pinefile, getTaskName(fnName, 'post'), args);
   }
 
   if (_after[name]) {
-    _after[name].forEach((name: string) => execute(name, args));
+    _after[name].forEach((name: string) => execute(pinefile, name, args));
   }
 };
 
 /**
- * Run pinefile or show help.
+ * Run task in pinefile.
  *
+ * @param {object} pinefile
  * @param {string} name
- * @param {ArgumentsType} args
+ * @param {object} args
  */
-export const runTask = (name: string, args: ArgumentsType): void => {
-  const _file = findFile(args.file);
-
-  try {
-    // eslint-disable-next-line
-    _module = require(_file);
-    _module = _module.default ? _module.default : _module;
-  } catch (err) {
-    logger.error(err);
-    return;
-  }
-
-  if (!_module) {
+export const runTask = (pinefile: any, name: string, args: ArgumentsType) => {
+  if (!pinefile) {
     logger.error('Pinefile not found');
     return;
   }
@@ -146,10 +139,10 @@ export const runTask = (name: string, args: ArgumentsType): void => {
     return;
   }
 
-  if (!_module[name] && !resolve(name, _module)) {
+  if (!pinefile[name] && !resolve(name, pinefile)) {
     logger.error(`Task ${logger.color.cyan(`'${name}'`)} not found`);
     return;
   }
 
-  execute(name, args);
+  return execute(pinefile, name, args);
 };

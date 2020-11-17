@@ -1,9 +1,9 @@
 const isDev = process.env.PINE_ENV === 'development';
-const { run, shell, log } = require(`./packages/pine${isDev ? '/src' : ''}`);
+const { run, shell, log, option } = require(`./packages/pine${
+  isDev ? '/src' : ''
+}`);
 
-const getLatestCommit = async () => await shell(`git rev-parse --short HEAD`);
-
-const npm = (c) => run(`npm run ${c}`);
+option('name', { default: 'world' });
 
 module.exports = {
   prebuild: () => console.log('prebuild task'),
@@ -14,10 +14,12 @@ module.exports = {
   test: async () => {
     await run('jest');
   },
-  hello: async () => {
+  // examples
+  commit: async () => {
     const commit = await getLatestCommit();
-    log.log(`hello ${commit}`);
+    log.log(`Hello ${commit}`);
   },
-  print: async () => console.log(`hello ${process.env.NAME}`),
+  print: async () => console.log(`Hello ${process.env.NAME}`),
   say: async () => await run('NAME="nils" npm run pine:dev print'),
+  sayhello: (argv) => log.log(`Hello ${argv.name}`),
 };

@@ -1,16 +1,14 @@
 import fs from 'fs';
-import path from 'path';
-import { isFile, findFile } from '../file';
+import { findFile } from '../file';
 
 export const pkg = (): any => {
   return readJSON('package.json');
 };
 
-export const readJSON = (filepath: string): any => {
-  return require(findFile(filepath));
+export const readJSON = (path: string): any => {
+  return require(findFile(path));
 };
 
-export const writeJSON = (filepath: string, data: any): void => {
-  const data = JSON.stringify(content, null, 2);
-  return fs.writeFileSync(filepath, data);
+export const writeJSON = (path: string, data: any): void => {
+  return fs.writeFileSync(path, JSON.stringify(data, null, 2));
 };

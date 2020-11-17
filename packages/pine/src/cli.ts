@@ -1,44 +1,27 @@
-import yargs, { Options } from 'yargs';
+import { parse, options } from './args';
 import { runTask } from './task';
 import { findFile } from './file';
 import * as logger from './log';
-import { ArgumentsType } from './types';
-
-const options: { [key: string]: Options } = {
-  help: { type: 'boolean', default: false, desc: 'Show help' },
-  file: {
-    type: 'string',
-    default: '',
-    desc: 'Path to Pipefile or pipefile.js',
-  },
-  silent: {
-    type: 'boolean',
-    default: false,
-    desc: 'Runs the task in silent mode',
-  },
-  requires: {
-    type: 'array',
-    default: [],
-    desc: 'Packages to load before a task is executed',
-  },
-};
 
 /**
  * Print help text.
  */
 const help = (): void => {
-  const len = 10;
-  console.log(`Usage: pine <task>
+  const opts = options();
+  const len =
+    Object.keys(opts).reduce((c, v) => (c.length > v.length ? c : v)).length +
+    2;
+  console.log(`Usage: pine <task> <options>
 
 Options:`);
-  Object.keys(options).forEach((flag) => {
+  Object.keys(opts).forEach((flag) => {
     let space = '';
 
     for (let i = 0; i < len - flag.length; i++) {
       space += ' ';
     }
 
-    console.log(`  --${flag}${space}${options[flag].desc}`);
+    console.log(`  --${flag}${space}${opts[flag].desc}`);
   });
 };
 
@@ -63,22 +46,7 @@ const printTasks = (file?: string) => {
 };
 
 export const runCLI = (argv: Array<any>) => {
-  let args = yargs.options(options).parse(argv) as ArgumentsType;
-
-  try {
-    // eslint-disable-next-line
-    const pkg = require(findFile('package.json'));
-    const pine =
-      typeof pkg.pine === 'object' && !Array.isArray(pkg.pine) ? pkg.pine : {};
-
-    args = {
-      ...args,
-      ...pine,
-    } as ArgumentsType;
-  } catch (err) {
-    logger.error(err);
-    return;
-  }
+  let args = parse(argv);
 
   // todo
   if (args.silent) {
@@ -90,13 +58,23 @@ export const runCLI = (argv: Array<any>) => {
     : [args.requires]) as Array<string>).filter((r) => r);
   req.forEach(require);
 
-  const name = args._.shift();
+  let pinefile;
 
+  try {
+    // eslint-disable-next-line
+    pinefile = require(findFile(args.file));
+    pinefile = pinefile.default ? pinefile.default : pinefile;
+  } catch (err) {
+    logger.error(err);
+    return;
+  }
+
+  const name = args._.shift();
   if (!name || args.help) {
     help();
     printTasks(args.file);
     return;
   }
 
-  return runTask(name, args);
+  runTask(pinefile, name, parse(argv));
 };
