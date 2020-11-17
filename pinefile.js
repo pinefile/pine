@@ -17,9 +17,9 @@ module.exports = {
   // examples
   commit: async () => {
     const commit = await getLatestCommit();
-    log.log(`Hello ${commit}`);
+    log.info(`Hello ${commit}`);
   },
   print: async () => console.log(`Hello ${process.env.NAME}`),
   say: async () => await run('NAME="nils" npm run pine:dev print'),
-  sayhello: (argv) => log.log(`Hello ${argv.name}`),
+  sayhello: (argv) => log.info(`Hello ${argv.name}`),
 };

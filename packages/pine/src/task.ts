@@ -98,14 +98,14 @@ const execute = async (
 
     const startTime = Date.now();
     if (!logger.isSilent()) {
-      logger.log(`Starting ${logger.color.cyan(`'${name}'`)}`);
+      logger.info(`Starting ${logger.color.cyan(`'${name}'`)}`);
     }
 
     await fn(args);
 
     const time = Date.now() - startTime;
     if (!logger.isSilent()) {
-      logger.log(
+      logger.info(
         `Finished ${logger.color.cyan(
           `'${name}'`
         )} after ${logger.color.magenta(time + 'ms')}`

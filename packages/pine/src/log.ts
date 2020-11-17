@@ -17,7 +17,7 @@ export const prefixes = {
 const formatDate = (date: Date) => chalk.gray(format(date, '[kk:mm:ss]'));
 const newDate = () => new Date();
 
-export const log = (...message: string[]) => {
+export const info = (...message: string[]) => {
   const date = formatDate(newDate());
   console.log(date, ...message);
 };
