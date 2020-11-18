@@ -16,9 +16,11 @@ exports.build = () => {
 exports.test = async () => {
     await run('jest');
 }
+```
 
-// or by using module.exports
+or by using `module.exports`
 
+```js
 module.exports = {
   build: () => {
     console.log(`Building ${pkg().version}...`);
