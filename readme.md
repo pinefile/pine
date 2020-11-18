@@ -9,6 +9,16 @@ Create `Pinefile` or `pinefile.js`
 ```js
 const { pkg, run } = require('@pinefile/pine');
 
+exports.build = () => {
+    console.log(`Building ${pkg().version}...`);
+}
+
+exports.test = async () => {
+    await run('jest');
+}
+
+// or by using module.exports
+
 module.exports = {
   build: () => {
     console.log(`Building ${pkg().version}...`);
