@@ -1,3 +1,5 @@
+const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+
 const tasks = {
   lerna: require('./tasks/lerna'),
   'lerna:prestring': () => console.log('lerna:prestring'),
@@ -5,30 +7,23 @@ const tasks = {
   'lerna:poststring': () => console.log('lerna:prestring'),
 };
 
-tasks.s1 = (argv, done) => {
-  setTimeout(() => {
-    console.log('Cleaning...');
-    done();
-  }, 500);
+tasks.s1 = async () => {
+  await delay(500);
+  console.log('Cleaning...');
 };
 
-tasks.s2 = async (argv, done) => {
+tasks.s2 = () => {
   console.log('Building...');
-  done();
 };
 
-tasks.p1 = async (argv, done) => {
-  setTimeout(() => {
-    console.log('Cleaning...');
-    done();
-  }, 5000);
+tasks.p1 = async () => {
+  await delay(5000);
+  console.log('Cleaning...');
 };
 
-tasks.p2 = async (argv, done) => {
-  setTimeout(() => {
-    console.log('Building...');
-    done();
-  }, 5000);
+tasks.p2 = async () => {
+  await delay(5000);
+  console.log('Building...');
 };
 
 module.exports = tasks;

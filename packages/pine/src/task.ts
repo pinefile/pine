@@ -64,15 +64,21 @@ const execute = async (
       runner = fn(pinefile, name, args);
       break;
     default:
-      // 1 + 2: task function.
-      runner = async () => {
-        await pify(fn)(args).catch(logger.error);
+      // 1: task function.
+      runner = async (done: any) => {
+        try {
+          await pify(fn, { excludeMain: true })(args);
 
-        // execute post* function.
-        const postName = getTaskName(fnName, 'post');
-        const postFunc = resolve(postName, pinefile);
-        if (postFunc) {
-          await execute(pinefile, postName, args);
+          // execute post* function.
+          const postName = getTaskName(fnName, 'post');
+          const postFunc = resolve(postName, pinefile);
+          if (postFunc) {
+            await execute(pinefile, postName, args);
+          }
+
+          done();
+        } catch (err) {
+          done(err);
         }
       };
       break;

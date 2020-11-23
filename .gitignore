@@ -1,4 +1,5 @@
 packages/*/dist
+pinefile.*.js
 node_modules
 testdata
 test.js*
