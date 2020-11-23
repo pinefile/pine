@@ -22,5 +22,5 @@
     "noUnusedLocals": true,
     "module": "commonjs"
   },
-  "include": ["packages/**/src"],
+  "include": ["packages/**/src"]
 }

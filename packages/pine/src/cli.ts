@@ -76,5 +76,5 @@ export const runCLI = (argv: Array<any>) => {
     return;
   }
 
-  runTask(pinefile, name, parse(argv));
+  runTask(pinefile, name, parse(argv)).catch(logger.error);
 };

@@ -9,3 +9,7 @@ export type PackageType = {
     [key: string]: any;
   };
 };
+
+export type PinefileType = {
+  [key: string]: any;
+};

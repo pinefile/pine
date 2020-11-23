@@ -1,124 +1,93 @@
+// @ts-ignore
+import bach from 'bach';
+import pify from 'pify';
 import * as logger from './log';
-import { ArgumentsType } from './types';
+import { ArgumentsType, PinefileType } from './types';
 import { resolve } from './utils';
 
-const _before = {};
-const _after = {};
-
-/**
- * Register task that should be runned before a task.
- *
- * Example
- *   before('build', 'compile', 'write')
- *   before('build', ['compile', 'write'])
- *   before(['build', 'compile'], 'notify')
- */
-export const before = (...args: any): void => {
-  const names = args[0];
-  const after = Array.prototype.slice.call(args, 1);
-
-  if (!Array.isArray(names) && typeof names !== 'string') {
-    throw new Error(
-      'First argument of `before` should be array of strings or a string'
-    );
-  }
-
-  (Array.isArray(names) ? names : [names]).forEach((name: string) => {
-    if (!_before[name]) {
-      _before[name] = [];
-    }
-
-    _before[name] = _before[name].concat(after.flat());
-    _before[name] = [...Array.from(new Set(_before[name]))];
-  });
-};
-
-/**
- * Register task that should be runned after a task.
- *
- * Example
- *   after('build', 'publish', 'log')
- *   after('build', ['publish', 'log'])
- *   after(['build', 'compile'], 'publish')
- */
-export const after = (...args: any): void => {
-  const names = args[0];
-  const before = Array.prototype.slice.call(args, 1);
-
-  if (!Array.isArray(names) && typeof names !== 'string') {
-    throw new Error(
-      'First argument of `after` should be array of strings or a string'
-    );
-  }
-
-  (Array.isArray(names) ? names : [names]).forEach((name: string) => {
-    if (!_after[name]) {
-      _after[name] = [];
-    }
-
-    _after[name] = _after[name].concat(before.flat());
-    _after[name] = [...Array.from(new Set(_after[name]))];
-  });
-};
-
-const getTaskName = (name: string, prefix = ''): string => {
-  const names = name.split(':');
+const getTaskName = (name: string, prefix = '', sep = ':'): string => {
+  const names = name.split(sep);
   const lastName = names.pop();
-  names.push(`${prefix}${lastName}`);
-  return names.join(':');
+  return names.concat(`${prefix}${lastName}`).join(sep);
 };
 
 /**
- * Execute task.
+ * Run tasks series.
  *
- * @param {object} pinefile
- * @param {string} name
- * @param {object} args
+ * series('clean', 'build')
+ *
+ * @return function
  */
+export const series = (...tasks: any[]): any => {
+  return (pinefile: PinefileType, _: string, args: ArgumentsType) =>
+    bach.series(
+      ...tasks.map((task) => (cb: any) =>
+        runTask(pinefile, task, args).then(cb)
+      )
+    );
+};
+
+/**
+ * Run tasks parallel.
+ *
+ * parallel('clean', 'build')
+ *
+ * @return function
+ */
+export const parallel = (...tasks: any[]): any => {
+  return (pinefile: PinefileType, _: string, args: ArgumentsType) =>
+    bach.parallel(
+      ...tasks.map((task) => (cb: any) =>
+        runTask(pinefile, task, args).then(cb)
+      )
+    );
+};
+
 const execute = async (
   pinefile: any,
   name: string,
   args: ArgumentsType
 ): Promise<void> => {
-  if (_before[name]) {
-    _before[name].forEach((name: string) => execute(pinefile, name, args));
-  }
-
-  let fn = pinefile[name] || resolve(name, pinefile);
+  let fn = resolve(name, pinefile);
   let fnName = name;
 
+  // fine default function in objects.
   if (typeof fn === 'object' && fn.default) {
     fn = fn.default;
     fnName = `${name}:default`;
   }
 
-  if (typeof fn === 'function') {
-    // run pre* tasks.
-    execute(pinefile, getTaskName(fnName, 'pre'), args);
+  let runner;
+  switch (fn.length) {
+    case 3:
+      // 3: plugin function.
+      runner = fn(pinefile, name, args);
+      break;
+    default:
+      // 1 + 2: task function.
+      runner = async () => {
+        await pify(fn)(args).catch(logger.error);
 
-    const startTime = Date.now();
-    if (!logger.isSilent()) {
-      logger.info(`Starting ${logger.color.cyan(`'${name}'`)}`);
-    }
-
-    await fn(args);
-
-    const time = Date.now() - startTime;
-    if (!logger.isSilent()) {
-      logger.info(
-        `Finished ${logger.color.cyan(
-          `'${name}'`
-        )} after ${logger.color.magenta(time + 'ms')}`
-      );
-    }
-
-    // run post* tasks.
-    execute(pinefile, getTaskName(fnName, 'post'), args);
+        // execute post* function.
+        const postName = getTaskName(fnName, 'post');
+        const postFunc = resolve(postName, pinefile);
+        if (postFunc) {
+          await execute(pinefile, postName, args);
+        }
+      };
+      break;
   }
 
-  if (_after[name]) {
-    _after[name].forEach((name: string) => execute(pinefile, name, args));
+  // execute pre* function.
+  const preName = getTaskName(fnName, 'pre');
+  const preFunc = resolve(preName, pinefile);
+  if (preFunc) {
+    await execute(pinefile, preName, args);
   }
+
+  return await runner((err: any) => {
+    if (err) logger.error(err);
+  });
 };
 
 /**
@@ -128,7 +97,11 @@ const execute = async (
  * @param {string} name
  * @param {object} args
  */
-export const runTask = (pinefile: any, name: string, args: ArgumentsType) => {
+export const runTask = async (
+  pinefile: any,
+  name: string,
+  args: ArgumentsType
+) => {
   if (!pinefile) {
     logger.error('Pinefile not found');
     return;
@@ -144,5 +117,5 @@ export const runTask = (pinefile: any, name: string, args: ArgumentsType) => {
     return;
   }
 
-  return execute(pinefile, name, args);
+  return await execute(pinefile, name, args);
 };

@@ -35,23 +35,7 @@ describe('pine', () => {
   };
 
   it('should run basic pinefile', async () => {
-    await testCallOrder('before', 'build', ['build']);
-  });
-
-  it('should run pinefile with before tasks', async () => {
-    await testCallOrder('before', 'build', ['compile', 'write', 'build']);
-  });
-
-  it('should run pinefile with before tasks with array', async () => {
-    await testCallOrder('before', 'array', ['compile', 'array']);
-  });
-
-  it('should run pinefile with after tasks', async () => {
-    await testCallOrder('after', 'build', ['build', 'compile', 'write']);
-  });
-
-  it('should run pinefile with after tasks with array', async () => {
-    await testCallOrder('after', 'array', ['array', 'compile']);
+    await testCallOrder('basic', 'build', ['build']);
   });
 
   it('should run sub commands', async () => {
