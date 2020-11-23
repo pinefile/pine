@@ -43,11 +43,11 @@ describe('pine', () => {
     expect(callOrder).toEqual(order.length ? order : [task]);
   };
 
-  it('should run basic pinefile', async () => {
+  test('should run basic pinefile', async () => {
     await testCallOrder('basic', 'build', ['build']);
   });
 
-  it('should run sub commands', async () => {
+  test('should run sub commands', async () => {
     await testCallOrder('tasks', 'lerna:build', [
       'lerna:prebuild',
       'lerna:build',
@@ -65,11 +65,15 @@ describe('pine', () => {
     ]);
   });
 
-  it('should require files before run using package.json config', () => {
+  test('should require files before run using package.json config', () => {
     const spy = jest.spyOn(console, 'log');
     runTask('basic', 'build');
     expect(spy).toHaveBeenCalledWith('Required...');
     expect(spy).toHaveBeenCalledWith('Building...');
     spy.mockRestore();
+  });
+
+  test('should fail', () => {
+    expect(false).toBeTruthy();
   });
 });

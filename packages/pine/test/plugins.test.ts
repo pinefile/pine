@@ -1,32 +1,32 @@
 import fs from 'fs';
 
 describe('plugins', () => {
-  const log = console.log;
   let run;
+  let spyLog;
 
   beforeEach(() => {
     jest.resetModules();
-    console.log = jest.fn();
+    spyLog = jest.spyOn(console, 'log');
     run = require('../src').runCLI;
   });
 
   afterEach(() => {
-    console.log = log;
+    spyLog.mockRestore();
   });
 
-  it('should run pinefile with built in plugins', () => {
+  it('should run pinefile with built in plugins', async () => {
     const file = `--file=${__dirname}/fixtures/pinefile.plugins.builtin.js`;
     const tests = [
       {
         task: 'pkg',
         test: () => {
-          expect(console.log).toHaveBeenCalledWith('pkg: 1.0.0');
+          expect(spyLog).toHaveBeenCalledWith('pkg: 1.0.0');
         },
       },
       {
         task: 'readJSON',
         test: () => {
-          expect(console.log).toHaveBeenCalledWith('readJSON: 1.0.0');
+          expect(spyLog).toHaveBeenCalledWith('readJSON: 1.0.0');
         },
       },
       {
@@ -35,7 +35,9 @@ describe('plugins', () => {
           fs.unlinkSync(`${__dirname}/fixtures/write.json`);
         },
         test: () => {
-          expect(fs.existsSync(`${__dirname}/fixtures/write.json`));
+          expect(
+            fs.existsSync(`${__dirname}/fixtures/write.json`)
+          ).toBeTruthy();
         },
       },
     ];
@@ -53,14 +55,14 @@ describe('plugins', () => {
         task: 'echo',
         file: 'custom',
         test: () => {
-          expect(console.log).toHaveBeenCalledWith('Echo...');
+          expect(spyLog).toHaveBeenCalledWith('Echo...');
         },
       },
       {
         task: 'test',
         file: 'custom',
         test: () => {
-          expect(console.log).toHaveBeenCalledWith(
+          expect(spyLog).toHaveBeenCalledWith(
             expect.stringContaining('Testing...')
           );
         },
