@@ -34,6 +34,8 @@ export const shell = (cmd: string, opts?: ShellOptionsType): Promise<any> => {
     }
 
     sp.on('close', (code: number) => {
+      process.exitCode = code;
+
       if (opts?.stdout) {
         resolve(null);
       }
