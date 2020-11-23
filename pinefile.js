@@ -1,4 +1,3 @@
-const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 const isDev = process.env.PINE_ENV === 'development';
 const { run, shell, log, option, series, parallel } = require(`./packages/pine${
   isDev ? '/src' : ''
