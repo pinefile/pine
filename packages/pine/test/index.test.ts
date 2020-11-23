@@ -1,3 +1,12 @@
+// root package.json
+jest.mock('../../../package.json', () => {
+  return {
+    pine: {
+      requires: [`${process.cwd()}/packages/pine/test/fixtures/require.js`],
+    },
+  };
+});
+
 describe('pine', () => {
   let run;
 
@@ -58,17 +67,9 @@ describe('pine', () => {
 
   it('should require files before run using package.json config', () => {
     const spy = jest.spyOn(console, 'log');
-    jest.mock('../../../package.json', () => {
-      return {
-        pine: {
-          requires: [`${process.cwd()}/packages/pine/test/fixtures/require.js`],
-        },
-      };
-    });
     runTask('basic', 'build');
     expect(spy).toHaveBeenCalledWith('Required...');
     expect(spy).toHaveBeenCalledWith('Building...');
-    jest.unmock('../../../package.json');
     spy.mockRestore();
   });
 });

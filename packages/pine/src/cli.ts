@@ -45,36 +45,36 @@ const printTasks = (file?: string) => {
   } catch (err) {}
 };
 
-export const runCLI = (argv: Array<any>) => {
-  let args = parse(argv);
-
-  // todo
-  if (args.silent) {
-    process.env.LOG_LEVEL = 'silent';
-  }
-
-  const req = ((Array.isArray(args.requires)
-    ? args.requires
-    : [args.requires]) as Array<string>).filter((r) => r);
-  req.forEach(require);
-
-  let pinefile;
-
+export const runCLI = async (argv: Array<any>): Promise<any> => {
   try {
+    let args = parse(argv);
+
+    // todo
+    if (args.silent) {
+      process.env.LOG_LEVEL = 'silent';
+    }
+
+    const req = ((Array.isArray(args.requires)
+      ? args.requires
+      : [args.requires]) as Array<string>).filter((r) => r);
+    req.forEach(require);
+
+    let pinefile;
+
     // eslint-disable-next-line
     pinefile = require(findFile(args.file));
     pinefile = pinefile.default ? pinefile.default : pinefile;
+
+    const name = args._.shift();
+    if (!name || args.help) {
+      help();
+      printTasks(args.file);
+      return;
+    }
+
+    return await runTask(pinefile, name, parse(argv));
   } catch (err) {
     logger.error(err);
     return;
   }
-
-  const name = args._.shift();
-  if (!name || args.help) {
-    help();
-    printTasks(args.file);
-    return;
-  }
-
-  runTask(pinefile, name, parse(argv)).catch(logger.error);
 };

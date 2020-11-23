@@ -17,12 +17,11 @@ tasks.s2 = () => {
 };
 
 tasks.p1 = async () => {
-  await delay(5000);
+  await delay(2500);
   console.log('Cleaning...');
 };
 
 tasks.p2 = async () => {
-  await delay(5000);
   console.log('Building...');
 };
 

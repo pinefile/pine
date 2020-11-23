@@ -1,8 +1,8 @@
 module.exports = {
-  predefault: async () => await console.log('lerna:predefault'),
-  default: async () => await console.log('lerna:default'),
-  postdefault: async () => await console.log('lerna:postdefault'),
-  prebuild: async () => await console.log('lerna:prebuild'),
-  build: async () => await console.log('lerna:build'),
-  postbuild: async () => await console.log('lerna:postbuild'),
+  predefault: () => console.log('lerna:predefault'),
+  default: () => console.log('lerna:default'),
+  postdefault: () => console.log('lerna:postdefault'),
+  prebuild: () => console.log('lerna:prebuild'),
+  build: () => console.log('lerna:build'),
+  postbuild: () => console.log('lerna:postbuild'),
 };
