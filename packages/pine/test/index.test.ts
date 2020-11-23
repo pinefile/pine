@@ -72,8 +72,4 @@ describe('pine', () => {
     expect(spy).toHaveBeenCalledWith('Building...');
     spy.mockRestore();
   });
-
-  test('should fail', () => {
-    expect(false).toBeTruthy();
-  });
 });
