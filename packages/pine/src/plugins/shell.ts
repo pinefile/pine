@@ -11,10 +11,7 @@ type ShellOptionsType = {
   stderr?: NodeJS.WriteStream;
 };
 
-export const shell = (
-  cmd: string,
-  opts?: ShellOptionsType
-): Promise<unknown> => {
+export const shell = (cmd: string, opts?: ShellOptionsType): Promise<any> => {
   const cwd = opts?.cwd || process.cwd();
   const s = cmd.split(' ');
 
@@ -38,7 +35,7 @@ export const shell = (
 
     sp.on('close', (code: number) => {
       if (opts?.stdout) {
-        resolve();
+        resolve(null);
       }
     });
   });

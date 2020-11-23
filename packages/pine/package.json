@@ -22,15 +22,15 @@
   "license": "MIT",
   "devDependencies": {
     "@types/pify": "^3.0.2",
-    "@types/yargs": "^15.0.7"
+    "@types/yargs": "^15.0.10"
   },
   "dependencies": {
     "bach": "^1.2.0",
     "chalk": "^4.1.0",
-    "core-js": "^3.6.5",
+    "core-js": "^3.7.0",
     "date-fns": "^2.16.1",
-    "execa": "^4.0.3",
+    "execa": "^4.1.0",
     "pify": "^5.0.0",
-    "yargs": "^16.0.3"
+    "yargs": "^16.1.1"
   }
 }
