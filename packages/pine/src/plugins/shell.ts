@@ -11,6 +11,14 @@ type ShellOptionsType = {
   stderr?: NodeJS.WriteStream;
 };
 
+/**
+ * Run shell command.
+ *
+ * @param {string} cmd
+ * @param {object} opts
+ *
+ * @return {Promise}
+ */
 export const shell = (cmd: string, opts?: ShellOptionsType): Promise<any> => {
   const cwd = opts?.cwd || process.cwd();
   const s = cmd.split(' ');
@@ -45,6 +53,14 @@ export const shell = (cmd: string, opts?: ShellOptionsType): Promise<any> => {
   });
 };
 
+/**
+ * Run shell command.
+ *
+ * @param {string} cmd
+ * @param {object} opts
+ *
+ * @return {Promise}
+ */
 export const run = (cmd: string, opts?: ShellOptionsType) =>
   shell(cmd, {
     stdout: opts?.stdout || process.stdout,

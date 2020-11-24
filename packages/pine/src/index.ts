@@ -4,7 +4,7 @@ import 'core-js/stable';
 export { option } from './args';
 export * as log from './log';
 export { runCLI } from './cli';
-export * from './task';
+export { parallel, series } from './task';
 
 // plugins
 export * from './plugins/file';

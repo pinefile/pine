@@ -43,8 +43,15 @@ export const parallel = (...tasks: any[]): any => {
     );
 };
 
+/**
+ * Execute task in pinefile object.
+ *
+ * @param {object} pinefile
+ * @param {string} name
+ * @param {array}  args
+ */
 const execute = async (
-  pinefile: any,
+  pinefile: PinefileType,
   name: string,
   args: ArgumentsType
 ): Promise<void> => {
@@ -104,7 +111,7 @@ const execute = async (
  * @param {object} args
  */
 export const runTask = async (
-  pinefile: any,
+  pinefile: PinefileType,
   name: string,
   args: ArgumentsType
 ) => {
