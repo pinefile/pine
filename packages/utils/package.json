@@ -1,0 +1,13 @@
+{
+  "name": "@pinefile/utils",
+  "version": "1.0.0-alpha.8",
+  "description": "Pine task runner utils",
+  "homepage": "https://github.com/pinefile/pine",
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.js",
+  "types": "dist",
+  "author": "Fredrik Forsmo <fredrik.forsmo@gmail.com>",
+  "license": "MIT"
+}

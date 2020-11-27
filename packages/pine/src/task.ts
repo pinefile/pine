@@ -75,17 +75,16 @@ const execute = async (
       runner = async (done: any) => {
         try {
           await pify(fn, { excludeMain: true })(args);
-
-          // execute post* function.
-          const postName = getTaskName(fnName, 'post');
-          const postFunc = resolve(postName, pinefile);
-          if (postFunc) {
-            await execute(pinefile, postName, args);
-          }
-
           done();
         } catch (err) {
           done(err);
+        }
+
+        // execute post* function.
+        const postName = getTaskName(fnName, 'post');
+        const postFunc = resolve(postName, pinefile);
+        if (postFunc) {
+          await execute(pinefile, postName, args);
         }
       };
       break;
@@ -98,8 +97,22 @@ const execute = async (
     await execute(pinefile, preName, args);
   }
 
+  const startTime = Date.now();
+  if (!logger.isSilent()) {
+    logger.info(`Starting ${logger.color.cyan(`'${name}'`)}`);
+  }
+
   return await runner((err: any) => {
     if (err) logger.error(err);
+
+    const time = Date.now() - startTime;
+    if (!logger.isSilent()) {
+      logger.info(
+        `Finished ${logger.color.cyan(
+          `'${name}'`
+        )} after ${logger.color.magenta(time + 'ms')}`
+      );
+    }
   });
 };
 

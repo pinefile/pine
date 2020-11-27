@@ -41,7 +41,7 @@
     "parser": "babel-eslint"
   },
   "pine": {
-    "silent": true
+    "silent": false
   },
   "dependencies": {}
 }
