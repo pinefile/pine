@@ -20,7 +20,7 @@
     "noImplicitReturns": true,
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": true,
-    "module": "commonjs"
-  },
-  "include": ["packages/**/src"]
+    "module": "commonjs",
+    "composite": true
+  }
 }

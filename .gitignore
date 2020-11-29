@@ -4,3 +4,4 @@ node_modules
 testdata
 test.js*
 tasks
+tsconfig.tsbuildinfo
