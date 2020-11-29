@@ -7,6 +7,6 @@ test('escapeArgs', () => {
       output: 'jest --config "jest.config.js"',
     },
   ].forEach((t) => {
-    expect(escapeArgs(t.input)).toBe(t.output);
+    expect(escapeArgs(t.input).join(' ')).toBe(t.output);
   });
 });
