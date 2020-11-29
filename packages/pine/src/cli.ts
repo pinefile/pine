@@ -1,7 +1,7 @@
 import { parse, options } from './args';
 import { runTask } from './task';
 import { findFile } from './file';
-import * as logger from './log';
+import * as logger from './logger';
 
 /**
  * Print help text.

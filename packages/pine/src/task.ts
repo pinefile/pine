@@ -1,7 +1,7 @@
 // @ts-ignore
 import bach from 'bach';
 import pify from 'pify';
-import * as logger from './log';
+import * as logger from './logger';
 import { ArgumentsType, PinefileType } from './types';
 import { resolve } from './utils';
 
@@ -110,7 +110,7 @@ const execute = async (
       logger.info(
         `Finished ${logger.color.cyan(
           `'${name}'`
-        )} after ${logger.color.magenta(time + 'ms')}`
+        )} after ${logger.color.magenta(logger.timeInSecs(time))}`
       );
     }
   });

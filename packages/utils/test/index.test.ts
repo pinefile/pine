@@ -1,4 +1,4 @@
-const { encodeArgs, escapeArgs } = require('../src');
+const { escapeArgs } = require('../src');
 
 test('escapeArgs', () => {
   [
@@ -8,6 +8,5 @@ test('escapeArgs', () => {
     },
   ].forEach((t) => {
     expect(escapeArgs(t.input)).toBe(t.output);
-    expect(encodeArgs(t.input)).toStrictEqual(t.output.split(' '));
   });
 });

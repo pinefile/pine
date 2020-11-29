@@ -1,6 +1,6 @@
 import yargs, { Options as YOptions } from 'yargs';
 import { findFile } from './file';
-import * as logger from './log';
+import * as logger from './logger';
 import { ArgumentsType } from './types';
 
 const defaultOptions: OptionsType = {
