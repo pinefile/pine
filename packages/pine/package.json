@@ -1,6 +1,6 @@
 {
   "name": "@pinefile/pine",
-  "version": "1.0.0-alpha.8",
+  "version": "1.0.0-alpha.9",
   "description": "Small task runner for node.js",
   "bin": {
     "pine": "bin/pine"
@@ -25,7 +25,7 @@
     "@types/yargs": "^15.0.10"
   },
   "dependencies": {
-    "@pinefile/utils": "^1.0.0-alpha.8",
+    "@pinefile/utils": "^1.0.0-alpha.9",
     "bach": "^1.2.0",
     "chalk": "^4.1.0",
     "core-js": "^3.7.0",
