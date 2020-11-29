@@ -7,7 +7,7 @@
   "version": "1.0.0",
   "scripts": {
     "lerna": "lerna",
-    "build": "lerna exec --parallel -- tsc",
+    "build": "lerna exec --stream -- tsc",
     "pine:test": "jest",
     "pine:prod": "./packages/pine/bin/pine",
     "pine:dev": "PINE_ENV=development ts-node ./packages/pine/bin/pine",
