@@ -22,11 +22,11 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: npm install
-        run: npm install
-      - name: npm build
-        run: npm run build
+      - name: Yarn install
+        run: yarn
+      - name: Yarn build
+        run: yarn run build
       - name: Pine test
-        run: npm run pine:prod test
+        run: yarn run pine:prod test
         env:
           CI: true
