@@ -33,6 +33,8 @@ Options:`);
 const printTasks = (file?: string) => {
   try {
     const _file = findFile(file);
+
+    // eslint-disable-next-line
     const obj = require(_file);
     const keys = Object.keys(obj);
 
@@ -42,12 +44,14 @@ const printTasks = (file?: string) => {
     keys.forEach((key) => {
       console.log(`  ${key}`);
     });
-  } catch (err) {}
+  } catch (err) {
+    // todo
+  }
 };
 
 export const runCLI = async (argv: Array<any>): Promise<any> => {
   try {
-    let args = parse(argv);
+    const args = parse(argv);
 
     // todo
     if (args.silent) {
