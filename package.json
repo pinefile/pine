@@ -10,13 +10,13 @@
     "build": "npm run clean && npm run compile",
     "compile": "lerna exec --stream -- tsc",
     "clean": "lerna exec --stream -- rm -rf ./dist tsconfig.tsbuildinfo",
-    "pine:test": "jest",
     "pine:prod": "./packages/pine/bin/pine",
     "pine:dev": "PINE_ENV=development ts-node ./packages/pine/bin/pine",
     "format": "prettier --write 'packages/**/src/**/*.ts' packages/**/test/**/*.ts",
     "lint": "eslint packages/**/src --ext .ts",
     "prepublish": "npm run build",
-    "test": "jest"
+    "test": "npm run pine:dev test",
+    "ci": "npm run lint && npm run pine:prod test"
   },
   "author": "Fredrik Forsmo <fredrik.forsmo@gmail.com>",
   "license": "MIT",

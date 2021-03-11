@@ -27,6 +27,6 @@ jobs:
       - name: Yarn build
         run: yarn run build
       - name: Pine test
-        run: yarn run pine:prod test
+        run: yarn run ci
         env:
           CI: true
