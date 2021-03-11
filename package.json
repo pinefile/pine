@@ -44,5 +44,6 @@
   },
   "pine": {
     "silent": false
-  }
+  },
+  "dependencies": {}
 }
