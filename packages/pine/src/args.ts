@@ -33,8 +33,8 @@ export const option = (name: string, options: YOptions) => {
 };
 
 export const options = (): OptionsType => ({
-  ..._options,
   ...defaultOptions,
+  ..._options,
 });
 
 export const parse = (argv: Array<any>): ArgumentsType => {
