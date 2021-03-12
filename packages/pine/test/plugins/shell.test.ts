@@ -22,6 +22,7 @@ describe('shell', () => {
       await shell('exit 1');
       expect(true).toBeFalsy();
     } catch (err) {
+      expect(err).toBeInstanceOf(Error);
       expect(true).toBeTruthy();
     }
   });

@@ -38,7 +38,7 @@ export const shell = (cmd: string, opts?: ShellOptionsType): Promise<any> => {
       sp?.stdout?.pipe(opts.stdout);
       sp?.stderr?.pipe(opts.stderr || opts.stdout);
     } else {
-      sp.then((r) => resolve(r.stdout)).catch((r) => reject(r.stdout));
+      sp.then((r) => resolve(r.stdout)).catch(reject);
     }
 
     sp.on('close', (code: number) => {
