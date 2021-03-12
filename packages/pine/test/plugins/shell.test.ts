@@ -1,4 +1,4 @@
-import { run, shell } from '../../src/plugins/shell';
+import { shell } from '../../src/plugins/shell';
 
 describe('shell', () => {
   test('should run shell commands', async () => {
