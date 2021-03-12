@@ -1,4 +1,3 @@
-// @ts-ignore
 import isCI from 'is-ci';
 import execa from 'execa';
 
