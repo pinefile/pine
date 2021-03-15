@@ -2,6 +2,7 @@ import { parse, options } from './args';
 import { runTask } from './task';
 import { findFile } from './file';
 import * as logger from './logger';
+import { ArgumentsType } from './types';
 
 /**
  * Print help text.
@@ -49,14 +50,23 @@ const printTasks = (file?: string) => {
   }
 };
 
+const setEnvironment = (args: ArgumentsType) => {
+  // set log level by default.
+  if (args.silent) {
+    process.env.LOG_LEVEL = 'silent';
+  }
+
+  // turn on colors by default
+  if (!args.noColor) {
+    process.env.FORCE_COLOR = '1';
+  }
+};
+
 export const runCLI = async (argv: Array<any>): Promise<any> => {
   try {
     const args = parse(argv);
 
-    // todo
-    if (args.silent) {
-      process.env.LOG_LEVEL = 'silent';
-    }
+    setEnvironment(args);
 
     const req = ((Array.isArray(args.requires)
       ? args.requires

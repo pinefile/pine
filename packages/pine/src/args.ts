@@ -10,6 +10,11 @@ const defaultOptions: OptionsType = {
     default: '',
     desc: 'Path to Pipefile or pipefile.js',
   },
+  noColor: {
+    type: 'boolean',
+    default: false,
+    desc: 'Disabling of color',
+  },
   silent: {
     type: 'boolean',
     default: false,
@@ -38,7 +43,14 @@ export const options = (): OptionsType => ({
 });
 
 export const parse = (argv: Array<any>): ArgumentsType => {
-  let args: ArgumentsType = yargs.help(false).options(options()).parse(argv);
+  let args: ArgumentsType = yargs
+    .parserConfiguration({
+      // https://github.com/yargs/yargs/issues/1011
+      'boolean-negation': false,
+    })
+    .help(false)
+    .options(options())
+    .parse(argv);
 
   try {
     // eslint-disable-next-line

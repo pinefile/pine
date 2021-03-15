@@ -1,4 +1,3 @@
-import isCI from 'is-ci';
 import execa from 'execa';
 
 type EnvType = {
@@ -30,7 +29,7 @@ export const shell = (cmd: string, opts?: ShellOptionsType): Promise<any> => {
       shell: true,
       env: {
         // @ts-ignore
-        FORCE_COLOR: !isCI,
+        FORCE_COLOR: !!process.env.FORCE_COLOR,
         ...opts?.env,
       },
     });
