@@ -3,7 +3,18 @@ import bach from 'bach';
 import pify from 'pify';
 import * as logger from './logger';
 import { ArgumentsType, PinefileType } from './types';
-import { resolve } from './utils';
+
+const resolveTask = (key: string, obj: any, sep = ':'): any => {
+  const properties = (Array.isArray(key)
+    ? key
+    : key.split(sep)) as Array<string>;
+
+  return (
+    properties.reduce((prev: Array<any>, cur: string) => {
+      return prev[cur] || '';
+    }, obj) || obj[key]
+  );
+};
 
 const getTaskName = (name: string, prefix = '', sep = ':'): string => {
   const names = name.split(sep);
@@ -55,7 +66,7 @@ const execute = async (
   name: string,
   args: ArgumentsType
 ): Promise<void> => {
-  let fn = resolve(name, pinefile);
+  let fn = resolveTask(name, pinefile);
   let fnName = name;
 
   // fine default function in objects.
@@ -82,7 +93,7 @@ const execute = async (
 
         // execute post* function.
         const postName = getTaskName(fnName, 'post');
-        const postFunc = resolve(postName, pinefile);
+        const postFunc = resolveTask(postName, pinefile);
         if (postFunc) {
           await execute(pinefile, postName, args);
         }
@@ -92,7 +103,7 @@ const execute = async (
 
   // execute pre* function.
   const preName = getTaskName(fnName, 'pre');
-  const preFunc = resolve(preName, pinefile);
+  const preFunc = resolveTask(preName, pinefile);
   if (preFunc) {
     await execute(pinefile, preName, args);
   }
@@ -138,7 +149,7 @@ export const runTask = async (
     return;
   }
 
-  if (!pinefile[name] && !resolve(name, pinefile)) {
+  if (!pinefile[name] && !resolveTask(name, pinefile)) {
     logger.error(`Task ${logger.color.cyan(`'${name}'`)} not found`);
     return;
   }
