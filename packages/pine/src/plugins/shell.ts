@@ -21,7 +21,7 @@ type ShellOptionsType = {
  */
 export const shell = (cmd: string, opts?: ShellOptionsType): Promise<any> => {
   const cwd = opts?.cwd || process.cwd();
-  const s = cmd.split(' ');
+  const s = cmd.split(/\s/);
 
   return new Promise((resolve, reject) => {
     const sp = execa(s[0], s.slice(1), {
