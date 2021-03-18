@@ -22,8 +22,11 @@ module.exports = {
   build: async () => {
     await npm('build');
   },
-  test: async () => {
-    await run('jest');
+  test: async (argv) => {
+    await run(`jest ${argv._.join(' ')}`);
+  },
+  argv: async (argv) => {
+    console.log(argv);
   },
   // examples
   commit: async () => {

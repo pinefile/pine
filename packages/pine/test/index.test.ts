@@ -72,4 +72,11 @@ describe('pine', () => {
     expect(spy).toHaveBeenCalledWith('Building...');
     spy.mockRestore();
   });
+
+  test('should slice name from rest of arguments', async () => {
+    const spy = jest.spyOn(console, 'log');
+    runTask('basic', 'sliceNameFromArgv');
+    expect(spy).toHaveBeenCalledWith('Argv length 0');
+    spy.mockRestore();
+  });
 });

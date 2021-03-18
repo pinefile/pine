@@ -86,7 +86,7 @@ export const runCLI = async (argv: Array<any>): Promise<any> => {
       return;
     }
 
-    return await runTask(pinefile, name, parse(argv));
+    return await runTask(pinefile, name, args);
   } catch (err) {
     logger.error(err);
     return;
