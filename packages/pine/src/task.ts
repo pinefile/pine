@@ -69,7 +69,7 @@ const execute = async (
   let fn = resolveTask(name, pinefile);
   let fnName = name;
 
-  // fine default function in objects.
+  // use default function in objects.
   if (typeof fn === 'object' && fn.default) {
     fn = fn.default;
     fnName = `${name}:default`;
