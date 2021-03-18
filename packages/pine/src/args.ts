@@ -1,4 +1,5 @@
 import yargs, { Options as YOptions } from 'yargs';
+import { isObject } from '@pinefile/utils';
 import { findFile } from './file';
 import * as logger from './logger';
 import { ArgumentsType } from './types';
@@ -32,10 +33,13 @@ type OptionsType = {
   [key: string]: YOptions;
 };
 
-export const options = (): OptionsType => ({
-  ...defaultOptions,
-  ...getConfig().options,
-});
+export const options = (): OptionsType => {
+  const conf = getConfig();
+  return {
+    ...defaultOptions,
+    ...(isObject(conf.options) ? conf.options : {}),
+  };
+};
 
 export const parse = (argv: Array<any>): ArgumentsType => {
   let args: ArgumentsType = yargs

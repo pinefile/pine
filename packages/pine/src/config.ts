@@ -1,6 +1,9 @@
 import { Options as YOptions } from 'yargs';
+import { isObject } from '@pinefile/utils';
 
 type ConfigType = {
+  [key: string]: any;
+  env: NodeJS.ProcessEnv;
   options: {
     [key: string]: YOptions;
   };
@@ -9,7 +12,18 @@ type ConfigType = {
 type ConfigFunctionType = (obj: ConfigType) => ConfigType;
 
 let config: ConfigType = {
+  env: {},
   options: {},
+};
+
+const setEnvironment = (config: ConfigType) => {
+  if (!isObject(config.env)) {
+    return;
+  }
+
+  for (const key in config.env) {
+    process.env[key.toUpperCase()] = config.env[key];
+  }
 };
 
 export const getConfig = (): ConfigType => {
@@ -27,4 +41,6 @@ export const configure = (newConfig: ConfigType | ConfigFunctionType) => {
     ...config,
     ...newConfig,
   };
+
+  setEnvironment(config);
 };

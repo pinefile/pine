@@ -7,3 +7,6 @@ export const escapeArgs = (args: string[]): string[] =>
 
     return arg;
   });
+
+export const isObject = (val: any): boolean =>
+  val != null && typeof val === 'object' && Array.isArray(val) === false;
