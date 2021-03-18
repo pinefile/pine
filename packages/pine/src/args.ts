@@ -2,6 +2,7 @@ import yargs, { Options as YOptions } from 'yargs';
 import { findFile } from './file';
 import * as logger from './logger';
 import { ArgumentsType } from './types';
+import { getConfig } from './config';
 
 const defaultOptions: OptionsType = {
   help: { type: 'boolean', default: false, desc: 'Show help' },
@@ -31,15 +32,9 @@ type OptionsType = {
   [key: string]: YOptions;
 };
 
-const _options: OptionsType = {};
-
-export const option = (name: string, options: YOptions) => {
-  _options[name] = options;
-};
-
 export const options = (): OptionsType => ({
   ...defaultOptions,
-  ..._options,
+  ...getConfig().options,
 });
 
 export const parse = (argv: Array<any>): ArgumentsType => {

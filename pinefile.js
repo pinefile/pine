@@ -1,9 +1,20 @@
 const isDev = process.env.PINE_ENV === 'development';
-const { run, shell, log, option, series, parallel } = require(`./packages/pine${
-  isDev ? '/src' : ''
-}`);
+const {
+  run,
+  shell,
+  log,
+  configure,
+  series,
+  parallel,
+} = require(`./packages/pine${isDev ? '/src' : ''}`);
 
-option('name', { default: 'world' });
+configure({
+  options: {
+    name: {
+      default: 'world',
+    },
+  },
+});
 
 module.exports = {
   prebuild: () => console.log('prebuild task'),

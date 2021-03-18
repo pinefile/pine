@@ -1,8 +1,13 @@
-import { option, parse } from '../src/args';
+import { configure } from '../src/config';
+import { parse } from '../src/args';
 
 describe('args', () => {
   test('option', () => {
-    option('name', { default: 'bar' });
+    configure({
+      options: {
+        name: { default: 'bar' },
+      },
+    });
 
     let args = parse(['--name']);
     expect(args.name).toBe('bar');
