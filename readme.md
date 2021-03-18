@@ -1,6 +1,8 @@
 # Pine [![Build Status](https://github.com/pinefile/pine/workflows/build/badge.svg)](https://github.com/pinefile/pine/actions)
 
-Small JavaScript-based task runner for node.js
+> Work in progress, API may change before first stable release.
+
+Small JavaScript-based task runner for node.js.
 
 ## Example
 
