@@ -7,3 +7,6 @@ export const escapeArgs = (args: string[]): string[] =>
 
     return arg;
   });
+
+export const toArr = (val: any) =>
+  Array.isArray(val) ? val : val == null ? [] : [val];
