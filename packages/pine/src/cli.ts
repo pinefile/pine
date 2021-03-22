@@ -63,7 +63,7 @@ const requireFiles = (args: ArgumentsType) => {
 };
 
 const getDefaultEnvironment = (args: ArgumentsType): NodeJS.ProcessEnv => {
-  let env: NodeJS.ProcessEnv = {};
+  const env: NodeJS.ProcessEnv = {};
 
   // set log level to silent if true
   if (args.silent) {
