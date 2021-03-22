@@ -1,12 +1,7 @@
 const isDev = process.env.PINE_ENV === 'development';
-const {
-  run,
-  shell,
-  log,
-  configure,
-  series,
-  parallel,
-} = require(`./packages/pine${isDev ? '/src' : ''}`);
+const { run, log, configure } = require(`./packages/pine${
+  isDev ? '/src' : ''
+}`);
 
 configure({
   options: {

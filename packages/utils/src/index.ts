@@ -10,3 +10,6 @@ export const escapeArgs = (args: string[]): string[] =>
 
 export const isObject = (val: any): boolean =>
   val != null && typeof val === 'object' && Array.isArray(val) === false;
+
+export const camelCaseToDash = (str: string) =>
+  str.replace(/([a-zA-Z])(?=[A-Z])/g, '$1-').toLowerCase();

@@ -1,28 +1,35 @@
+import { camelCaseToDash } from '@pinefile/utils';
 import { parse, options } from './args';
 import { runTask } from './task';
 import { findFile } from './file';
 import * as logger from './logger';
-import { ArgumentsType } from './types';
+import { configure } from './config';
+import { ArgumentsType, ConfigType } from './types';
 
 /**
  * Print help text.
  */
 const help = (): void => {
   const opts = options();
+  const keys = Object.keys(opts).map((key) => ({
+    key,
+    flag: camelCaseToDash(key),
+  }));
+
   const len =
-    Object.keys(opts).reduce((c, v) => (c.length > v.length ? c : v)).length +
+    keys.reduce((c, v) => (c.flag.length > v.flag.length ? c : v)).flag.length +
     2;
   console.log(`Usage: pine <task> <options>
 
 Options:`);
-  Object.keys(opts).forEach((flag) => {
+  keys.forEach((key) => {
     let space = '';
 
-    for (let i = 0; i < len - flag.length; i++) {
+    for (let i = 0; i < len - key.flag.length; i++) {
       space += ' ';
     }
 
-    console.log(`  --${flag}${space}${opts[flag].desc}`);
+    console.log(`  --${key.flag}${space}${opts[key.key].desc}`);
   });
 };
 
@@ -31,12 +38,10 @@ Options:`);
  *
  * @param {string} file
  */
-const printTasks = (file?: string) => {
+const printTasks = (file: string) => {
   try {
-    const _file = findFile(file);
-
     // eslint-disable-next-line
-    const obj = require(_file);
+    const obj = require(file);
     const keys = Object.keys(obj);
 
     console.log('\nTasks:');
@@ -50,43 +55,57 @@ const printTasks = (file?: string) => {
   }
 };
 
-const setEnvironment = (args: ArgumentsType) => {
-  // set log level by default.
+const requireFiles = (args: ArgumentsType) => {
+  const req = ((Array.isArray(args.requires)
+    ? args.requires
+    : [args.requires]) as Array<string>).filter((r) => r);
+  req.forEach(require);
+};
+
+const getDefaultEnvironment = (args: ArgumentsType): NodeJS.ProcessEnv => {
+  let env: NodeJS.ProcessEnv = {};
+
+  // set log level to silent if true
   if (args.silent) {
-    process.env.LOG_LEVEL = 'silent';
+    env.LOG_LEVEL = 'silent';
   }
 
   // turn on colors by default
   if (!args.noColor) {
-    process.env.FORCE_COLOR = '1';
+    env.FORCE_COLOR = '1';
   }
+
+  return env;
 };
 
 export const runCLI = async (argv: Array<any>): Promise<any> => {
   try {
     const args = parse(argv);
+    const pineFile = findFile(args.file);
 
-    setEnvironment(args);
+    configure((config: ConfigType) => ({
+      ...config,
+      env: {
+        ...getDefaultEnvironment(args),
+        ...config.env,
+      },
+      pinefile: pineFile,
+    }));
 
-    const req = ((Array.isArray(args.requires)
-      ? args.requires
-      : [args.requires]) as Array<string>).filter((r) => r);
-    req.forEach(require);
-
-    let pinefile;
+    requireFiles(args);
 
     // eslint-disable-next-line
-    pinefile = require(findFile(args.file));
-    pinefile = pinefile.default ? pinefile.default : pinefile;
+    let pineModule = require(pineFile);
+    pineModule = pineModule.default ? pineModule.default : pineModule;
 
     const name = args._.shift();
     if (!name || args.help) {
       help();
-      printTasks(args.file);
+      printTasks(pineFile);
       return;
     }
 
-    return await runTask(pinefile, name, args);
+    return await runTask(pineModule, name, args);
   } catch (err) {
     logger.error(err);
     return;

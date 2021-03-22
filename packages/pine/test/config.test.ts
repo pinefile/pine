@@ -10,6 +10,7 @@ describe('config', () => {
       return {};
     });
   });
+
   afterEach(() => {
     configure(originalConfig);
   });
@@ -19,26 +20,24 @@ describe('config', () => {
   });
 
   test('set custom option', () => {
-    configure({
+    const conf = configure({
       options: {
         name: { default: 'world' },
       },
     });
 
-    const conf = getConfig();
     expect(conf.options.name.default).toEqual('world');
+    expect(conf).toEqual(getConfig());
   });
 
   test('set environment variables', () => {
     configure({
       env: {
         STRING: 'pine',
-        PORT: 8080,
-        ARRAY: [1, 2],
+        PORT: '' + 8080,
+        ARRAY: [1, 2].join(','),
       },
     });
-
-    const conf = getConfig();
 
     expect(process.env.STRING).toBe('pine');
     expect(process.env.PORT).toBe('8080');

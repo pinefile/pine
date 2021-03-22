@@ -29,7 +29,7 @@ export const shell = (cmd: string, opts?: ShellOptionsType): Promise<any> => {
       shell: true,
       env: {
         // @ts-ignore
-        FORCE_COLOR: !!process.env.FORCE_COLOR,
+        FORCE_COLOR: process.env.FORCE_COLOR === '1',
         ...opts?.env,
       },
     });
