@@ -16,7 +16,7 @@ let config: ConfigType = {
   options: {},
 };
 
-const setEnvironment = (config: ConfigType) => {
+const setupEnvironment = (config: ConfigType) => {
   if (!isObject(config.env)) {
     return;
   }
@@ -42,5 +42,5 @@ export const configure = (newConfig: ConfigType | ConfigFunctionType) => {
     ...newConfig,
   };
 
-  setEnvironment(config);
+  setupEnvironment(config);
 };

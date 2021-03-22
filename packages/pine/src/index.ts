@@ -3,6 +3,7 @@ import 'core-js/stable';
 // core
 export { configure, getConfig } from './config';
 export * as log from './logger';
+export { color } from './logger';
 export { runCLI } from './cli';
 export { parallel, series } from './task';
 
