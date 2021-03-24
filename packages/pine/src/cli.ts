@@ -75,6 +75,10 @@ const getDefaultEnvironment = (args: ArgumentsType): NodeJS.ProcessEnv => {
     env.FORCE_COLOR = '1';
   }
 
+  if (args.debug) {
+    env.DEBUG = '1';
+  }
+
   return env;
 };
 
@@ -85,6 +89,7 @@ export const runCLI = async (argv: Array<any>): Promise<any> => {
 
     configure((config: ConfigType) => ({
       ...config,
+      dotenv: args.noDotenv ? [] : ['.env'],
       env: {
         ...getDefaultEnvironment(args),
         ...config.env,

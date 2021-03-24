@@ -1,3 +1,4 @@
+.env
 packages/*/dist
 pinefile.*.js
 node_modules

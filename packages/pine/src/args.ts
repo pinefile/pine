@@ -12,6 +12,11 @@ const defaultOptions: OptionsType = {
     default: '',
     desc: 'Path to Pipefile or pipefile.js',
   },
+  noDotenv: {
+    type: 'boolean',
+    default: false,
+    desc: 'Disabling auto load of .env',
+  },
   noColor: {
     type: 'boolean',
     default: false,

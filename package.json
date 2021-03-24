@@ -25,6 +25,7 @@
     "@babel/eslint-parser": "^7.13.10",
     "@babel/preset-env": "^7.13.10",
     "@babel/preset-typescript": "^7.13.0",
+    "@types/debug": "^4.1.5",
     "@types/jest": "^26.0.21",
     "@types/yargs": "16.0.0",
     "@typescript-eslint/eslint-plugin": "^4.18.0",
@@ -44,5 +45,8 @@
   },
   "pine": {
     "silent": false
+  },
+  "dependencies": {
+    "debug": "^4.3.1"
   }
 }
