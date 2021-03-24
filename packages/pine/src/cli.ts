@@ -75,10 +75,6 @@ const getDefaultEnvironment = (args: ArgumentsType): NodeJS.ProcessEnv => {
     env.FORCE_COLOR = '1';
   }
 
-  if (args.debug) {
-    env.DEBUG = '1';
-  }
-
   return env;
 };
 
