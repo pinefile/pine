@@ -11,11 +11,15 @@ export const isFile = (filePath: string): boolean =>
   fs.existsSync(filePath) && !fs.lstatSync(filePath).isDirectory();
 
 export const findFile = (file = ''): string => {
-  if (file.startsWith('/') && isFile(file)) {
+  if (path.isAbsolute(file) && isFile(file)) {
     return file;
   }
 
   return resolveFilePathByTraversing(path.resolve('.'), process.cwd(), file);
+};
+
+export const findDirname = (file = ''): string => {
+  return path.dirname(findFile(file));
 };
 
 const resolveFilePathByTraversing = (

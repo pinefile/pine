@@ -7,6 +7,7 @@ let config: ConfigType = {
   dotenv: [],
   env: {},
   options: {},
+  path: '',
 };
 
 const loadDotenv = (config: ConfigType) => {
@@ -14,9 +15,13 @@ const loadDotenv = (config: ConfigType) => {
     return;
   }
 
+  if (!config.path && config.dotenv.length) {
+    throw new Error("Config path shouldn't be empty");
+  }
+
   config.dotenv.forEach((file, i) => {
     dotenv.config({
-      path: `${path.join(path.dirname(config.pinefile), file)}`,
+      path: `${path.join(config.path, file)}`,
     });
     delete config.dotenv[i];
   });
