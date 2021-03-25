@@ -1,5 +1,4 @@
 import path from 'path';
-import debug from 'debug';
 import dotenv from 'dotenv';
 import { isObject } from '@pinefile/utils';
 import { ConfigType, ConfigFunctionType } from './types';
@@ -16,7 +15,6 @@ const loadDotenv = (config: ConfigType) => {
   }
 
   config.dotenv.forEach((file, i) => {
-    debug('dotenv')('loading', file);
     dotenv.config({
       path: `${path.join(path.dirname(config.pinefile), file)}`,
     });
