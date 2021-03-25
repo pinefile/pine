@@ -4,8 +4,6 @@ import dotenv from 'dotenv';
 import { isObject } from '@pinefile/utils';
 import { ConfigType, ConfigFunctionType } from './types';
 
-let processed: Array<string> = [];
-
 let config: ConfigType = {
   dotenv: [],
   env: {},
@@ -17,15 +15,13 @@ const loadDotenv = (config: ConfigType) => {
     return;
   }
 
-  config.dotenv
-    .filter((file) => !processed.includes(file))
-    .forEach((file) => {
-      debug('dotenv')('loading', file);
-      dotenv.config({
-        path: `${path.join(path.dirname(config.pinefile), file)}`,
-      });
-      processed.push(file);
+  config.dotenv.forEach((file, i) => {
+    debug('dotenv')('loading', file);
+    dotenv.config({
+      path: `${path.join(path.dirname(config.pinefile), file)}`,
     });
+    delete config.dotenv[i];
+  });
 };
 
 const setEnvironment = (config: ConfigType) => {
