@@ -12,7 +12,7 @@ describe('file', () => {
   });
 
   it('can read json', () => {
-    const r = readJSON();
+    const r = readJSON('fake.json');
     expect(typeof r).toBe('object');
   });
 });

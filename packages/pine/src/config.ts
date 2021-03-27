@@ -21,7 +21,7 @@ export const getConfig = (): ConfigType => {
 };
 
 export const configure = (
-  newConfig: ConfigType | ConfigFunctionType
+  newConfig: Partial<ConfigType> | ConfigFunctionType
 ): ConfigType => {
   if (typeof newConfig === 'function') {
     newConfig = newConfig(config);

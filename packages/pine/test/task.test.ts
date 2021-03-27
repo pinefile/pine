@@ -3,7 +3,7 @@ const pinefile = require('./fixtures/pinefile.tasks');
 
 jest.setTimeout(10000);
 
-let spyLog;
+let spyLog: any = null;
 
 describe('task', () => {
   beforeEach(() => {

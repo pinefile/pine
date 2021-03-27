@@ -6,8 +6,8 @@ export type ArgumentsType = {
 
 export type ConfigType = {
   [key: string]: any;
-  env?: NodeJS.ProcessEnv;
-  options?: {
+  env: NodeJS.ProcessEnv;
+  options: {
     [key: string]: YOptions;
   };
 };

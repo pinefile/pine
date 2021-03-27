@@ -8,7 +8,7 @@ jest.mock('../../../package.json', () => {
 });
 
 describe('pine', () => {
-  let run;
+  let run: any = null;
 
   beforeEach(() => {
     jest.resetModules();
@@ -20,13 +20,17 @@ describe('pine', () => {
     jest.clearAllMocks();
   });
 
-  const runTask = async (file, task) => {
+  const runTask = async (file: string, task: string) => {
     await run([task, `--file=${__dirname}/fixtures/pinefile.${file}.js`]);
   };
 
-  const testCallOrder = async (file, task, order = []) => {
+  const testCallOrder = async (
+    file: string,
+    task: string,
+    order: Array<string> = []
+  ) => {
     const module = require(`./fixtures/pinefile.${file}.js`);
-    const callOrder = [];
+    const callOrder: Array<string> = [];
     order.forEach((f) => {
       if (module[f]) {
         module[f] = jest.fn().mockImplementation(() => callOrder.push(f));

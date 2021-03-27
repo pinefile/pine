@@ -1,7 +1,7 @@
 import { configure, getConfig } from '../src/config';
 
 describe('config', () => {
-  let originalConfig;
+  let originalConfig: any = {};
 
   beforeEach(() => {
     // restore existing configuration at the end

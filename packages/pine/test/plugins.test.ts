@@ -1,8 +1,8 @@
 import fs from 'fs';
 
 describe('plugins', () => {
-  let run;
-  let spyLog;
+  let run: any = null;
+  let spyLog: any = null;
 
   beforeEach(() => {
     jest.resetModules();

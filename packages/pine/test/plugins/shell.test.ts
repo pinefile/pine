@@ -2,7 +2,7 @@ import { shell } from '../../src/plugins/shell';
 
 describe('shell', () => {
   test('should run shell commands', async () => {
-    const tests = [
+    [
       {
         input: 'echo "hello"',
         output: 'hello',
