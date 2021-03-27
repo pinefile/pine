@@ -86,7 +86,7 @@ Example of how to use Babel transpiler for your `pinefile.js`
 }
 ```
 
-Example of how to use TypeScript transpiler for your `pinefile.js`
+Example of how to use TypeScript transpiler for your `pinefile.ts`
 
 ```json
 {
