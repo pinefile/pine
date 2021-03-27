@@ -1,10 +1,7 @@
 const { pkg, shell } = require('@pinefile/pine');
 const { echo } = require('./plugins/echo');
 
-const npm = (c) =>
-  shell(`npm run ${c}`, {
-    outputStream: process.stdout,
-  });
+const npm = (c) => run(`npm run ${c}`);
 
 module.exports = {
   build: () => {
