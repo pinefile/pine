@@ -10,7 +10,7 @@
 
 Small JavaScript-based task runner for node.js.
 
-## Example
+## Usage
 
 Create `Pinefile` or `pinefile.js`
 
