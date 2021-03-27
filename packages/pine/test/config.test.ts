@@ -43,4 +43,13 @@ describe('config', () => {
     expect(process.env.PORT).toBe('8080');
     expect(process.env.ARRAY).toBe('1,2');
   });
+
+  test('should load .env', () => {
+    configure({
+      path: __dirname,
+      dotenv: ['.env'],
+    });
+
+    expect(process.env.NAME).toBe('Pine');
+  });
 });
