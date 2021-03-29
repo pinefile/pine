@@ -100,6 +100,19 @@ Example of how to use TypeScript transpiler for your `pinefile.ts`
 }
 ```
 
+Example of how to use esbuild transpiler for your `pinefile.[j|t]s`
+
+```json
+{
+  "pine": {
+    "requires": ["esbuild-register"]
+  },
+  "devDependencies": {
+    "esbuild-register": "^2.3.0"
+  }
+}
+```
+
 ## License
 
 MIT © [Fredrik Forsmo](https://github.com/frozzare)
