@@ -22,17 +22,6 @@ const getTaskName = (name: string, prefix = '', sep = ':'): string => {
   return names.concat(`${prefix}${lastName}`).join(sep);
 };
 
-// const _pify = (fn: any, args: any[] = []) => async (done: any) => {
-//   try {
-//     await pify(fn, { excludeMain: true })(args);
-//     done();
-//   } catch (err) {
-//     done(err);
-//   }
-// };
-
-// await _pify(fn, args)();
-
 /**
  * Run tasks series.
  *
