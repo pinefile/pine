@@ -22,6 +22,17 @@ const getTaskName = (name: string, prefix = '', sep = ':'): string => {
   return names.concat(`${prefix}${lastName}`).join(sep);
 };
 
+// const _pify = (fn: any, args: any[] = []) => async (done: any) => {
+//   try {
+//     await pify(fn, { excludeMain: true })(args);
+//     done();
+//   } catch (err) {
+//     done(err);
+//   }
+// };
+
+// await _pify(fn, args)();
+
 /**
  * Run tasks series.
  *
@@ -30,6 +41,22 @@ const getTaskName = (name: string, prefix = '', sep = ':'): string => {
  * @return function
  */
 export const series = (...tasks: any[]): any => {
+  if (typeof tasks[0] === 'function') {
+    return new Promise((resolve, reject) => {
+      bach.series(tasks)((err: any, res: any) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(res);
+        }
+      });
+    });
+  }
+
+  if (Array.isArray(tasks[0])) {
+    return series(...tasks[0]);
+  }
+
   return (pinefile: PinefileType, _: string, args: ArgumentsType) =>
     bach.series(
       ...tasks.map((task) => (cb: any) =>
@@ -46,6 +73,22 @@ export const series = (...tasks: any[]): any => {
  * @return function
  */
 export const parallel = (...tasks: any[]): any => {
+  if (typeof tasks[0] === 'function') {
+    return new Promise((resolve, reject) => {
+      bach.parallel(tasks)((err: any, res: any) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(res);
+        }
+      });
+    });
+  }
+
+  if (Array.isArray(tasks[0])) {
+    return parallel(...tasks[0]);
+  }
+
   return (pinefile: PinefileType, _: string, args: ArgumentsType) =>
     bach.parallel(
       ...tasks.map((task) => (cb: any) =>
