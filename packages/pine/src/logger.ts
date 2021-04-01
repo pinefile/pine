@@ -26,17 +26,17 @@ export const timeInSecs = (time: number) => {
   return `${seconds}.${milliseconds}s`;
 };
 
-export const info = (...message: string[]) => {
+export const info = (...message: Array<string | Error>) => {
   const date = formatDate(newDate());
   console.log(date, ...message);
 };
 
-export const warn = (...message: string[]) => {
+export const warn = (...message: Array<string | Error>) => {
   const date = formatDate(newDate());
   console.warn(date, ...message);
 };
 
-export const error = (...message: string[]) => {
+export const error = (...message: Array<string | Error>) => {
   const date = formatDate(newDate());
   console.error(date, ...message);
 };
