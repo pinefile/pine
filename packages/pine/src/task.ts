@@ -1,10 +1,15 @@
 // @ts-ignore
 import bach from 'bach';
 import pify from 'pify';
+import { isObject } from '@pinefile/utils';
 import * as logger from './logger';
 import { ArgumentsType, PinefileType } from './types';
 
-const resolveTask = (key: string, obj: any, sep = ':'): any => {
+export const resolveTask = (key: string, obj: any, sep = ':'): any => {
+  if (obj[key]) {
+    return obj[key];
+  }
+
   const properties = (Array.isArray(key)
     ? key
     : key.split(sep)) as Array<string>;
@@ -16,7 +21,7 @@ const resolveTask = (key: string, obj: any, sep = ':'): any => {
   );
 };
 
-const getTaskName = (name: string, prefix = '', sep = ':'): string => {
+export const getTaskName = (name: string, prefix = '', sep = ':'): string => {
   const names = name.split(sep);
   const lastName = names.pop();
   return names.concat(`${prefix}${lastName}`).join(sep);
@@ -102,9 +107,9 @@ const execute = async (
   let fnName = name;
 
   // use default function in objects.
-  if (typeof fn === 'object' && fn.default) {
+  if (isObject(fn) && fn.default) {
     fn = fn.default;
-    fnName = `${name}:default`;
+    fnName = name !== 'default' ? `${name}:default` : 'default';
   }
 
   let runner;
@@ -171,17 +176,7 @@ export const runTask = async (
   name: string,
   args: ArgumentsType
 ) => {
-  if (!pinefile) {
-    logger.error('Pinefile not found');
-    return;
-  }
-
-  if (!name) {
-    logger.error('No task provided');
-    return;
-  }
-
-  if (!pinefile[name] && !resolveTask(name, pinefile)) {
+  if (!resolveTask(name, pinefile)) {
     logger.error(`Task ${logger.color.cyan(`'${name}'`)} not found`);
     return;
   }

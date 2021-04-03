@@ -1,4 +1,4 @@
-import { camelCaseToDash } from '@pinefile/utils';
+import { camelCaseToDash, isObject } from '@pinefile/utils';
 import { parse, options } from './args';
 import { runTask } from './task';
 import { findFile, findDirname } from './file';
@@ -97,10 +97,11 @@ export const runCLI = async (argv: Array<any>): Promise<any> => {
 
     // eslint-disable-next-line
     let pineModule = require(pineFile);
-    pineModule = pineModule.default ? pineModule.default : pineModule;
+    pineModule = isObject(pineModule.default) ? pineModule.default : pineModule;
 
-    const name = args._.shift();
-    if (!name || args.help) {
+    const name = args._.shift() || 'default';
+
+    if (args.help) {
       help();
       printTasks(pineFile);
       return;

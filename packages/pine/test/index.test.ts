@@ -69,6 +69,20 @@ describe('pine', () => {
     ]);
   });
 
+  test('should run default task', () => {
+    const spy = jest.spyOn(console, 'log');
+    runTask('basic', 'default');
+    expect(spy).toHaveBeenCalledWith('Default...');
+    spy.mockRestore();
+  });
+
+  test('should log if task is not found', () => {
+    const spy = jest.spyOn(console, 'error');
+    runTask('basic', 'missing');
+    expect(spy.mock.calls[0][1].indexOf('missing')).toBeGreaterThan(-1);
+    spy.mockRestore();
+  });
+
   test('should require files before run using package.json config', () => {
     const spy = jest.spyOn(console, 'log');
     runTask('basic', 'build');

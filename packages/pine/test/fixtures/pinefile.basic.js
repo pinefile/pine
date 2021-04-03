@@ -1,3 +1,7 @@
+exports.default = function (argv) {
+  console.log('Default...');
+};
+
 exports.build = function (argv) {
   console.log('Building...');
 };
