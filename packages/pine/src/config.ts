@@ -35,6 +35,11 @@ export type ConfigType = {
    * Directory of Pinefile
    */
   root: string;
+
+  /**
+   * Require
+   */
+  require: string[];
 };
 
 export type ConfigFunctionType = (obj: ConfigType) => ConfigType;
@@ -45,6 +50,7 @@ let config: ConfigType = {
   logLevel: 'info',
   options: {},
   root: '',
+  require: [],
 };
 
 const loadDotenv = (config: ConfigType) => {
@@ -61,6 +67,18 @@ const loadDotenv = (config: ConfigType) => {
       path: `${path.join(config.root, file)}`,
     });
     delete config.dotenv[i];
+  });
+};
+
+const loadModules = (config: ConfigType) => {
+  if (!Array.isArray(config.require)) {
+    return;
+  }
+
+  config.require.forEach((file, i) => {
+    // eslint-disable-next-line
+    require(file);
+    delete config.require[i];
   });
 };
 
@@ -94,6 +112,7 @@ export const configure = (
   };
 
   loadDotenv(config);
+  loadModules(config);
   setEnvironment(config);
 
   return config;

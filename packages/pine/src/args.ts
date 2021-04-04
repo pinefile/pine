@@ -9,7 +9,11 @@ export type ArgumentsType = {
 };
 
 const defaultOptions: OptionsType = {
-  help: { type: 'boolean', default: false, desc: 'Show help' },
+  help: {
+    type: 'boolean',
+    default: false,
+    desc: 'Print help and available tasks',
+  },
   file: {
     type: 'string',
     default: '',
@@ -25,15 +29,15 @@ const defaultOptions: OptionsType = {
     default: false,
     desc: 'Disabling of color',
   },
-  silent: {
+  logLevel: {
     type: 'boolean',
-    default: false,
-    desc: 'Runs the task in silent mode',
+    default: 'info',
+    desc: 'Set log level: info | warn | error | silent.',
   },
-  requires: {
+  require: {
     type: 'array',
     default: [],
-    desc: 'Packages to load before a task is executed',
+    desc: 'Packages to preload before Pinefile is loaded',
   },
 };
 
@@ -62,8 +66,7 @@ export const parse = (argv: Array<any>): ArgumentsType => {
   try {
     // eslint-disable-next-line
     const pkg = require(findFile('package.json'));
-    const pine =
-      typeof pkg.pine === 'object' && !Array.isArray(pkg.pine) ? pkg.pine : {};
+    const pine = isObject(pkg.pine) ? pkg.pine : {};
 
     args = {
       ...args,

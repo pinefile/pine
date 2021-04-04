@@ -1,5 +1,5 @@
 import { camelCaseToDash, isObject } from '@pinefile/utils';
-import { parse, options, ArgumentsType } from './args';
+import { parse, options } from './args';
 import { runTask } from './task';
 import { findFile, findDirname } from './file';
 import * as logger from './logger';
@@ -54,40 +54,34 @@ const printTasks = (file: string) => {
   }
 };
 
-const requireFiles = (args: ArgumentsType) => {
-  const req = ((Array.isArray(args.requires)
-    ? args.requires
-    : [args.requires]) as Array<string>).filter((r) => r);
-  req.forEach(require);
-};
-
-const getDefaultEnvironment = (args: ArgumentsType): NodeJS.ProcessEnv => {
-  const env: NodeJS.ProcessEnv = {};
-
-  // turn on colors by default
-  if (!args.noColor) {
-    env.FORCE_COLOR = '1';
-  }
-
-  return env;
-};
-
 export const runCLI = async (argv: Array<any>): Promise<any> => {
   try {
     const args = parse(argv);
     const pineFile = findFile(args.file);
 
-    configure((config: ConfigType) => ({
-      ...config,
-      dotenv: args.noDotenv ? [] : ['.env'],
-      env: {
-        ...getDefaultEnvironment(args),
-        ...config.env,
-      },
-      root: findDirname(pineFile),
-    }));
+    configure((config: ConfigType) => {
+      config = {
+        ...config,
+        ...(isObject(args.config) ? args.config : {}),
+      };
 
-    requireFiles(args);
+      return {
+        dotenv: args.noDotenv ? [] : ['.env'],
+        env: {
+          ...(!args.noColor ? { FORCE_COLOR: '1' } : {}),
+          ...config.env,
+        },
+        root: findDirname(pineFile),
+        logLevel: args.logLevel,
+        require: [
+          ...config.require,
+          ...(Array.isArray(args.require) ? args.require : []),
+        ],
+      };
+    });
+
+    // delete config since it's not a real argument.
+    delete args.config;
 
     // eslint-disable-next-line
     let pineModule = require(pineFile);

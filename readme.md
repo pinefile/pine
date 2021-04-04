@@ -73,7 +73,7 @@ Example of how to use Babel transpiler for your `pinefile.js`
 ```json
 {
   "pine": {
-    "requires": ["@babel/register"]
+    "require": ["@babel/register"]
   },
   "babel": {
     "presets": ["env"]
@@ -91,7 +91,7 @@ Example of how to use TypeScript transpiler for your `pinefile.ts`
 ```json
 {
   "pine": {
-    "requires": ["ts-node/register"]
+    "require": ["ts-node/register"]
   },
   "devDependencies": {
     "ts-node": "^9.0.0",
@@ -105,7 +105,7 @@ Example of how to use esbuild transpiler for your `pinefile.[j|t]s`
 ```json
 {
   "pine": {
-    "requires": ["esbuild-register"]
+    "require": ["esbuild-register"]
   },
   "devDependencies": {
     "esbuild-register": "^2.3.0"
