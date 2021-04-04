@@ -30,7 +30,7 @@ const loadDotenv = (config: ConfigType) => {
   }
 
   if (!config.path && config.dotenv.length) {
-    throw new Error("Config path shouldn't be empty");
+    throw new Error('Config path cannot be empty when loading dotenv files');
   }
 
   config.dotenv.forEach((file, i) => {
