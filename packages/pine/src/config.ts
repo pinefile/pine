@@ -1,7 +1,7 @@
-import { Options as YOptions } from 'yargs';
 import path from 'path';
 import dotenv from 'dotenv';
 import { isObject } from '@pinefile/utils';
+import { OptionsType } from './args';
 import { LogLevel } from './logger';
 
 export type ConfigType = {
@@ -9,9 +9,7 @@ export type ConfigType = {
   dotenv: string[];
   env: NodeJS.ProcessEnv;
   logLevel: LogLevel;
-  options: {
-    [key: string]: YOptions;
-  };
+  options: OptionsType;
 };
 
 export type ConfigFunctionType = (obj: ConfigType) => ConfigType;

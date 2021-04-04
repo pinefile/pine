@@ -37,7 +37,7 @@ const defaultOptions: OptionsType = {
   },
 };
 
-type OptionsType = {
+export type OptionsType = {
   [key: string]: YOptions;
 };
 
