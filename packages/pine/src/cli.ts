@@ -81,7 +81,9 @@ export const runCLI = async (argv: Array<any>): Promise<any> => {
     });
 
     // delete config since it's not a real argument.
-    delete args.config;
+    if (isObject(args.config)) {
+      delete args.config;
+    }
 
     // eslint-disable-next-line
     let pineModule = require(pineFile);
