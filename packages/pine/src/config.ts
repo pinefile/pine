@@ -6,6 +6,7 @@ import { ConfigType, ConfigFunctionType } from './types';
 let config: ConfigType = {
   dotenv: [],
   env: {},
+  logLevel: 'info',
   options: {},
   path: '',
 };

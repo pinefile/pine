@@ -146,21 +146,18 @@ const execute = async (
   }
 
   const startTime = Date.now();
-  if (!logger.isSilent()) {
-    logger.info(`Starting ${logger.color.cyan(`'${name}'`)}`);
-  }
+  logger.info(`Starting ${logger.color.cyan(`'${name}'`)}`);
 
   return await runner((err: any) => {
     if (err) logger.error(err);
 
     const time = Date.now() - startTime;
-    if (!logger.isSilent()) {
-      logger.info(
-        `Finished ${logger.color.cyan(
-          `'${name}'`
-        )} after ${logger.color.magenta(logger.timeInSecs(time))}`
-      );
-    }
+
+    logger.info(
+      `Finished ${logger.color.cyan(`'${name}'`)} after ${logger.color.magenta(
+        logger.timeInSecs(time)
+      )}`
+    );
   });
 };
 

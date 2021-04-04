@@ -65,11 +65,6 @@ const requireFiles = (args: ArgumentsType) => {
 const getDefaultEnvironment = (args: ArgumentsType): NodeJS.ProcessEnv => {
   const env: NodeJS.ProcessEnv = {};
 
-  // set log level to silent if true
-  if (args.silent) {
-    env.LOG_LEVEL = 'silent';
-  }
-
   // turn on colors by default
   if (!args.noColor) {
     env.FORCE_COLOR = '1';
