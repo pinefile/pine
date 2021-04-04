@@ -5,11 +5,36 @@ import { OptionsType } from './args';
 import { LogLevel } from './logger';
 
 export type ConfigType = {
+  /**
+   * Dynamic config properties.
+   */
   [key: string]: any;
+
+  /**
+   * Array of dotenv files to load from root.
+   */
   dotenv: string[];
+
+  /**
+   * Object of process env.
+   */
   env: NodeJS.ProcessEnv;
+
+  /**
+   * Log level.
+   * Default: 'info'
+   */
   logLevel: LogLevel;
+
+  /**
+   * Yargs options.
+   */
   options: OptionsType;
+
+  /**
+   * Directory of Pinefile
+   */
+  root: string;
 };
 
 export type ConfigFunctionType = (obj: ConfigType) => ConfigType;
@@ -19,7 +44,7 @@ let config: ConfigType = {
   env: {},
   logLevel: 'info',
   options: {},
-  path: '',
+  root: '',
 };
 
 const loadDotenv = (config: ConfigType) => {
@@ -27,13 +52,13 @@ const loadDotenv = (config: ConfigType) => {
     return;
   }
 
-  if (!config.path && config.dotenv.length) {
-    throw new Error('Config path cannot be empty when loading dotenv files');
+  if (!config.root && config.dotenv.length) {
+    throw new Error('Config root cannot be empty when loading dotenv files');
   }
 
   config.dotenv.forEach((file, i) => {
     dotenv.config({
-      path: `${path.join(config.path, file)}`,
+      path: `${path.join(config.root, file)}`,
     });
     delete config.dotenv[i];
   });

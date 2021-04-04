@@ -46,7 +46,7 @@ describe('config', () => {
 
   test('should load .env', () => {
     configure({
-      path: __dirname,
+      root: __dirname,
       dotenv: ['.env'],
     });
 

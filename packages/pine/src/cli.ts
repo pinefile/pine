@@ -84,7 +84,7 @@ export const runCLI = async (argv: Array<any>): Promise<any> => {
         ...getDefaultEnvironment(args),
         ...config.env,
       },
-      path: findDirname(pineFile),
+      root: findDirname(pineFile),
     }));
 
     requireFiles(args);
