@@ -2,8 +2,12 @@
 import bach from 'bach';
 import pify from 'pify';
 import { isObject } from '@pinefile/utils';
+import { ArgumentsType } from './args';
 import * as logger from './logger';
-import { ArgumentsType, PinefileType } from './types';
+
+type PinefileType = {
+  [key: string]: any;
+};
 
 export const resolveTask = (key: string, obj: any, sep = ':'): any => {
   if (obj[key]) {

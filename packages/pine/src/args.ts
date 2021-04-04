@@ -1,9 +1,12 @@
-import yargs, { Options as YOptions } from 'yargs';
+import yargs, { Arguments as YArguments, Options as YOptions } from 'yargs';
 import { isObject } from '@pinefile/utils';
 import { findFile } from './file';
 import * as logger from './logger';
-import { ArgumentsType } from './types';
 import { getConfig } from './config';
+
+export type ArgumentsType = {
+  [key in keyof YArguments<any>]: YArguments<any>[key];
+};
 
 const defaultOptions: OptionsType = {
   help: { type: 'boolean', default: false, desc: 'Show help' },

@@ -1,10 +1,9 @@
 import { camelCaseToDash, isObject } from '@pinefile/utils';
-import { parse, options } from './args';
+import { parse, options, ArgumentsType } from './args';
 import { runTask } from './task';
 import { findFile, findDirname } from './file';
 import * as logger from './logger';
-import { configure } from './config';
-import { ArgumentsType, ConfigType } from './types';
+import { configure, ConfigType } from './config';
 
 /**
  * Print help text.

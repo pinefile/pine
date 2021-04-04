@@ -5,12 +5,6 @@ import { getConfig } from './config';
 const formatDate = (date: Date) => chalk.gray(format(date, '[kk:mm:ss]'));
 const newDate = () => new Date();
 
-// const prefixes = {
-//   error: chalk.red('error') + ': ',
-//   warn: chalk.yellow('warn') + ':  ',
-//   info: chalk.cyan('info') + ':  ',
-// };
-
 export const color = chalk;
 export type LogType = 'error' | 'warn' | 'info';
 export type LogLevel = LogType | 'silent';
