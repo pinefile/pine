@@ -9,6 +9,15 @@ type PinefileType = {
   [key: string]: any;
 };
 
+/**
+ * Resolve task function by name.
+ *
+ * @param {string} key
+ * @param {string} obj
+ * @param {string} sep
+ *
+ * @return {function}
+ */
 export const resolveTask = (key: string, obj: any, sep = ':'): any => {
   if (obj[key]) {
     return obj[key];
@@ -25,7 +34,16 @@ export const resolveTask = (key: string, obj: any, sep = ':'): any => {
   );
 };
 
-export const getTaskName = (name: string, prefix = '', sep = ':'): string => {
+/**
+ * Get task function name with prefix.
+ *
+ * @param {string} name
+ * @param {string} prefix
+ * @param {string} sep
+ *
+ * @return {string}
+ */
+const getFnName = (name: string, prefix = '', sep = ':'): string => {
   const names = name.split(sep);
   const lastName = names.pop();
   return names.concat(`${prefix}${lastName}`).join(sep);
@@ -36,7 +54,7 @@ export const getTaskName = (name: string, prefix = '', sep = ':'): string => {
  *
  * series('clean', 'build')
  *
- * @return function
+ * @return {function|Promise}
  */
 export const series = (...tasks: any[]): any => {
   if (typeof tasks[0] === 'function') {
@@ -68,7 +86,7 @@ export const series = (...tasks: any[]): any => {
  *
  * parallel('clean', 'build')
  *
- * @return function
+ * @return {function|Promise}
  */
 export const parallel = (...tasks: any[]): any => {
   if (typeof tasks[0] === 'function') {
@@ -101,6 +119,8 @@ export const parallel = (...tasks: any[]): any => {
  * @param {object} pinefile
  * @param {string} name
  * @param {array}  args
+ *
+ * @return {Promise}
  */
 const execute = async (
   pinefile: PinefileType,
@@ -133,7 +153,7 @@ const execute = async (
         }
 
         // execute post* function.
-        const postName = getTaskName(fnName, 'post');
+        const postName = getFnName(fnName, 'post');
         const postFunc = resolveTask(postName, pinefile);
         if (postFunc) {
           await execute(pinefile, postName, args);
@@ -143,7 +163,7 @@ const execute = async (
   }
 
   // execute pre* function.
-  const preName = getTaskName(fnName, 'pre');
+  const preName = getFnName(fnName, 'pre');
   const preFunc = resolveTask(preName, pinefile);
   if (preFunc) {
     await execute(pinefile, preName, args);
@@ -171,6 +191,8 @@ const execute = async (
  * @param {object} pinefile
  * @param {string} name
  * @param {object} args
+ *
+ * @return {Promise}
  */
 export const runTask = async (
   pinefile: PinefileType,

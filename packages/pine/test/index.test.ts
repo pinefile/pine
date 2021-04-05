@@ -1,3 +1,5 @@
+import { runCLI, getConfig } from '../src';
+
 // root package.json
 jest.mock('../../../package.json', () => {
   return {
@@ -12,7 +14,7 @@ describe('pine', () => {
 
   beforeEach(() => {
     jest.resetModules();
-    run = require('../src').runCLI;
+    run = runCLI;
   });
 
   afterEach(() => {
@@ -73,6 +75,7 @@ describe('pine', () => {
     const spy = jest.spyOn(console, 'log');
     runTask('basic', 'default');
     expect(spy).toHaveBeenCalledWith('Default...');
+    expect(getConfig().task).toBe('default');
     spy.mockRestore();
   });
 
@@ -88,6 +91,7 @@ describe('pine', () => {
     runTask('basic', 'build');
     expect(spy).toHaveBeenCalledWith('Required...');
     expect(spy).toHaveBeenCalledWith('Building...');
+    expect(getConfig().task).toBe('build');
     spy.mockRestore();
   });
 
@@ -95,6 +99,7 @@ describe('pine', () => {
     const spy = jest.spyOn(console, 'log');
     runTask('basic', 'sliceNameFromArgv');
     expect(spy).toHaveBeenCalledWith('Argv length 0');
+    expect(getConfig().task).toBe('sliceNameFromArgv');
     spy.mockRestore();
   });
 });

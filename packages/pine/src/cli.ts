@@ -58,13 +58,13 @@ export const runCLI = async (argv: Array<any>): Promise<any> => {
   try {
     const args = parse(argv);
     const pineFile = findFile(args.file);
+    const name = args._.shift() || 'default';
 
     configure((config: ConfigType) => {
       config = {
         ...config,
         ...(isObject(args.config) ? args.config : {}),
       };
-
       return {
         dotenv: args.noDotenv ? [] : ['.env'],
         env: {
@@ -77,6 +77,7 @@ export const runCLI = async (argv: Array<any>): Promise<any> => {
           ...config.require,
           ...(Array.isArray(args.require) ? args.require : []),
         ],
+        task: name,
       };
     });
 
@@ -88,8 +89,6 @@ export const runCLI = async (argv: Array<any>): Promise<any> => {
     // eslint-disable-next-line
     let pineModule = require(pineFile);
     pineModule = isObject(pineModule.default) ? pineModule.default : pineModule;
-
-    const name = args._.shift() || 'default';
 
     if (args.help) {
       help();

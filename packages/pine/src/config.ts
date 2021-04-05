@@ -1,3 +1,4 @@
+import fs from 'fs';
 import path from 'path';
 import dotenv from 'dotenv';
 import { isObject } from '@pinefile/utils';
@@ -37,12 +38,22 @@ export type ConfigType = {
   root: string;
 
   /**
-   * Require
+   * Packages to preload before Pinefile is loaded.
    */
   require: string[];
+
+  /**
+   * Task name of the function that is executing.
+   */
+  task: string;
 };
 
-export type ConfigFunctionType = (obj: ConfigType) => ConfigType;
+/**
+ * Config function
+ *
+ * configure((config, task) => config)
+ */
+export type ConfigFunctionType = (cfg: ConfigType) => ConfigType;
 
 let config: ConfigType = {
   dotenv: [],
@@ -51,6 +62,7 @@ let config: ConfigType = {
   options: {},
   root: '',
   require: [],
+  task: '',
 };
 
 const loadDotenv = (config: ConfigType) => {
@@ -62,12 +74,31 @@ const loadDotenv = (config: ConfigType) => {
     throw new Error('Config root cannot be empty when loading dotenv files');
   }
 
-  config.dotenv.forEach((file, i) => {
-    dotenv.config({
-      path: `${path.join(config.root, file)}`,
-    });
-    delete config.dotenv[i];
+  config.dotenv.forEach((file) => {
+    try {
+      const dotEnvPath = path.join(config.root, file);
+      const stats = fs.statSync(dotEnvPath);
+
+      // make sure to only attempt to read files
+      if (!stats.isFile()) {
+        return;
+      }
+
+      const result = dotenv.config({
+        path: dotEnvPath,
+      });
+
+      if (result.error) {
+        throw result.error;
+      }
+    } catch (err) {
+      if (err.code !== 'ENOENT') {
+        throw err;
+      }
+    }
   });
+
+  config.dotenv = [];
 };
 
 const loadModules = (config: ConfigType) => {
@@ -75,10 +106,10 @@ const loadModules = (config: ConfigType) => {
     return;
   }
 
-  config.require.forEach((file, i) => {
+  config.require = config.require.filter((file) => {
     // eslint-disable-next-line
     require(file);
-    delete config.require[i];
+    return false;
   });
 };
 
@@ -99,6 +130,22 @@ export const getConfig = (): ConfigType => {
   return config;
 };
 
+/**
+ * Pine can be configured via the configure function, which accepts:
+ *
+ * > A plain JavaScript object, this will be merged into the existing configuration.
+ *
+ *   configure({
+ *     dotenv: ['my.env'],
+ *   })
+ *
+ * > A function the function will be given the existing configuration and the task name as a optional argument.
+ * > The function should return a plain JavaScript object which will be merged into the existing configuration.
+ *
+ *   configure((config) => ({
+ *     dotenv: ['my.env'],
+ *   }))
+ */
 export const configure = (
   newConfig: Partial<ConfigType> | ConfigFunctionType
 ): ConfigType => {
