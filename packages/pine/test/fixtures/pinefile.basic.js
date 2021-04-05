@@ -9,3 +9,7 @@ exports.build = function (argv) {
 exports.sliceNameFromArgv = function (argv) {
   console.log(`Argv length ${argv._.length}`);
 };
+
+exports.sayhello = function (argv) {
+  console.log(`Hello ${argv.name}`);
+};

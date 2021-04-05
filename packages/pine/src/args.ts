@@ -1,7 +1,6 @@
 import yargs, { Arguments as YArguments, Options as YOptions } from 'yargs';
 import { isObject } from '@pinefile/utils';
-import { findFile } from './file';
-import * as logger from './logger';
+import { findDirname } from './file';
 import { getConfig } from './config';
 
 export type ArgumentsType = {
@@ -53,28 +52,14 @@ export const options = (): OptionsType => {
   };
 };
 
-export const parse = (argv: Array<any>): ArgumentsType => {
-  let args: ArgumentsType = yargs
+export const parse = (argv: any[], opts?: OptionsType): ArgumentsType => {
+  return yargs
     .parserConfiguration({
       // https://github.com/yargs/yargs/issues/1011
       'boolean-negation': false,
     })
     .help(false)
-    .options(options())
+    .options(opts ? opts : options())
+    .pkgConf('pine', findDirname('package.json'))
     .parse(argv);
-
-  try {
-    // eslint-disable-next-line
-    const pkg = require(findFile('package.json'));
-    const pine = isObject(pkg.pine) ? pkg.pine : {};
-
-    args = {
-      ...args,
-      ...pine,
-    } as ArgumentsType;
-  } catch (err) {
-    logger.error(err);
-  }
-
-  return args;
 };

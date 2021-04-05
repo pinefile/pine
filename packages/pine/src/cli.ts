@@ -1,9 +1,9 @@
 import { camelCaseToDash, isObject } from '@pinefile/utils';
 import { parse, options } from './args';
 import { runTask } from './task';
-import { findFile, findDirname } from './file';
+import { findFile, findDirname, loadPineFile, PineFileType } from './file';
 import * as logger from './logger';
-import { configure, ConfigType } from './config';
+import { configure, getConfig, ConfigType } from './config';
 
 /**
  * Print help text.
@@ -35,13 +35,12 @@ Options:`);
 /**
  * Print tasks from Pinefile.
  *
- * @param {string} file
+ * @param {object} pineModule
  */
-const printTasks = (file: string) => {
+const printTasks = (pineModule: PineFileType) => {
   try {
     // eslint-disable-next-line
-    const obj = require(file);
-    const keys = Object.keys(obj);
+    const keys = Object.keys(pineModule);
 
     console.log('\nTasks:');
 
@@ -54,49 +53,46 @@ const printTasks = (file: string) => {
   }
 };
 
-export const runCLI = async (argv: Array<any>): Promise<any> => {
+export const runCLI = async (argv: any[]): Promise<any> => {
   try {
     const args = parse(argv);
     const pineFile = findFile(args.file);
     const name = args._.shift() || 'default';
 
-    configure((config: ConfigType) => {
-      config = {
-        ...config,
-        ...(isObject(args.config) ? args.config : {}),
-      };
-      return {
-        dotenv: args.noDotenv ? [] : ['.env'],
-        env: {
-          ...(!args.noColor ? { FORCE_COLOR: '1' } : {}),
-          ...config.env,
-        },
-        root: findDirname(pineFile),
-        logLevel: args.logLevel,
-        require: [
-          ...config.require,
-          ...(Array.isArray(args.require) ? args.require : []),
-        ],
-        task: name,
-      };
-    });
+    configure((config: ConfigType) => ({
+      dotenv: args.noDotenv ? [] : ['.env'],
+      env: {
+        ...(!args.noColor ? { FORCE_COLOR: '1' } : {}),
+        ...config.env,
+      },
+      root: findDirname(pineFile),
+      logLevel: args.logLevel,
+      require: [
+        ...(Array.isArray(args.require) ? args.require : []),
+        ...config.require,
+      ],
+      task: name,
+    }));
 
-    // delete config since it's not a real argument.
-    if (isObject(args.config)) {
-      delete args.config;
-    }
-
-    // eslint-disable-next-line
-    let pineModule = require(pineFile);
-    pineModule = isObject(pineModule.default) ? pineModule.default : pineModule;
+    const pineModule = loadPineFile(pineFile);
 
     if (args.help) {
       help();
-      printTasks(pineFile);
+      printTasks(pineModule);
       return;
     }
 
-    return await runTask(pineModule, name, args);
+    const config = getConfig();
+    const configArgs =
+      isObject(config.options) && Object.keys(config.options).length
+        ? parse(argv, config.options)
+        : {};
+
+    return await runTask(pineModule, name, {
+      ...args,
+      ...configArgs,
+      _: args._,
+    });
   } catch (err) {
     logger.error(err);
     return;

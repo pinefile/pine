@@ -3,11 +3,8 @@ import bach from 'bach';
 import pify from 'pify';
 import { isObject } from '@pinefile/utils';
 import { ArgumentsType } from './args';
+import { PineFileType } from './file';
 import * as logger from './logger';
-
-type PinefileType = {
-  [key: string]: any;
-};
 
 /**
  * Resolve task function by name.
@@ -23,12 +20,10 @@ export const resolveTask = (key: string, obj: any, sep = ':'): any => {
     return obj[key];
   }
 
-  const properties = (Array.isArray(key)
-    ? key
-    : key.split(sep)) as Array<string>;
+  const properties = (Array.isArray(key) ? key : key.split(sep)) as string[];
 
   return (
-    properties.reduce((prev: Array<any>, cur: string) => {
+    properties.reduce((prev: any[], cur: string) => {
       return prev[cur] || '';
     }, obj) || obj[key]
   );
@@ -73,7 +68,7 @@ export const series = (...tasks: any[]): any => {
     return series(...tasks[0]);
   }
 
-  return (pinefile: PinefileType, _: string, args: ArgumentsType) =>
+  return (pinefile: PineFileType, _: string, args: ArgumentsType) =>
     bach.series(
       ...tasks.map((task) => (cb: any) =>
         runTask(pinefile, task, args).then(cb)
@@ -105,7 +100,7 @@ export const parallel = (...tasks: any[]): any => {
     return parallel(...tasks[0]);
   }
 
-  return (pinefile: PinefileType, _: string, args: ArgumentsType) =>
+  return (pinefile: PineFileType, _: string, args: ArgumentsType) =>
     bach.parallel(
       ...tasks.map((task) => (cb: any) =>
         runTask(pinefile, task, args).then(cb)
@@ -123,7 +118,7 @@ export const parallel = (...tasks: any[]): any => {
  * @return {Promise}
  */
 const execute = async (
-  pinefile: PinefileType,
+  pinefile: PineFileType,
   name: string,
   args: ArgumentsType
 ): Promise<void> => {
@@ -195,7 +190,7 @@ const execute = async (
  * @return {Promise}
  */
 export const runTask = async (
-  pinefile: PinefileType,
+  pinefile: PineFileType,
   name: string,
   args: ArgumentsType
 ) => {

@@ -1,13 +1,4 @@
-import { runCLI, getConfig } from '../src';
-
-// root package.json
-jest.mock('../../../package.json', () => {
-  return {
-    pine: {
-      require: [`${process.cwd()}/packages/pine/test/fixtures/require.js`],
-    },
-  };
-});
+import { runCLI, getConfig, configure } from '../src';
 
 describe('pine', () => {
   let run: any = null;
@@ -22,17 +13,19 @@ describe('pine', () => {
     jest.clearAllMocks();
   });
 
-  const runTask = async (file: string, task: string) => {
-    await run([task, `--file=${__dirname}/fixtures/pinefile.${file}.js`]);
+  const runTask = async (file: string, task: string, ...args: string[]) => {
+    await run(
+      [task, `--file=${__dirname}/fixtures/pinefile.${file}.js`].concat(args)
+    );
   };
 
   const testCallOrder = async (
     file: string,
     task: string,
-    order: Array<string> = []
+    order: string[] = []
   ) => {
     const module = require(`./fixtures/pinefile.${file}.js`);
-    const callOrder: Array<string> = [];
+    const callOrder: string[] = [];
     order.forEach((f) => {
       if (module[f]) {
         module[f] = jest.fn().mockImplementation(() => callOrder.push(f));
@@ -88,7 +81,11 @@ describe('pine', () => {
 
   test('should require files before run using package.json config', () => {
     const spy = jest.spyOn(console, 'log');
-    runTask('basic', 'build');
+    runTask(
+      'basic',
+      'build',
+      `--require=${process.cwd()}/packages/pine/test/fixtures/require.js`
+    );
     expect(spy).toHaveBeenCalledWith('Required...');
     expect(spy).toHaveBeenCalledWith('Building...');
     expect(getConfig().task).toBe('build');
@@ -100,6 +97,22 @@ describe('pine', () => {
     runTask('basic', 'sliceNameFromArgv');
     expect(spy).toHaveBeenCalledWith('Argv length 0');
     expect(getConfig().task).toBe('sliceNameFromArgv');
+    spy.mockRestore();
+  });
+
+  test('should use default args value for custom name option', async () => {
+    configure({
+      options: {
+        name: {
+          default: 'world',
+        },
+      },
+    });
+
+    const spy = jest.spyOn(console, 'log');
+    runTask('basic', 'sayhello');
+    expect(spy).toHaveBeenCalledWith('Hello world');
+    expect(getConfig().task).toBe('sayhello');
     spy.mockRestore();
   });
 });

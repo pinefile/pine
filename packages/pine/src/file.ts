@@ -1,11 +1,22 @@
 import fs from 'fs';
 import path from 'path';
+import { isObject } from '@pinefile/utils';
 
 const PINE_FILE_ORDER = Object.freeze([
   'Pinefile',
   'pinefile.js',
   'pinefile.ts',
 ]);
+
+export type PineFileType = {
+  [key: string]: any;
+};
+
+export const loadPineFile = (file: string): PineFileType => {
+  // eslint-disable-next-line
+  const pineModule = require(file);
+  return isObject(pineModule.default) ? pineModule.default : pineModule;
+};
 
 export const isFile = (filePath: string): boolean =>
   fs.existsSync(filePath) && !fs.lstatSync(filePath).isDirectory();
