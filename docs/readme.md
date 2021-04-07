@@ -5,10 +5,10 @@
 Create `Pinefile` or `pinefile.js`
 
 ```js
-const { pkg, run } = require('@pinefile/pine');
+const { run } = require('@pinefile/pine');
 
 exports.build = () => {
-  console.log(`Building ${pkg().version}...`);
+  console.log(`Building...`);
 };
 
 exports.test = async () => {
@@ -19,17 +19,17 @@ exports.test = async () => {
 or by using `module.exports`
 
 ```js
+const { run } = require('@pinefile/pine');
+
 module.exports = {
   build: () => {
-    console.log(`Building ${pkg().version}...`);
+    console.log(`Building...`);
   },
   test: async () => {
     await run('jest');
   },
 };
 ```
-
-`pkg` function will read closest `package.json`
 
 Then run it! It is best to either place `pine` inside a npm run script or run it with `npx`:
 
@@ -42,7 +42,6 @@ npx pine build
 - [color](api-reference/color.md)
 - [configure](api-reference/config.md)
 - [log](api-reference/log.md)
-- [pkg](api-reference/pkg.md)
 - [run](api-reference/run.md)
 - [shell](api-reference/shell.md)
 

@@ -12,23 +12,6 @@ describe('plugins', () => {
     spyLog.mockRestore();
   });
 
-  it('should run pinefile with built in plugins', async () => {
-    const file = `--file=${__dirname}/fixtures/pinefile.plugins.builtin.js`;
-    const tests = [
-      {
-        task: 'pkg',
-        test: () => {
-          expect(spyLog).toHaveBeenCalledWith('pkg: 1.0.0');
-        },
-      },
-    ];
-
-    tests.forEach(async (test) => {
-      await run([test.task, file]);
-      test.test();
-    });
-  });
-
   it('should run pinefile with with custom plugins', () => {
     const tests = [
       {

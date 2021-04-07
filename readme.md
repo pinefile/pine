@@ -19,17 +19,17 @@ Read the documentation [here](/docs)
 Create `Pinefile` or `pinefile.js`
 
 ```js
+const { run } = require('@pinefile/pine');
+
 module.exports = {
   build: () => {
-    console.log(`Building ${pkg().version}...`);
+    console.log(`Building ...`);
   },
   test: async () => {
     await run('jest');
   },
 };
 ```
-
-`pkg` function will read closest `package.json`
 
 Then run it! It is best to either place `pine` inside a npm run script or run it with `npx`:
 
