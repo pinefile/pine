@@ -17,18 +17,21 @@ export type ConfigType = {
   dotenv: string[];
 
   /**
-   * Object of process env.
+   * Environment key-value pairs.
    */
   env: NodeJS.ProcessEnv;
 
   /**
    * Log level.
-   * Default: 'info'
+   *
+   * @default 'info'
    */
   logLevel: LogLevel;
 
   /**
-   * Yargs options.
+   * Yargs options, key-value pairs.
+   *
+   * @link https://yargs.js.org/docs/#api-reference-optionskey-opt
    */
   options: OptionsType;
 
@@ -139,7 +142,7 @@ export const getConfig = (): ConfigType => {
  *     dotenv: ['my.env'],
  *   })
  *
- * > A function the function will be given the existing configuration and the task name as a optional argument.
+ * > With a function will be given the existing configuration and the task name as a optional argument.
  * > The function should return a plain JavaScript object which will be merged into the existing configuration.
  *
  *   configure((config) => ({

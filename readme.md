@@ -10,23 +10,13 @@
 
 Small JavaScript-based task runner for node.js.
 
-## Usage
+## Docs
+
+Read the documentation [here](/docs)
+
+## Basic usage
 
 Create `Pinefile` or `pinefile.js`
-
-```js
-const { pkg, run } = require('@pinefile/pine');
-
-exports.build = () => {
-  console.log(`Building ${pkg().version}...`);
-};
-
-exports.test = async () => {
-  await run('jest');
-};
-```
-
-or by using `module.exports`
 
 ```js
 module.exports = {
@@ -45,87 +35,6 @@ Then run it! It is best to either place `pine` inside a npm run script or run it
 
 ```
 npx pine build
-```
-
-## Split up tasks
-
-You can split up tasks in more than one file, e.g having all build tasks in one file:
-
-```js
-// tasks/build.js
-module.exports = {
-  css: () => console.log('build:css'),
-  default: () => console.log('build'),
-};
-
-// pinefile.js
-module.exports = {
-  build: require('./tasks/build.js'),
-};
-```
-
-Then you can run `npx pine build:css`
-
-## Transpilers
-
-Example of how to use Babel transpiler for your `pinefile.js`
-
-```json
-{
-  "pine": {
-    "require": ["@babel/register"]
-  },
-  "babel": {
-    "presets": ["env"]
-  },
-  "devDependencies": {
-    "@babel/core": "^7.12.3",
-    "@babel/preset-env": "^7.12.1",
-    "@babel/register": "^7.12.1"
-  }
-}
-```
-
-Example of how to use TypeScript transpiler for your `pinefile.ts`
-
-```json
-{
-  "pine": {
-    "require": ["ts-node/register"]
-  },
-  "devDependencies": {
-    "ts-node": "^9.0.0",
-    "typescript": "^4.0.5"
-  }
-}
-```
-
-Example of how to use esbuild transpiler for your `pinefile.[j|t]s`
-
-```json
-{
-  "pine": {
-    "require": ["esbuild-register"]
-  },
-  "devDependencies": {
-    "esbuild-register": "^2.3.0"
-  }
-}
-```
-
-## Custom executable
-
-You can use create executable and use Pine under the hood. To make it work you need to push the file flag to `argv` array so Pine knows where to load your `pinefile.js` from.
-
-```js
-#!/usr/bin/env node
-
-const { runCLI } = require('@pinefile/pine');
-const argv = process.argv.slice(2);
-
-argv.push(`--file=${__dirname}/pinefile.js`);
-
-runCLI(argv);
 ```
 
 ## License

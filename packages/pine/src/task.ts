@@ -45,7 +45,7 @@ const getFnName = (name: string, prefix = '', sep = ':'): string => {
 };
 
 /**
- * Run tasks series.
+ * Run tasks that will be executed one after another, in sequential order.
  *
  * series('clean', 'build')
  *
@@ -77,7 +77,7 @@ export const series = (...tasks: any[]): any => {
 };
 
 /**
- * Run tasks parallel.
+ * Run tasks that will be executed simultaneously.
  *
  * parallel('clean', 'build')
  *

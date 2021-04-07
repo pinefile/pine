@@ -1,13 +1,32 @@
 import execa from 'execa';
 
-type EnvType = {
-  [key: string]: any;
-};
-
 type ShellOptionsType = {
+  /**
+   * Current working directory of the child process.
+   *
+   * @default process.cwd()
+   */
   cwd?: string;
-  env?: EnvType;
+
+  /**
+   * Environment key-value pairs.
+   *
+   * @default process.stderr
+   */
+  env?: NodeJS.ProcessEnv;
+
+  /**
+   * stdout write stream
+   *
+   * @default process.stdout
+   */
   stdout?: NodeJS.WriteStream;
+
+  /**
+   * stderr write stream
+   *
+   * @default process.stderr
+   */
   stderr?: NodeJS.WriteStream;
 };
 
@@ -64,5 +83,6 @@ export const shell = (cmd: string, opts?: ShellOptionsType): Promise<any> => {
 export const run = (cmd: string, opts?: ShellOptionsType) =>
   shell(cmd, {
     stdout: opts?.stdout || process.stdout,
+    stderr: opts?.stderr || process.stderr,
     ...opts,
   });
