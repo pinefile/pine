@@ -1,6 +1,6 @@
 {
   "name": "@pinefile/utils",
-  "version": "1.0.0-y.0",
+  "version": "1.0.0-alpha.16",
   "description": "Pine task runner utils",
   "homepage": "https://github.com/pinefile/pine",
   "files": [
