@@ -8,7 +8,7 @@ Create `Pinefile` or `pinefile.js`
 const { run } = require('@pinefile/pine');
 
 exports.build = () => {
-  console.log(`Building...`);
+  console.log('Building...');
 };
 
 exports.test = async () => {
@@ -23,7 +23,7 @@ const { run } = require('@pinefile/pine');
 
 module.exports = {
   build: () => {
-    console.log(`Building...`);
+    console.log('Building...');
   },
   test: async () => {
     await run('jest');
