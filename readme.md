@@ -23,7 +23,7 @@ const { run } = require('@pinefile/pine');
 
 module.exports = {
   build: () => {
-    console.log(`Building ...`);
+    console.log('Building...');
   },
   test: async () => {
     await run('jest');
