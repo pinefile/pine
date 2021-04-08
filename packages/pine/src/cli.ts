@@ -59,6 +59,8 @@ export const runCLI = async (argv: any[]): Promise<any> => {
     const pineFile = findFile(args.file);
     const name = args._.shift() || 'default';
 
+    logger.setup(args);
+
     configure((config: ConfigType) => ({
       dotenv: args.noDotenv ? [] : ['.env'],
       env: {

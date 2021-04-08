@@ -27,7 +27,7 @@ describe('task', () => {
     });
   });
 
-  test('should run parallel of functions', async (done) => {
+  test('should run series of functions', async (done) => {
     const output: string[] = [];
     const tasks = [
       (ok: any) => {

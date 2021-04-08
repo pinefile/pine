@@ -1,11 +1,10 @@
 import 'core-js/stable';
 
 // core
-export { configure, getConfig } from './config';
-export * as log from './logger';
 export { runCLI } from './cli';
-export { parallel, series } from './task';
 
 // plugins
+export { configure, getConfig } from './config';
+export { log, color } from './logger';
+export { parallel, series } from './task';
 export * from './plugins/shell';
-export { color } from './logger';

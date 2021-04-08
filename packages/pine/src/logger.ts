@@ -1,11 +1,16 @@
-import chalk from 'chalk';
+import chalk, { Chalk } from 'chalk';
 import format from 'date-fns/format';
+import { ArgumentsType } from './args';
 import { getConfig } from './config';
+
+export let color: Chalk = chalk;
+export const setup = (args: ArgumentsType) => {
+  color = new chalk.Instance({ level: args.noColor ? 0 : 1 });
+};
 
 const formatDate = (date: Date) => chalk.gray(format(date, '[kk:mm:ss]'));
 const newDate = () => new Date();
 
-export const color = chalk;
 export type LogType = 'error' | 'warn' | 'info';
 export type LogLevel = LogType | 'silent';
 
@@ -47,3 +52,5 @@ export const warn = (...message: Array<string | Error>) =>
 
 export const error = (...message: Array<string | Error>) =>
   output('error', ...message);
+
+export const log = { info, warn, error };
