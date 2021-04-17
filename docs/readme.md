@@ -47,6 +47,7 @@ npx pine build
 
 ## Advanced
 
-- [Custom executable](advanced/custom-executable.md)
-- [Transpilers](advanced/transpilers.md)
-- [Split up tasks](advanced/split-up-tasks.md)
+- [custom executable](advanced/custom-executable.md)
+- [plugin](advanced/plugin.md)
+- [split up tasks](advanced/split-up-tasks.md)
+- [transpilers](advanced/transpilers.md)

@@ -1,8 +1,8 @@
-## configure
+# configure
 
 Pine can be configured via the `configure` function, which accepts:
 
-# With object
+## with object
 
 The object will be merged into the existing configuration.
 
@@ -18,7 +18,7 @@ module.exports = {
 };
 ```
 
-# With function
+## with function
 
 The function will be given the existing configuration and the task name as a optional argument. The function should return a plain JavaScript object which will be merged into the existing configuration.
 
@@ -34,7 +34,7 @@ module.exports = {
 };
 ```
 
-### options
+## options
 
 ```js
 {

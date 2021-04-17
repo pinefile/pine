@@ -1,4 +1,4 @@
-# Transpilers
+# transpilers
 
 Example of how to use Babel transpiler for your `pinefile.js`
 

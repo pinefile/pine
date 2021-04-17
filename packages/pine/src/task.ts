@@ -44,6 +44,15 @@ const getFnName = (name: string, prefix = '', sep = ':'): string => {
   return names.concat(`${prefix}${lastName}`).join(sep);
 };
 
+const doneify = (fn: any, ...args: any[]) => async (done: any) => {
+  try {
+    await pify(fn, { excludeMain: true })(args);
+    done();
+  } catch (err) {
+    done(err);
+  }
+};
+
 /**
  * Run tasks that will be executed one after another, in sequential order.
  *
@@ -131,7 +140,7 @@ const execute = async (
     fnName = name !== 'default' ? `${name}:default` : 'default';
   }
 
-  let runner;
+  let runner: any;
   switch (fn.length) {
     case 3:
       // 3: plugin function.
@@ -166,6 +175,18 @@ const execute = async (
 
   const startTime = Date.now();
   logger.info(`Starting ${logger.color.cyan(`'${name}'`)}`);
+
+  // await for runner if Promise
+  if (runner instanceof Promise) {
+    runner = await runner;
+  }
+
+  // wrap runner with no arguments
+  // with an callback function with
+  // done function as a argument.
+  if (!runner.length) {
+    runner = doneify(runner);
+  }
 
   return await runner((err: any) => {
     if (err) logger.error(err);

@@ -14,7 +14,7 @@ module.exports = {
 };
 ```
 
-### options
+## options
 
 ```js
 {

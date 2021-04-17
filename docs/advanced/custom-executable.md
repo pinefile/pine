@@ -1,4 +1,4 @@
-# Custom executable
+# custom executable
 
 You can use create executable and use Pine under the hood. To make it work you need to push the file flag to `argv` array so Pine knows where to load your `pinefile.js` from.
 

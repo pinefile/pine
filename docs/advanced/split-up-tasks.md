@@ -1,4 +1,4 @@
-# Split up tasks
+# split up tasks
 
 You can split up tasks in more than one file, e.g having all build tasks in one file:
 
