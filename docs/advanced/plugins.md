@@ -1,4 +1,4 @@
-# plugin
+# plugins
 
 There is to kind of plugins in Pine:
 
