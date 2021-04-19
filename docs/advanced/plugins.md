@@ -1,6 +1,6 @@
 # plugins
 
-There is to kind of plugins in Pine:
+There is two kind of plugins in Pine:
 
 - Standalone functions, e.g [shell](../api-reference/shell.md) and [run](../api-reference/run.md)
 - Task function that takes three arguments and return a promise.
