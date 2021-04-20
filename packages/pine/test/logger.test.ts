@@ -1,4 +1,4 @@
-import * as log from '../src/logger';
+import { log, createLogger } from '../src/logger';
 
 describe('logger', () => {
   test('can log info', () => {
@@ -38,5 +38,16 @@ describe('logger', () => {
     expect(spyError.mock.calls[1][1]).toEqual(err);
 
     spyError.mockRestore();
+  });
+
+  test('with custom prefix', () => {
+    const spyLog = jest.spyOn(console, 'log');
+    const logger = createLogger({ prefix: '[pine]' });
+
+    logger.info('info');
+    expect(spyLog.mock.calls[0][1]).toBe('[pine]');
+    expect(spyLog.mock.calls[0][2]).toBe('info');
+
+    spyLog.mockRestore();
   });
 });

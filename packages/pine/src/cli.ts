@@ -2,7 +2,7 @@ import { camelCaseToDash, isObject } from '@pinefile/utils';
 import { parse, options } from './args';
 import { runTask } from './task';
 import { findFile, findDirname, loadPineFile, PineFileType } from './file';
-import * as logger from './logger';
+import { log, setup as setupLogger } from './logger';
 import { configure, getConfig, ConfigType } from './config';
 
 /**
@@ -59,7 +59,7 @@ export const runCLI = async (argv: any[]): Promise<any> => {
     const pineFile = findFile(args.file);
     const name = args._.shift() || 'default';
 
-    logger.setup(args);
+    setupLogger(args);
 
     configure((config: ConfigType) => ({
       dotenv: args.noDotenv ? [] : ['.env'],
@@ -96,7 +96,7 @@ export const runCLI = async (argv: any[]): Promise<any> => {
       _: args._,
     });
   } catch (err) {
-    logger.error(err);
+    log.error(err);
     return;
   }
 };

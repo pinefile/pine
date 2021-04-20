@@ -4,7 +4,7 @@ import pify from 'pify';
 import { isObject } from '@pinefile/utils';
 import { ArgumentsType } from './args';
 import { PineFileType } from './file';
-import * as logger from './logger';
+import { log, color, timeInSecs } from './logger';
 
 /**
  * Resolve task function by name.
@@ -174,7 +174,7 @@ const execute = async (
   }
 
   const startTime = Date.now();
-  logger.info(`Starting ${logger.color.cyan(`'${name}'`)}`);
+  log.info(`Starting ${color.cyan(`'${name}'`)}`);
 
   // await for runner if Promise
   if (runner instanceof Promise) {
@@ -189,13 +189,13 @@ const execute = async (
   }
 
   return await runner((err: any) => {
-    if (err) logger.error(err);
+    if (err) log.error(err);
 
     const time = Date.now() - startTime;
 
-    logger.info(
-      `Finished ${logger.color.cyan(`'${name}'`)} after ${logger.color.magenta(
-        logger.timeInSecs(time)
+    log.info(
+      `Finished ${color.cyan(`'${name}'`)} after ${color.magenta(
+        timeInSecs(time)
       )}`
     );
   });
@@ -216,7 +216,7 @@ export const runTask = async (
   args: ArgumentsType
 ) => {
   if (!resolveTask(name, pinefile)) {
-    logger.error(`Task ${logger.color.cyan(`'${name}'`)} not found`);
+    log.error(`Task ${color.cyan(`'${name}'`)} not found`);
     return;
   }
 

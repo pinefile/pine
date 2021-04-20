@@ -21,7 +21,11 @@ const LogLevels: Record<LogLevel, number> = {
   info: 3,
 };
 
-const output = (type: LogLevel, ...message: Array<string | Error>) => {
+const output = (
+  type: LogLevel,
+  message: Array<string | Error>,
+  options: Partial<LoggerOptions> = {}
+) => {
   const logLevel = (
     process.env.LOG_LEVEL ||
     getConfig().logLevel ||
@@ -31,7 +35,12 @@ const output = (type: LogLevel, ...message: Array<string | Error>) => {
   if (LogLevels[logLevel] >= LogLevels[type]) {
     const date = formatDate(newDate());
     const method = type === 'info' ? 'log' : type;
-    console[method](date, ...message);
+
+    const args = [date, options.prefix && options.prefix, ...message].filter(
+      Boolean
+    );
+
+    console[method].apply(null, args);
   }
 };
 
@@ -44,13 +53,34 @@ export const timeInSecs = (time: number) => {
   return `${seconds}.${milliseconds}s`;
 };
 
-export const info = (...message: Array<string | Error>) =>
-  output('info', ...message);
+export type LoggerOptions = {
+  prefix: string;
+};
+class Logger {
+  private options: LoggerOptions;
 
-export const warn = (...message: Array<string | Error>) =>
-  output('warn', ...message);
+  constructor(options: Partial<LoggerOptions> = {}) {
+    this.options = {
+      prefix: '',
+      ...options,
+    };
+  }
 
-export const error = (...message: Array<string | Error>) =>
-  output('error', ...message);
+  info(...message: Array<string | Error>) {
+    output('info', message, this.options);
+  }
 
-export const log = { info, warn, error };
+  warn(...message: Array<string | Error>) {
+    output('warn', message, this.options);
+  }
+
+  error(...message: Array<string | Error>) {
+    output('error', message, this.options);
+  }
+}
+
+export const createLogger = (options: Partial<LoggerOptions> = {}) => {
+  return new Logger(options);
+};
+
+export const log = createLogger();
