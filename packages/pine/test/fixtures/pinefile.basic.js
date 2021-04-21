@@ -13,3 +13,5 @@ exports.sliceNameFromArgv = function (argv) {
 exports.sayhello = function (argv) {
   console.log(`Hello ${argv.name}`);
 };
+
+exports.basic = require('./tasks/basic');

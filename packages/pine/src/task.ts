@@ -1,10 +1,42 @@
 // @ts-ignore
 import bach from 'bach';
 import pify from 'pify';
-import { isObject } from '@pinefile/utils';
+import { isObject, merge } from '@pinefile/utils';
 import { ArgumentsType } from './args';
 import { PineFileType } from './file';
 import { log, color, timeInSecs } from './logger';
+
+/**
+ * Converts 'b:c' keys to object { 'b': { c: '' } }
+ *
+ * @param {string} obj
+ * @param {string} sep
+ *
+ * @return {object}
+ */
+const toObj = (obj: { [key: string]: any }, sep = ':') => {
+  let newObj = {};
+  Object.keys(obj).forEach((key) => {
+    if (isObject(obj[key])) {
+      newObj[key] = toObj(obj[key]);
+    } else if (key.indexOf(':') !== -1) {
+      newObj = merge(
+        newObj,
+        key
+          .split(':')
+          .reverse()
+          .reduce((prev2, cur2) => {
+            return Object.keys(prev2).length
+              ? { [cur2]: prev2 }
+              : { [cur2]: obj[key] };
+          }, {})
+      );
+    } else {
+      newObj[key] = obj[key];
+    }
+  });
+  return newObj;
+};
 
 /**
  * Resolve task function by name.
@@ -15,18 +47,21 @@ import { log, color, timeInSecs } from './logger';
  *
  * @return {function}
  */
-export const resolveTask = (key: string, obj: any, sep = ':'): any => {
+export const resolveTask = (
+  key: string,
+  obj: { [key: string]: any },
+  sep = ':'
+): any => {
   if (obj[key]) {
     return obj[key];
   }
 
   const properties = (Array.isArray(key) ? key : key.split(sep)) as string[];
+  const tasks = toObj(obj, sep);
 
-  return (
-    properties.reduce((prev: any[], cur: string) => {
-      return prev[cur] || '';
-    }, obj) || obj[key]
-  );
+  return properties.reduce((prev: any[], cur: string) => {
+    return prev[cur] || '';
+  }, tasks as any);
 };
 
 /**

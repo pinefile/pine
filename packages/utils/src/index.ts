@@ -1,3 +1,7 @@
+import merge from 'deepmerge';
+
+export { merge };
+
 export const escapeArgs = (args: string[]): string[] =>
   args.map((arg) => {
     if (/[^\w/:=-]/.test(arg)) {

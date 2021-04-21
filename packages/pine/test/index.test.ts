@@ -115,4 +115,18 @@ describe('pine', () => {
     expect(getConfig().task).toBe('sayhello');
     spy.mockRestore();
   });
+
+  test('should find and run basic:key:string task', async () => {
+    const spy = jest.spyOn(console, 'log');
+    runTask('basic', 'basic:key:string');
+    expect(spy).toHaveBeenCalledWith('basic:key:string');
+    spy.mockRestore();
+  });
+
+  test('should find and run basic:basic2:key:string task', async () => {
+    const spy = jest.spyOn(console, 'log');
+    runTask('basic', 'basic:basic2:key:string');
+    expect(spy).toHaveBeenCalledWith('basic2:key:string');
+    spy.mockRestore();
+  });
 });

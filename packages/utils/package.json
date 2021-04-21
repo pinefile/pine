@@ -9,5 +9,8 @@
   "main": "dist/index.js",
   "types": "dist",
   "author": "Fredrik Forsmo <fredrik.forsmo@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "deepmerge": "^4.2.2"
+  }
 }
