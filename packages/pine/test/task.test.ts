@@ -1,4 +1,5 @@
 const { parallel, series } = require('../src');
+const { resolveTask } = require('../src/task');
 const pinefile = require('./fixtures/pinefile.tasks');
 
 const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
@@ -114,5 +115,51 @@ describe('task', () => {
 
     done();
     expect(output).toEqual(['echo two', 'echo one']);
+  });
+
+  test('should resolve task', () => {
+    const tasks = {
+      a: {
+        'b:c': true,
+      },
+      d: {
+        'e:f': true,
+      },
+      g: true,
+      h: {
+        i: true,
+      },
+    };
+
+    const tests = [
+      {
+        input: 'a:b:c',
+        output: true,
+      },
+      {
+        input: 'd:e:f',
+        output: true,
+      },
+      {
+        input: 'g',
+        output: true,
+      },
+      {
+        input: 'h:i',
+        output: true,
+      },
+      {
+        input: 'j',
+        output: false,
+      },
+      {
+        input: 'k:l',
+        output: false,
+      },
+    ];
+
+    tests.forEach((test) => {
+      expect(resolveTask(test.input, tasks)).toBe(test.output);
+    });
   });
 });

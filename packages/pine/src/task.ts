@@ -14,14 +14,13 @@ import { log, color, timeInSecs } from './logger';
  *
  * @return {object}
  */
-const toObj = (obj: { [key: string]: any }, sep = ':') => {
-  let newObj = {};
-  Object.keys(obj).forEach((key) => {
+const toObj = (obj: { [key: string]: any }, sep = ':') =>
+  Object.keys(obj).reduce((prev: { [key: string]: any }, key: string) => {
     if (isObject(obj[key])) {
-      newObj[key] = toObj(obj[key]);
+      prev[key] = toObj(obj[key]);
     } else if (key.indexOf(':') !== -1) {
-      newObj = merge(
-        newObj,
+      prev = merge(
+        prev,
         key
           .split(':')
           .reverse()
@@ -32,11 +31,10 @@ const toObj = (obj: { [key: string]: any }, sep = ':') => {
           }, {})
       );
     } else {
-      newObj[key] = obj[key];
+      prev[key] = obj[key];
     }
-  });
-  return newObj;
-};
+    return prev;
+  }, {});
 
 /**
  * Resolve task function by name.
@@ -45,7 +43,7 @@ const toObj = (obj: { [key: string]: any }, sep = ':') => {
  * @param {string} obj
  * @param {string} sep
  *
- * @return {function}
+ * @return {function|boolean}
  */
 export const resolveTask = (
   key: string,
@@ -60,7 +58,7 @@ export const resolveTask = (
   const tasks = toObj(obj, sep);
 
   return properties.reduce((prev: any[], cur: string) => {
-    return prev[cur] || '';
+    return prev[cur] || false;
   }, tasks as any);
 };
 
