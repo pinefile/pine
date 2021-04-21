@@ -27,8 +27,8 @@
   "dependencies": {
     "@pinefile/utils": "^1.0.0-alpha.19",
     "bach": "^1.2.0",
-    "chalk": "^4.1.0",
-    "core-js": "^3.10.1",
+    "chalk": "^4.1.1",
+    "core-js": "^3.10.2",
     "date-fns": "^2.21.1",
     "dotenv": "^8.2.0",
     "execa": "^5.0.0",
