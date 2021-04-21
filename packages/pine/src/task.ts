@@ -18,11 +18,11 @@ const toObj = (obj: { [key: string]: any }, sep = ':') =>
   Object.keys(obj).reduce((prev: { [key: string]: any }, key: string) => {
     if (isObject(obj[key])) {
       prev[key] = toObj(obj[key]);
-    } else if (key.indexOf(':') !== -1) {
+    } else if (key.indexOf(sep) !== -1) {
       prev = merge(
         prev,
         key
-          .split(':')
+          .split(sep)
           .reverse()
           .reduce((prev2, cur2) => {
             return Object.keys(prev2).length
