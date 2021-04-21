@@ -3,5 +3,5 @@ packages/*/dist
 node_modules
 testdata
 test.js*
-tasks
+/tasks
 tsconfig.tsbuildinfo
