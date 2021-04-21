@@ -39,11 +39,11 @@ npx pine build
 
 ## Built-in functions:
 
-- [color](api-reference/color.md)
-- [configure](api-reference/config.md)
-- [log](api-reference/log.md)
-- [run](api-reference/run.md)
-- [shell](api-reference/shell.md)
+- [color](functions/color.md)
+- [configure](functions/config.md)
+- [log](functions/log.md)
+- [run](functions/run.md)
+- [shell](functions/shell.md)
 
 ## Advanced
 

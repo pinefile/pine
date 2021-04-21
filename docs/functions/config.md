@@ -63,7 +63,7 @@ module.exports = {
   /**
    * Yargs options, key-value pairs.
    *
-   * @link https://yargs.js.org/docs/#api-reference-optionskey-opt
+   * @link https://yargs.js.org/docs/#functions-optionskey-opt
    */
   options: OptionsType;
 

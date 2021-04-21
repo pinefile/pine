@@ -2,12 +2,12 @@
 
 There is two kind of plugins in Pine:
 
-- Standalone functions, e.g [shell](../api-reference/shell.md) and [run](../api-reference/run.md)
+- Standalone functions, e.g [shell](../functions/shell.md) and [run](../functions/run.md)
 - Task function that takes three arguments and return a promise.
 
 ## standalone functions
 
-Most of the functions that Pine exports is standalone functions, e.g [shell](../api-reference/shell.md) and [run](../api-reference/run.md), so writing your own functions is easy. You can use build-it functions like the [getConfig](../api-reference/config.md) to receive the configuration object.
+Most of the functions that Pine exports is standalone functions, e.g [shell](../functions/shell.md) and [run](../functions/run.md), so writing your own functions is easy. You can use build-it functions like the [getConfig](../functions/config.md) to receive the configuration object.
 
 ```js
 const echo = console.log;
