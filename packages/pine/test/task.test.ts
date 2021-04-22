@@ -120,6 +120,7 @@ describe('task', () => {
   test('should resolve task', () => {
     const tasks = {
       a: {
+        b: true,
         'b:c': true,
       },
       d: {
@@ -132,6 +133,13 @@ describe('task', () => {
     };
 
     const tests = [
+      {
+        input: 'a:b',
+        output: {
+          _: true,
+          c: true,
+        },
+      },
       {
         input: 'a:b:c',
         output: true,
@@ -146,7 +154,9 @@ describe('task', () => {
       },
       {
         input: 'h:i',
-        output: true,
+        output: {
+          _: true,
+        },
       },
       {
         input: 'j',
@@ -159,7 +169,7 @@ describe('task', () => {
     ];
 
     tests.forEach((test) => {
-      expect(resolveTask(test.input, tasks)).toBe(test.output);
+      expect(resolveTask(test.input, tasks)).toEqual(test.output);
     });
   });
 });

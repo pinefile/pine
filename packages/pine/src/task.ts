@@ -31,7 +31,7 @@ const toObj = (obj: { [key: string]: any }, sep = ':') =>
           }, {})
       );
     } else {
-      prev[key] = obj[key];
+      prev[key] = { _: obj[key] };
     }
     return prev;
   }, {});
@@ -166,6 +166,11 @@ const execute = async (
 ): Promise<void> => {
   let fn = resolveTask(name, pinefile);
   let fnName = name;
+
+  // use _ function in objects.
+  if (isObject(fn) && fn._) {
+    fn = fn._;
+  }
 
   // use default function in objects.
   if (isObject(fn) && fn.default) {
