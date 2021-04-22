@@ -16,4 +16,4 @@ module.exports = {
 
 ## options
 
-All Execa [options](https://github.com/sindresorhus/execa#options) can be used except `stdin`, `stdout` and `stderr` that's are defaulting to `process.std{xx}`. To change them you should use [shell](./shell.md) function instead.
+All Execa [options](https://github.com/sindresorhus/execa#options) can be used except `stdin`, `stdout` and `stderr` that's are defaulting to `inherit`. To change them you should use [shell](./shell.md) function instead.

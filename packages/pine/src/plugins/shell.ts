@@ -68,7 +68,7 @@ export const shell = (
 export const run = (cmd: string, opts: Partial<Options> = {}) =>
   shell(cmd, {
     ...opts,
-    stdin: process.stdin,
-    stdout: process.stdout,
-    stderr: process.stderr,
+    stdin: 'inherit',
+    stdout: 'inherit',
+    stderr: 'inherit',
   });
