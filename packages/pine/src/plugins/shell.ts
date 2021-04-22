@@ -1,33 +1,15 @@
-import execa from 'execa';
+import stream from 'stream';
+import execa, { Options } from 'execa';
 
-type ShellOptionsType = {
-  /**
-   * Current working directory of the child process.
-   *
-   * @default process.cwd()
-   */
-  cwd?: string;
+const toError = (obj: any) => {
+  const err = obj instanceof Error ? obj : new Error(obj);
 
-  /**
-   * Environment key-value pairs.
-   *
-   * @default process.stderr
-   */
-  env?: NodeJS.ProcessEnv;
+  if (obj.shortMessage !== undefined) {
+    obj.message = obj.shortMessage;
+    delete obj.shortMessage;
+  }
 
-  /**
-   * stdout write stream
-   *
-   * @default process.stdout
-   */
-  stdout?: NodeJS.WriteStream;
-
-  /**
-   * stderr write stream
-   *
-   * @default process.stderr
-   */
-  stderr?: NodeJS.WriteStream;
+  return err;
 };
 
 /**
@@ -38,14 +20,15 @@ type ShellOptionsType = {
  *
  * @return {Promise}
  */
-export const shell = (cmd: string, opts?: ShellOptionsType): Promise<any> => {
-  const cwd = opts?.cwd || process.cwd();
+export const shell = (
+  cmd: string,
+  opts: Partial<Options> = {}
+): Promise<any> => {
   const s = cmd.split(/\s/);
 
   return new Promise((resolve, reject) => {
     const sp = execa(s[0], s.slice(1), {
-      cwd,
-      shell: true,
+      ...opts,
       env: {
         // @ts-ignore
         FORCE_COLOR: process.env.FORCE_COLOR === '1',
@@ -53,11 +36,13 @@ export const shell = (cmd: string, opts?: ShellOptionsType): Promise<any> => {
       },
     });
 
-    if (opts?.stdout) {
-      sp?.stdout?.pipe(opts.stdout);
-      sp?.stderr?.pipe(opts.stderr || opts.stdout);
+    if (opts?.stdout && opts.stdout instanceof stream.Stream) {
+      sp?.stdout?.pipe(opts.stdout as any);
+      sp?.stderr?.pipe((opts.stderr || opts.stdout) as any);
     } else {
-      sp.then((r) => resolve(r.stdout)).catch(reject);
+      sp.then((res) => resolve(res.stdout)).catch((err) =>
+        reject(toError(err))
+      );
     }
 
     sp.on('close', (code: number) => {
@@ -80,9 +65,10 @@ export const shell = (cmd: string, opts?: ShellOptionsType): Promise<any> => {
  *
  * @return {Promise}
  */
-export const run = (cmd: string, opts?: ShellOptionsType) =>
+export const run = (cmd: string, opts: Partial<Options> = {}) =>
   shell(cmd, {
-    stdout: opts?.stdout || process.stdout,
-    stderr: opts?.stderr || process.stderr,
     ...opts,
+    stdin: process.stdin,
+    stdout: process.stdout,
+    stderr: process.stderr,
   });

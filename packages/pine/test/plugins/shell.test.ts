@@ -1,3 +1,7 @@
+import path from 'path';
+import fs from 'fs';
+import os from 'os';
+import * as uuid from 'uuid';
 import { shell } from '../../src/plugins/shell';
 
 describe('shell', () => {
@@ -25,5 +29,13 @@ describe('shell', () => {
       expect(err).toBeInstanceOf(Error);
       expect(true).toBeTruthy();
     }
+  });
+
+  test('should write stream to file', async () => {
+    const file = path.join(os.tmpdir(), `${uuid.v4()}.txt`);
+    await shell('echo "hello"', {
+      stdout: fs.openSync(file, 'w'),
+    });
+    expect(fs.readFileSync(file, 'utf8')).toContain('hello');
   });
 });

@@ -1,5 +1,7 @@
 const isDev = process.env.PINE_ENV === 'development';
-const { run, getConfig } = require(`./packages/pine${isDev ? '/src' : ''}`);
+const { shell, run, getConfig } = require(`./packages/pine${
+  isDev ? '/src' : ''
+}`);
 
 const npm = (c) => run(`npm run ${c}`);
 

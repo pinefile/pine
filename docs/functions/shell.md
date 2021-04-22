@@ -16,34 +16,4 @@ module.exports = {
 
 ## options
 
-```js
-{
-  /**
-   * Current working directory of the child process.
-   *
-   * @default process.cwd()
-   */
-  cwd?: string;
-
-  /**
-   * Environment key-value pairs.
-   *
-   * @default process.stderr
-   */
-  env?: NodeJS.ProcessEnv;
-
-  /**
-   * stdout write stream
-   *
-   * @default process.stdout
-   */
-  stdout?: NodeJS.WriteStream;
-
-  /**
-   * stderr write stream
-   *
-   * @default process.stderr
-   */
-  stderr?: NodeJS.WriteStream;
-};
-```
+All Execa [options](https://github.com/sindresorhus/execa#options) can be used.
