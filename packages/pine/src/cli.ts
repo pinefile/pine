@@ -62,7 +62,7 @@ export const runCLI = async (argv: any[]): Promise<any> => {
     setupLogger(args);
 
     configure((config: ConfigType) => ({
-      dotenv: args.noDotenv ? [] : ['.env'],
+      dotenv: args.dotenv ? ['.env'] : [],
       env: {
         ...(!args.noColor ? { FORCE_COLOR: '1' } : {}),
         ...config.env,
