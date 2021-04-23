@@ -12,7 +12,7 @@ Small JavaScript-based task runner for node.js.
 
 ## Docs
 
-Read the documentation [here](/docs)
+Read the documentation [here](https://pinefile.github.io/docs/)
 
 ## Basic usage
 
