@@ -28,6 +28,7 @@ export const shell = (
 
   return new Promise((resolve, reject) => {
     const sp = execa(s[0], s.slice(1), {
+      shell: true,
       ...opts,
       env: {
         // @ts-ignore

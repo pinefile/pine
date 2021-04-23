@@ -31,6 +31,15 @@ describe('shell', () => {
     }
   });
 
+  test('should not throw error when using &&', async () => {
+    try {
+      await shell('ls && echo ls');
+      expect(true).toBeTruthy();
+    } catch (err) {
+      expect(false).toBeTruthy();
+    }
+  });
+
   test('should write stream to file', async () => {
     const file = path.join(os.tmpdir(), `${uuid.v4()}.txt`);
     await shell('echo "hello"', {
