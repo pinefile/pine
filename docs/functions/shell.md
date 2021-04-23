@@ -16,4 +16,6 @@ module.exports = {
 
 ## options
 
-All Execa [options](https://github.com/sindresorhus/execa#options) can be used.
+All Execa [options](https://github.com/sindresorhus/execa#options) can be used. Pine has some default values that are different from Execa:
+
+*  `shell` option is default `true` instead of `false` so shell-specific features can be used (for or example, `&&` or `||`)
