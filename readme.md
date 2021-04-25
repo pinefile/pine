@@ -4,7 +4,9 @@
   </a>
 </div>
 
-# Pine [![Build Status](https://github.com/pinefile/pine/workflows/build/badge.svg)](https://github.com/pinefile/pine/actions)
+# Pine
+
+[![Build Status](https://img.shields.io/github/workflow/status/pinefile/pine/build?color=049668&style=flat-square)](https://github.com/pinefile/pine/actions) [![NPM](https://img.shields.io/npm/v/@pinefile/pine?color=049668&style=flat-square)](https://www.npmjs.com/package/@pinefile/pine)
 
 > Work in progress, API may change before first stable release.
 
