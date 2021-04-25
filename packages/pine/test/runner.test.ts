@@ -1,11 +1,11 @@
-import { runCLI } from '../src';
+import { api } from '../src';
 import pinefile from './fixtures/pinefile.runner';
 
 describe('pine', () => {
   let run: any = null;
 
   beforeEach(() => {
-    run = runCLI;
+    run = api.runCLI;
   });
 
   afterEach(() => {

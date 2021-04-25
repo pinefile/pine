@@ -188,7 +188,7 @@ const execute = async (
       // 1: task function.
       runner = async (done: any) => {
         try {
-          const fn2 = await pify(fn, { excludeMain: true });
+          const fn2 = pify(fn, { excludeMain: true });
           const fn2Type = typeof fn2;
           if (fn2Type === 'function') {
             await fn2(args);

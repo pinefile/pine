@@ -1,5 +1,5 @@
-const { parallel, series, runTask } = require('../src');
-const { resolveTask } = require('../src/task');
+const { parallel, series } = require('../src');
+const { resolveTask, runTask } = require('../src/task');
 const pinefile = require('./fixtures/pinefile.tasks');
 
 const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));

@@ -5,7 +5,7 @@ describe('plugins', () => {
   beforeEach(() => {
     jest.resetModules();
     spyLog = jest.spyOn(console, 'log');
-    run = require('../src').runCLI;
+    run = require('../src').api.runCLI;
   });
 
   afterEach(() => {

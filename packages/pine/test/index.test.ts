@@ -1,11 +1,11 @@
-import { runCLI, getConfig, configure } from '../src';
+import { api, getConfig, configure } from '../src';
 
 describe('pine', () => {
   let run: any = null;
 
   beforeEach(() => {
     jest.resetModules();
-    run = runCLI;
+    run = api.runCLI;
   });
 
   afterEach(() => {
@@ -39,10 +39,11 @@ describe('pine', () => {
       }
     });
     await run([task, `--file=${__dirname}/fixtures/pinefile.${file}.js`]);
+    console.log(callOrder);
     expect(callOrder).toEqual(order.length ? order : [task]);
   };
 
-  test('should run basic pinefile', async () => {
+  test.only('should run basic pinefile', async () => {
     await testCallOrder('basic', 'build', ['build']);
   });
 
@@ -62,14 +63,6 @@ describe('pine', () => {
       'lerna:string',
       'lerna:poststring',
     ]);
-  });
-
-  test('should run default task', () => {
-    const spy = jest.spyOn(console, 'log');
-    runTask('basic', 'default');
-    expect(spy).toHaveBeenCalledWith('Default...');
-    expect(getConfig().task).toBe('default');
-    spy.mockRestore();
   });
 
   test('should log if task is not found', () => {
@@ -92,14 +85,6 @@ describe('pine', () => {
     spy.mockRestore();
   });
 
-  test('should slice name from rest of arguments', async () => {
-    const spy = jest.spyOn(console, 'log');
-    runTask('basic', 'sliceNameFromArgv');
-    expect(spy).toHaveBeenCalledWith('Argv length 0');
-    expect(getConfig().task).toBe('sliceNameFromArgv');
-    spy.mockRestore();
-  });
-
   test('should use default args value for custom name option', async () => {
     configure({
       options: {
@@ -116,17 +101,32 @@ describe('pine', () => {
     spy.mockRestore();
   });
 
-  test('should find and run basic:key:string task', async () => {
-    const spy = jest.spyOn(console, 'log');
-    runTask('basic', 'basic:key:string');
-    expect(spy).toHaveBeenCalledWith('basic:key:string');
-    spy.mockRestore();
-  });
+  test('should run tasks', () => {
+    const tests = [
+      {
+        task: 'default',
+        output: 'Default...',
+      },
+      {
+        task: 'sliceNameFromArgv',
+        output: 'Argv length 0',
+      },
+      {
+        task: 'basic:key:string',
+        output: 'basic:key:string',
+      },
+      {
+        task: 'basic:basic2:key:string',
+        output: 'basic2:key:string',
+      },
+    ];
 
-  test('should find and run basic:basic2:key:string task', async () => {
-    const spy = jest.spyOn(console, 'log');
-    runTask('basic', 'basic:basic2:key:string');
-    expect(spy).toHaveBeenCalledWith('basic2:key:string');
-    spy.mockRestore();
+    tests.forEach((test) => {
+      const spy = jest.spyOn(console, 'log');
+      runTask('basic', test.task);
+      expect(spy).toHaveBeenCalledWith(test.output);
+      expect(getConfig().task).toBe(test.task);
+      spy.mockRestore();
+    });
   });
 });
