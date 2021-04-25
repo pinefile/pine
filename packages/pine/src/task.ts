@@ -188,8 +188,18 @@ const execute = async (
       // 1: task function.
       runner = async (done: any) => {
         try {
-          await pify(fn, { excludeMain: true })(args);
-          done();
+          const fn2 = await pify(fn, { excludeMain: true });
+          const fn2Type = typeof fn2;
+          if (fn2Type === 'function') {
+            await fn2(args);
+            done();
+          } else {
+            throw new Error(
+              `Expected task function to be a function, got ${
+                fn2 === null ? 'null' : fn2Type
+              }`
+            );
+          }
         } catch (err) {
           done(err);
         }

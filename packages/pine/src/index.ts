@@ -2,6 +2,7 @@ import 'core-js/stable';
 
 // core
 export { runCLI } from './cli';
+export { runTask } from './task';
 
 // plugins
 export { configure, getConfig } from './config';

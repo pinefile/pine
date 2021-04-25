@@ -1,4 +1,4 @@
-const { parallel, series } = require('../src');
+const { parallel, series, runTask } = require('../src');
 const { resolveTask } = require('../src/task');
 const pinefile = require('./fixtures/pinefile.tasks');
 
@@ -171,5 +171,22 @@ describe('task', () => {
     tests.forEach((test) => {
       expect(resolveTask(test.input, tasks)).toEqual(test.output);
     });
+  });
+
+  test('should throw error if task function is not function', async () => {
+    const fn = () => null;
+    const obj = {
+      foo: null,
+      fn: fn(),
+    };
+
+    for (const key of Object.keys(obj)) {
+      try {
+        await runTask(obj, key, []);
+        expect(true).toBeFalsy();
+      } catch (err) {
+        expect(err).toBeInstanceOf(Error);
+      }
+    }
   });
 });
