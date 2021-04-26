@@ -39,11 +39,10 @@ describe('pine', () => {
       }
     });
     await run([task, `--file=${__dirname}/fixtures/pinefile.${file}.js`]);
-    console.log(callOrder);
     expect(callOrder).toEqual(order.length ? order : [task]);
   };
 
-  test.only('should run basic pinefile', async () => {
+  test('should run basic pinefile', async () => {
     await testCallOrder('basic', 'build', ['build']);
   });
 
