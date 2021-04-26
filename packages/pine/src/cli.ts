@@ -1,6 +1,6 @@
 import { camelCaseToDash, isObject } from '@pinefile/utils';
 import { parse, options } from './args';
-import { runTask } from './task';
+import { runTask, toTasksObject, validTaskValue } from './task';
 import { findFile, findDirname, loadPineFile, PineFileType } from './file';
 import { log, setup as setupLogger } from './logger';
 import { configure, getConfig, ConfigType } from './config';
@@ -36,17 +36,32 @@ Options:`);
  * Print tasks from Pinefile.
  *
  * @param {object} pineModule
+ * @param {string} prefix
  */
-const printTasks = (pineModule: PineFileType) => {
+const printTasks = (pineModule: PineFileType, prefix = '') => {
   try {
-    // eslint-disable-next-line
-    const keys = Object.keys(pineModule);
+    const obj = toTasksObject(pineModule);
+    const keys = Object.keys(obj);
 
-    console.log('\nTasks:');
+    if (!prefix) {
+      console.log('\nTasks:');
+    }
 
     keys.sort((a, b) => a.localeCompare(b));
     keys.forEach((key) => {
-      console.log(`  ${key}`);
+      if (!validTaskValue(obj[key])) {
+        return;
+      }
+
+      if (isObject(obj[key]) && obj[key]._) {
+        delete obj[key]._;
+      }
+
+      console.log(`  ${prefix}${key}`);
+
+      if (isObject(obj[key]) && Object.keys(obj[key]).length) {
+        printTasks(obj[key], `${prefix}${key}:`);
+      }
     });
   } catch (err) {
     // todo

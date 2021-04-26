@@ -7,6 +7,21 @@ import { PineFileType } from './file';
 import { log, color, timeInSecs } from './logger';
 
 /**
+ * Determine if input value is a valid task value.
+ *
+ * @param  {object} val
+ *
+ * @return {boolean}
+ */
+export const validTaskValue = (val: any) => {
+  return (
+    typeof val === 'function' ||
+    (isObject(val) &&
+      (typeof val._ === 'undefined' || typeof val._ === 'function'))
+  );
+};
+
+/**
  * Converts 'b:c' keys to object { 'b': { c: '' } }
  *
  * @param {string} obj
@@ -14,10 +29,10 @@ import { log, color, timeInSecs } from './logger';
  *
  * @return {object}
  */
-const toObj = (obj: { [key: string]: any }, sep = ':') =>
+export const toTasksObject = (obj: { [key: string]: any }, sep = ':') =>
   Object.keys(obj).reduce((prev: { [key: string]: any }, key: string) => {
     if (isObject(obj[key])) {
-      prev[key] = toObj(obj[key]);
+      prev[key] = toTasksObject(obj[key]);
     } else if (key.indexOf(sep) !== -1) {
       prev = merge(
         prev,
@@ -30,6 +45,8 @@ const toObj = (obj: { [key: string]: any }, sep = ':') =>
               : { [cur2]: obj[key] };
           }, {})
       );
+    } else if (key === '_') {
+      prev[key] = obj[key];
     } else {
       prev[key] = { _: obj[key] };
     }
@@ -55,7 +72,7 @@ export const resolveTask = (
   }
 
   const properties = (Array.isArray(key) ? key : key.split(sep)) as string[];
-  const tasks = toObj(obj, sep);
+  const tasks = toTasksObject(obj, sep);
 
   return properties.reduce((prev: any[], cur: string) => {
     return prev[cur] || false;

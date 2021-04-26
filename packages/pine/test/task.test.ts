@@ -1,5 +1,5 @@
 const { parallel, series } = require('../src');
-const { resolveTask, runTask } = require('../src/task');
+const { resolveTask, runTask, validTaskValue } = require('../src/task');
 const pinefile = require('./fixtures/pinefile.tasks');
 
 const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
@@ -130,6 +130,9 @@ describe('task', () => {
       h: {
         i: true,
       },
+      j: {
+        _: true,
+      },
     };
 
     const tests = [
@@ -160,6 +163,12 @@ describe('task', () => {
       },
       {
         input: 'j',
+        output: {
+          _: true,
+        },
+      },
+      {
+        input: 'z',
         output: false,
       },
       {
@@ -170,6 +179,89 @@ describe('task', () => {
 
     tests.forEach((test) => {
       expect(resolveTask(test.input, tasks)).toEqual(test.output);
+    });
+  });
+
+  test('should validate task value', () => {
+    const tests = [
+      {
+        input: () => {},
+        output: true,
+      },
+      {
+        input: {},
+        output: true,
+      },
+      {
+        input: {
+          _: () => {},
+        },
+        output: true,
+      },
+      {
+        input: {
+          _: null,
+        },
+        output: false,
+      },
+      {
+        input: {
+          _: undefined,
+        },
+        output: true,
+      },
+      {
+        input: {
+          _: false,
+        },
+        output: false,
+      },
+      {
+        input: {
+          _: true,
+        },
+        output: false,
+      },
+      {
+        input: {
+          _: 1,
+        },
+        output: false,
+      },
+      {
+        input: {
+          _: '',
+        },
+        output: false,
+      },
+      {
+        input: true,
+        output: false,
+      },
+      {
+        input: false,
+        output: false,
+      },
+      {
+        input: null,
+        output: false,
+      },
+      {
+        input: undefined,
+        output: false,
+      },
+      {
+        input: 1,
+        output: false,
+      },
+      {
+        input: '',
+        output: false,
+      },
+    ];
+
+    tests.forEach((test) => {
+      expect(validTaskValue(test.input)).toEqual(test.output);
     });
   });
 
