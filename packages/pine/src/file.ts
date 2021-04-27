@@ -16,8 +16,8 @@ export type PineFileType = {
  * Parse Pinefile to object with valid key and value.
  *
  * Will convert
- * - 'b:c' keys to object { 'b': { c: '' } }
- * - 'b' keys to object { 'b': { '_': '' } }
+ * - 'b:c' keys to object { b: { c: { _: '' } } }
+ * - 'b' keys to object { b: { _: '' } }
  *
  * @param {string} obj
  * @param {string} sep
