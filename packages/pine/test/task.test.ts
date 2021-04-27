@@ -1,5 +1,6 @@
 const { parallel, series } = require('../src');
 const { resolveTask, runTask, validTaskValue } = require('../src/task');
+const { parsePineFile } = require('../src/file');
 const pinefile = require('./fixtures/pinefile.tasks');
 
 const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
@@ -19,7 +20,7 @@ describe('task', () => {
 
   test('should run pinefile with series of tasks', async (done) => {
     const plugin = series('s1', 's2');
-    const task = plugin(pinefile, '');
+    const task = plugin(parsePineFile(pinefile), '');
 
     await task(() => {
       done();
@@ -68,7 +69,7 @@ describe('task', () => {
 
   test('should run pinefile with parallel of tasks', async (done) => {
     const plugin = parallel('p1', 'p2');
-    const task = plugin(pinefile, '');
+    const task = plugin(parsePineFile(pinefile), '');
 
     await task(() => {
       done();
@@ -118,67 +119,70 @@ describe('task', () => {
   });
 
   test('should resolve task', () => {
-    const tasks = {
+    const tasks = parsePineFile({
       a: {
-        b: true,
-        'b:c': true,
+        b: () => true,
+        'b:c': () => true,
       },
       d: {
-        'e:f': true,
+        'e:f': () => true,
       },
-      g: true,
+      g: () => true,
       h: {
-        i: true,
+        i: () => true,
       },
       j: {
-        _: true,
+        _: () => true,
       },
-    };
+    });
 
     const tests = [
       {
         input: 'a:b',
-        output: {
-          _: true,
-          c: true,
-        },
+        type: 'function',
+        output: true,
       },
       {
         input: 'a:b:c',
+        type: 'function',
         output: true,
       },
       {
         input: 'd:e:f',
+        type: 'function',
         output: true,
       },
       {
         input: 'g',
+        type: 'function',
         output: true,
       },
       {
         input: 'h:i',
-        output: {
-          _: true,
-        },
+        type: 'function',
+        output: true,
       },
       {
         input: 'j',
-        output: {
-          _: true,
-        },
+        type: 'function',
+        output: true,
       },
       {
         input: 'z',
+        type: 'boolean',
         output: false,
       },
       {
         input: 'k:l',
+        type: 'boolean',
         output: false,
       },
     ];
 
     tests.forEach((test) => {
-      expect(resolveTask(test.input, tasks)).toEqual(test.output);
+      const output = resolveTask(test.input, tasks);
+      expect(typeof output).toBe(test.type);
+      expect(output ? output() : output).toBe(test.output);
     });
   });
 
@@ -189,10 +193,6 @@ describe('task', () => {
         output: true,
       },
       {
-        input: {},
-        output: true,
-      },
-      {
         input: {
           _: () => {},
         },
@@ -200,15 +200,19 @@ describe('task', () => {
       },
       {
         input: {
-          _: null,
+          _: undefined,
         },
+        output: true,
+      },
+      {
+        input: {},
         output: false,
       },
       {
         input: {
-          _: undefined,
+          _: null,
         },
-        output: true,
+        output: false,
       },
       {
         input: {

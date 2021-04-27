@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { isObject } from '@pinefile/utils';
+import { isObject, merge } from '@pinefile/utils';
 
 const PINE_FILE_ORDER = Object.freeze([
   'Pinefile',
@@ -12,10 +12,47 @@ export type PineFileType = {
   [key: string]: any;
 };
 
+/**
+ * Parse Pinefile to object with valid key and value.
+ *
+ * Will convert
+ * - 'b:c' keys to object { 'b': { c: '' } }
+ * - 'b' keys to object { 'b': { '_': '' } }
+ *
+ * @param {string} obj
+ * @param {string} sep
+ *
+ * @return {object}
+ */
+export const parsePineFile = (obj: PineFileType, sep = ':') =>
+  Object.keys(obj).reduce((prev: PineFileType, key: string) => {
+    if (isObject(obj[key])) {
+      prev[key] = parsePineFile(obj[key]);
+    } else if (key.indexOf(sep) !== -1) {
+      prev = merge(
+        prev,
+        key
+          .split(sep)
+          .reverse()
+          .reduce((prev2, cur2) => {
+            return Object.keys(prev2).length
+              ? { [cur2]: prev2 }
+              : { [cur2]: { _: obj[key] } };
+          }, {})
+      );
+    } else if (key === '_') {
+      prev[key] = obj[key];
+    } else {
+      prev[key] = { _: obj[key] };
+    }
+    return prev;
+  }, {});
+
 export const loadPineFile = (file: string): PineFileType => {
   // eslint-disable-next-line
-  const pineModule = require(file);
-  return isObject(pineModule.default) ? pineModule.default : pineModule;
+  let pineModule = require(file);
+  pineModule = isObject(pineModule.default) ? pineModule.default : pineModule;
+  return parsePineFile(pineModule);
 };
 
 export const isFile = (filePath: string): boolean =>

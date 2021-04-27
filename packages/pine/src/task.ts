@@ -1,7 +1,7 @@
 // @ts-ignore
 import bach from 'bach';
 import pify from 'pify';
-import { isObject, merge } from '@pinefile/utils';
+import { isObject } from '@pinefile/utils';
 import { ArgumentsType } from './args';
 import { PineFileType } from './file';
 import { log, color, timeInSecs } from './logger';
@@ -17,41 +17,10 @@ export const validTaskValue = (val: any) => {
   return (
     typeof val === 'function' ||
     (isObject(val) &&
+      !!Object.keys(val).length &&
       (typeof val._ === 'undefined' || typeof val._ === 'function'))
   );
 };
-
-/**
- * Converts 'b:c' keys to object { 'b': { c: '' } }
- *
- * @param {string} obj
- * @param {string} sep
- *
- * @return {object}
- */
-export const toTasksObject = (obj: { [key: string]: any }, sep = ':') =>
-  Object.keys(obj).reduce((prev: { [key: string]: any }, key: string) => {
-    if (isObject(obj[key])) {
-      prev[key] = toTasksObject(obj[key]);
-    } else if (key.indexOf(sep) !== -1) {
-      prev = merge(
-        prev,
-        key
-          .split(sep)
-          .reverse()
-          .reduce((prev2, cur2) => {
-            return Object.keys(prev2).length
-              ? { [cur2]: prev2 }
-              : { [cur2]: obj[key] };
-          }, {})
-      );
-    } else if (key === '_') {
-      prev[key] = obj[key];
-    } else {
-      prev[key] = { _: obj[key] };
-    }
-    return prev;
-  }, {});
 
 /**
  * Resolve task function by name.
@@ -62,21 +31,25 @@ export const toTasksObject = (obj: { [key: string]: any }, sep = ':') =>
  *
  * @return {function|boolean}
  */
-export const resolveTask = (
-  key: string,
-  obj: { [key: string]: any },
-  sep = ':'
-): any => {
-  if (obj[key]) {
-    return obj[key];
+export const resolveTask = (key: string, obj: PineFileType, sep = ':'): any => {
+  const properties = (Array.isArray(key) ? key : key.split(sep)) as string[];
+  const task = properties.reduce((prev: any[], cur: string) => {
+    return prev[cur] || false;
+  }, obj as any) as any;
+
+  if (!isObject(task) && !validTaskValue(task)) {
+    return false;
   }
 
-  const properties = (Array.isArray(key) ? key : key.split(sep)) as string[];
-  const tasks = toTasksObject(obj, sep);
+  if (isObject(task) && task._) {
+    return task._;
+  }
 
-  return properties.reduce((prev: any[], cur: string) => {
-    return prev[cur] || false;
-  }, tasks as any);
+  if (isObject(task.default)) {
+    task.default = task.default._;
+  }
+
+  return task;
 };
 
 /**
@@ -183,11 +156,6 @@ const execute = async (
 ): Promise<void> => {
   let fn = resolveTask(name, pinefile);
   let fnName = name;
-
-  // use _ function in objects.
-  if (isObject(fn) && fn._) {
-    fn = fn._;
-  }
 
   // use default function in objects.
   if (isObject(fn) && fn.default) {

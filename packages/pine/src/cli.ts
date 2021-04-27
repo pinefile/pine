@@ -1,6 +1,6 @@
 import { camelCaseToDash, isObject } from '@pinefile/utils';
 import { parse, options } from './args';
-import { runTask, toTasksObject, validTaskValue } from './task';
+import { runTask, validTaskValue } from './task';
 import { findFile, findDirname, loadPineFile, PineFileType } from './file';
 import { log, setup as setupLogger } from './logger';
 import { configure, getConfig, ConfigType } from './config';
@@ -40,8 +40,7 @@ Options:`);
  */
 const printTasks = (pineModule: PineFileType, prefix = '') => {
   try {
-    const obj = toTasksObject(pineModule);
-    const keys = Object.keys(obj);
+    const keys = Object.keys(pineModule);
 
     if (!prefix) {
       console.log('\nTasks:');
@@ -49,18 +48,18 @@ const printTasks = (pineModule: PineFileType, prefix = '') => {
 
     keys.sort((a, b) => a.localeCompare(b));
     keys.forEach((key) => {
-      if (!validTaskValue(obj[key])) {
+      if (!validTaskValue(pineModule[key])) {
         return;
       }
 
-      if (isObject(obj[key]) && obj[key]._) {
-        delete obj[key]._;
+      if (isObject(pineModule[key]) && pineModule[key]._) {
+        delete pineModule[key]._;
       }
 
       console.log(`  ${prefix}${key}`);
 
-      if (isObject(obj[key]) && Object.keys(obj[key]).length) {
-        printTasks(obj[key], `${prefix}${key}:`);
+      if (isObject(pineModule[key]) && Object.keys(pineModule[key]).length) {
+        printTasks(pineModule[key], `${prefix}${key}:`);
       }
     });
   } catch (err) {
