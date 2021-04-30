@@ -12,6 +12,26 @@ const toError = (obj: any) => {
   return err;
 };
 
+export const shouldForceColor = (env: NodeJS.ProcessEnv = {}): boolean => {
+  if (!Object.keys(env).length) {
+    env = process.env;
+  }
+
+  if (!env.FORCE_COLOR) {
+    return false;
+  }
+
+  if (env.FORCE_COLOR === 'true') {
+    return true;
+  }
+
+  if (env.FORCE_COLOR === 'false') {
+    return false;
+  }
+
+  return !!Math.min(parseInt(env.FORCE_COLOR, 10), 3);
+};
+
 /**
  * Run shell command.
  *
@@ -31,7 +51,7 @@ export const shell = (
       ...opts,
       env: {
         // @ts-ignore
-        FORCE_COLOR: process.env.FORCE_COLOR === '1',
+        FORCE_COLOR: shouldForceColor(),
         ...opts?.env,
       },
     });
