@@ -1,7 +1,10 @@
 import 'core-js/stable';
+import { runCLI } from './cli';
+import { runTask } from './task';
 
 // core
-export { runCLI } from './cli';
+const api = { runCLI, runTask };
+export { api };
 
 // plugins
 export { configure, getConfig } from './config';

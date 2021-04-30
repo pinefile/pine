@@ -48,6 +48,7 @@ export const shell = (
 
   return new Promise((resolve, reject) => {
     const sp = execa(s[0], s.slice(1), {
+      shell: true,
       ...opts,
       env: {
         // @ts-ignore
@@ -88,7 +89,7 @@ export const shell = (
 export const run = (cmd: string, opts: Partial<Options> = {}) =>
   shell(cmd, {
     ...opts,
-    stdin: process.stdin,
-    stdout: process.stdout,
-    stderr: process.stderr,
+    stdin: 'inherit',
+    stdout: 'inherit',
+    stderr: 'inherit',
   });

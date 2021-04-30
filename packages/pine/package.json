@@ -1,6 +1,6 @@
 {
   "name": "@pinefile/pine",
-  "version": "1.0.0-alpha.20",
+  "version": "1.0.0-alpha.24",
   "description": "Small task runner for node.js",
   "bin": {
     "pine": "bin/pine"
@@ -16,7 +16,10 @@
     "system",
     "make",
     "tool",
-    "tasks"
+    "task",
+    "cli",
+    "runner",
+    "pipeline"
   ],
   "author": "Fredrik Forsmo <fredrik.forsmo@gmail.com>",
   "license": "MIT",
@@ -25,10 +28,10 @@
     "@types/yargs": "^16.0.1"
   },
   "dependencies": {
-    "@pinefile/utils": "^1.0.0-alpha.20",
+    "@pinefile/utils": "^1.0.0-alpha.24",
     "bach": "^1.2.0",
     "chalk": "^4.1.1",
-    "core-js": "^3.10.2",
+    "core-js": "^3.11.0",
     "date-fns": "^2.21.1",
     "dotenv": "^8.2.0",
     "execa": "^5.0.0",
