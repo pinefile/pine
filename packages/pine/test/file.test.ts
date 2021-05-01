@@ -1,4 +1,4 @@
-const { parsePineFile } = require('../src/file');
+import { parsePineFile } from '../src/file';
 
 describe('file', () => {
   test('should parse pinefile object', () => {

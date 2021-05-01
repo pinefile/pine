@@ -1,20 +1,16 @@
 import { api, getConfig, configure } from '../src';
 
 describe('pine', () => {
-  let run: any = null;
-
   beforeEach(() => {
     jest.resetModules();
-    run = api.runCLI;
   });
 
   afterEach(() => {
-    process.env.LOG_LEVEL = '';
     jest.clearAllMocks();
   });
 
   const runTask = async (file: string, task: string, ...args: string[]) => {
-    await run(
+    await api.runCLI(
       [task, `--file=${__dirname}/fixtures/pinefile.${file}.js`].concat(args)
     );
   };
@@ -38,7 +34,10 @@ describe('pine', () => {
         }, module);
       }
     });
-    await run([task, `--file=${__dirname}/fixtures/pinefile.${file}.js`]);
+    await api.runCLI([
+      task,
+      `--file=${__dirname}/fixtures/pinefile.${file}.js`,
+    ]);
     expect(callOrder).toEqual(order.length ? order : [task]);
   };
 

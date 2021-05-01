@@ -1,11 +1,11 @@
+import { api } from '../src';
+
 describe('plugins', () => {
-  let run: any = null;
   let spyLog: any = null;
 
   beforeEach(() => {
     jest.resetModules();
     spyLog = jest.spyOn(console, 'log');
-    run = require('../src').api.runCLI;
   });
 
   afterEach(() => {
@@ -33,7 +33,7 @@ describe('plugins', () => {
     ];
 
     tests.forEach((test) => {
-      run([
+      api.runCLI([
         test.task,
         `--file=${__dirname}/fixtures/pinefile.plugins.${test.file}.js`,
       ]);

@@ -1,3 +1,5 @@
+const { api } = require('../../src');
+
 module.exports = {
   runner1: async (pinefile, name, argv) => {
     return async () => {
@@ -29,5 +31,16 @@ module.exports = {
       console.log(name);
       done();
     };
+  },
+  runner7: (pinefile, name, argv) => {
+    if (argv) {
+      return async () => {
+        const task = api.resolveTask(name, pinefile);
+        await task({ name: 'runner7' });
+      };
+    }
+
+    // pinefile arg is argv at this point.
+    console.log(pinefile.name);
   },
 };

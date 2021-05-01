@@ -1,9 +1,9 @@
 import 'core-js/stable';
 import { runCLI } from './cli';
-import { runTask } from './task';
+import { resolveTask, runTask } from './task';
 
 // core
-const api = { runCLI, runTask };
+const api = { runCLI, resolveTask, runTask };
 export { api };
 
 // plugins

@@ -1,7 +1,7 @@
-const { parallel, series } = require('../src');
-const { resolveTask, runTask, validTaskValue } = require('../src/task');
-const { parsePineFile } = require('../src/file');
-const pinefile = require('./fixtures/pinefile.tasks');
+import { parallel, series } from '../src';
+import { resolveTask, runTask, validTaskValue } from '../src/task';
+import { parsePineFile } from '../src/file';
+import pinefile from './fixtures/pinefile.tasks';
 
 const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
