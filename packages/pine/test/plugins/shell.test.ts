@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import os from 'os';
 import * as uuid from 'uuid';
-import { shell } from '../../src/plugins/shell';
+import { shell, shouldForceColor } from '../../src/plugins/shell';
 
 describe('shell', () => {
   test('should run shell commands', async () => {
@@ -46,5 +46,44 @@ describe('shell', () => {
       stdout: fs.openSync(file, 'w'),
     });
     expect(fs.readFileSync(file, 'utf8')).toContain('hello');
+  });
+
+  test('should test force color value', async () => {
+    const tests = [
+      {
+        input: {
+          FORCE_COLOR: '1',
+        },
+        output: true,
+      },
+      {
+        input: {
+          FORCE_COLOR: '2',
+        },
+        output: true,
+      },
+      {
+        input: {
+          FORCE_COLOR: '3',
+        },
+        output: true,
+      },
+      {
+        input: {
+          FORCE_COLOR: 'true',
+        },
+        output: true,
+      },
+      {
+        input: {
+          FORCE_COLOR: 'false',
+        },
+        output: false,
+      },
+    ];
+
+    tests.forEach((test) => {
+      expect(shouldForceColor(test.input)).toBe(test.output);
+    });
   });
 });
