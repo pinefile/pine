@@ -32,6 +32,10 @@ export const validTaskValue = (val: any) => {
  * @return {function|boolean}
  */
 export const resolveTask = (key: string, obj: PineFileType, sep = ':'): any => {
+  if (!key) {
+    return false;
+  }
+
   const properties = (Array.isArray(key) ? key : key.split(sep)) as string[];
   const task = properties.reduce((prev: any[], cur: string) => {
     return prev[cur] || false;
@@ -157,6 +161,11 @@ const execute = async (
   let fn = resolveTask(name, pinefile);
   let fnName = name;
 
+  if (!fn) {
+    log.error(`Task ${color.cyan(`'${name}'`)} not found`);
+    return;
+  }
+
   // use default function in objects.
   if (isObject(fn) && fn.default) {
     fn = fn.default;
@@ -188,13 +197,6 @@ const execute = async (
         } catch (err) {
           done(err);
         }
-
-        // execute post* function.
-        const postName = getFnName(fnName, 'post');
-        const postFunc = resolveTask(postName, pinefile);
-        if (postFunc) {
-          await execute(pinefile, postName, args);
-        }
       };
       break;
   }
@@ -221,7 +223,7 @@ const execute = async (
     runner = doneify(runner);
   }
 
-  return await runner((err: any) => {
+  return await runner(async (err: any) => {
     if (err) log.error(err);
 
     const time = Date.now() - startTime;
@@ -231,6 +233,13 @@ const execute = async (
         timeInSecs(time)
       )}`
     );
+
+    // execute post* function.
+    const postName = getFnName(fnName, 'post');
+    const postFunc = resolveTask(postName, pinefile);
+    if (postFunc) {
+      await execute(pinefile, postName, args);
+    }
   });
 };
 
@@ -248,10 +257,5 @@ export const runTask = async (
   name: string,
   args: ArgumentsType
 ) => {
-  if (!resolveTask(name, pinefile)) {
-    log.error(`Task ${color.cyan(`'${name}'`)} not found`);
-    return;
-  }
-
   return await execute(pinefile, name, args);
 };

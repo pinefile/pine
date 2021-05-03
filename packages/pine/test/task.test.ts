@@ -177,10 +177,15 @@ describe('task', () => {
         type: 'boolean',
         output: false,
       },
+      {
+        input: undefined,
+        type: 'boolean',
+        output: false,
+      },
     ];
 
     tests.forEach((test) => {
-      const output = resolveTask(test.input, tasks);
+      const output = resolveTask(test.input as any, tasks);
       expect(typeof output).toBe(test.type);
       expect(output ? output() : output).toBe(test.output);
     });
