@@ -1,5 +1,5 @@
 const isDev = process.env.PINE_ENV === 'development';
-const { shell, run, getConfig } = require(`./packages/pine${
+const { log, run, getConfig } = require(`./packages/pine${
   isDev ? '/src' : ''
 }`);
 
@@ -11,7 +11,7 @@ module.exports = {
   },
   config: () => {
     const config = getConfig();
-    console.log(config);
+    log.info(config);
   },
   test: async (argv) => {
     await run(`jest ${argv._.join(' ')}`);

@@ -169,16 +169,17 @@ const execute = async (
     fn = config.runner;
   }
 
-  // fail if no task function can be found
-  if (!fn) {
-    log.error(`Task ${color.cyan(`'${name}'`)} not found`);
-    return;
-  }
-
   // use default function in objects.
   if (isObject(fn) && fn.default) {
     fn = fn.default;
     fnName = name !== 'default' ? `${name}:default` : 'default';
+  }
+
+  // fail if no task function can be found
+  if (typeof fn !== 'function') {
+    console.log(fn, typeof fn);
+    log.error(`Task ${color.cyan(`'${name}'`)} not found`);
+    return;
   }
 
   let runner: any;
@@ -264,7 +265,7 @@ const execute = async (
 export const runTask = async (
   pinefile: PineFileType,
   name: string,
-  args: ArgumentsType
+  args: ArgumentsType = {}
 ) => {
   return await execute(pinefile, name, args);
 };

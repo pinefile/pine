@@ -21,7 +21,7 @@
   "author": "Fredrik Forsmo <fredrik.forsmo@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "@types/jest": "^26.0.22",
+    "@types/jest": "^26.0.23",
     "@types/uuid": "^8.3.0",
     "@types/yargs": "16.0.1",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
