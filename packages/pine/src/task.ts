@@ -177,7 +177,6 @@ const execute = async (
 
   // fail if no task function can be found
   if (typeof fn !== 'function') {
-    console.log(fn, typeof fn);
     log.error(`Task ${color.cyan(`'${name}'`)} not found`);
     return;
   }

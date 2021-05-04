@@ -2,8 +2,9 @@ import fs from 'fs';
 import path from 'path';
 import dotenv from 'dotenv';
 import { isObject } from '@pinefile/utils';
-import { OptionsType } from './args';
+import { ArgumentsType, OptionsType } from './args';
 import { LogLevel } from './logger';
+import { PineFileType } from './file';
 
 export type ConfigType = {
   /**
@@ -48,7 +49,7 @@ export type ConfigType = {
   /**
    * Global runner that can be used to customize the runner for all tasks.
    */
-  runner?: Function;
+  runner?: (pinefile: PineFileType, name: string, args: ArgumentsType) => any;
 
   /**
    * Task name of the function that is executing.
