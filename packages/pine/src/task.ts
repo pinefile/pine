@@ -3,6 +3,7 @@ import bach from 'bach';
 import pify from 'pify';
 import { isObject } from '@pinefile/utils';
 import { ArgumentsType } from './args';
+import { getConfig } from './config';
 import { PineFileType } from './file';
 import { log, color, timeInSecs } from './logger';
 
@@ -158,9 +159,17 @@ const execute = async (
   name: string,
   args: ArgumentsType
 ): Promise<void> => {
+  const config = getConfig();
+
   let fn = resolveTask(name, pinefile);
   let fnName = name;
 
+  // use global runner if configured.
+  if (!fn && typeof config.runner === 'function') {
+    fn = config.runner;
+  }
+
+  // fail if no task function can be found
   if (!fn) {
     log.error(`Task ${color.cyan(`'${name}'`)} not found`);
     return;

@@ -36,14 +36,19 @@ export type ConfigType = {
   options: OptionsType;
 
   /**
+   * Packages to preload before Pinefile is loaded.
+   */
+  require: string[];
+
+  /**
    * Directory of Pinefile
    */
   root: string;
 
   /**
-   * Packages to preload before Pinefile is loaded.
+   * Global runner that can be used to customize the runner for all tasks.
    */
-  require: string[];
+  runner?: Function;
 
   /**
    * Task name of the function that is executing.
