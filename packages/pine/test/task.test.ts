@@ -185,7 +185,7 @@ describe('task', () => {
     ];
 
     tests.forEach((test) => {
-      const output = resolveTask(test.input as any, tasks);
+      const output = resolveTask(tasks, test.input as any);
       expect(typeof output).toBe(test.type);
       expect(output ? output() : output).toBe(test.output);
     });

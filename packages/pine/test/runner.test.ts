@@ -19,20 +19,31 @@ describe('pine', () => {
   });
 
   test('should run custom global runner', async () => {
+    const spy = jest.spyOn(console, 'log');
+
     const obj = parsePineFile({
-      test: () => console.log('test'),
+      test: (args: any) => console.log(args.name),
     });
 
     configure({
-      runner: async (pinefile: any, name: string, argv: any) => {
+      runner: async (pinefile: any, name: string, args: any) => {
         return async () => {
           expect(typeof pinefile.test._).toBe('function');
           expect(name).toBe('test');
-          expect(argv).toBe({});
+          expect(args).toBe({ name: 'test' });
+          const task = api.resolveTask(obj, name);
+          if (task) {
+            await task(args);
+          }
         };
       },
     });
 
-    api.runTask(obj, 'test');
+    await api.runTask(obj, 'test', {
+      name: 'test',
+    });
+
+    expect(spy.mock.calls[1][0]).toBe('test');
+    spy.mockRestore();
   });
 });

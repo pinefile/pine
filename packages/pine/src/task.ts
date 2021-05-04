@@ -26,13 +26,13 @@ export const validTaskValue = (val: any) => {
 /**
  * Resolve task function by name.
  *
- * @param {string} key
  * @param {string} obj
+ * @param {string} key
  * @param {string} sep
  *
  * @return {function|boolean}
  */
-export const resolveTask = (key: string, obj: PineFileType, sep = ':'): any => {
+export const resolveTask = (obj: PineFileType, key: string, sep = ':'): any => {
   if (!key) {
     return false;
   }
@@ -161,11 +161,11 @@ const execute = async (
 ): Promise<void> => {
   const config = getConfig();
 
-  let fn = resolveTask(name, pinefile);
+  let fn = resolveTask(pinefile, name);
   let fnName = name;
 
   // use global runner if configured.
-  if (!fn && typeof config.runner === 'function') {
+  if (typeof config.runner === 'function') {
     fn = config.runner;
   }
 
@@ -212,7 +212,7 @@ const execute = async (
 
   // execute pre* function.
   const preName = getFnName(fnName, 'pre');
-  const preFunc = resolveTask(preName, pinefile);
+  const preFunc = resolveTask(pinefile, preName);
   if (preFunc) {
     await execute(pinefile, preName, args);
   }
@@ -245,7 +245,7 @@ const execute = async (
 
     // execute post* function.
     const postName = getFnName(fnName, 'post');
-    const postFunc = resolveTask(postName, pinefile);
+    const postFunc = resolveTask(pinefile, postName);
     if (postFunc) {
       await execute(pinefile, postName, args);
     }

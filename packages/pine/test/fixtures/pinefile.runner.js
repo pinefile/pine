@@ -35,7 +35,7 @@ module.exports = {
   runner7: (pinefile, name, argv) => {
     if (argv) {
       return async () => {
-        const task = api.resolveTask(name, pinefile);
+        const task = api.resolveTask(pinefile, name);
         await task({ name: 'runner7' });
       };
     }
