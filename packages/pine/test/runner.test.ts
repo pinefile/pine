@@ -1,5 +1,4 @@
-import { configure } from '../dist';
-import { api } from '../src';
+import { api, configure } from '../src';
 import { parsePineFile } from '../src/file';
 import pinefile from './fixtures/pinefile.runner';
 
@@ -20,6 +19,7 @@ describe('pine', () => {
 
   test('should run custom global runner', async () => {
     const spy = jest.spyOn(console, 'log');
+    let runner = false;
 
     const obj = parsePineFile({
       test: (args: any) => console.log(args.name),
@@ -30,13 +30,89 @@ describe('pine', () => {
         return async () => {
           expect(typeof pinefile.test._).toBe('function');
           expect(name).toBe('test');
-          expect(args).toBe({ name: 'test' });
+          expect(args.name).toBe('test');
           const task = api.resolveTask(obj, name);
+          runner = true;
           if (task) {
             await task(args);
           }
         };
       },
+    });
+
+    await api.runTask(obj, 'test', {
+      name: 'test',
+    });
+
+    expect(spy.mock.calls[1][0]).toBe('test');
+    expect(runner).toBe(true);
+
+    spy.mockRestore();
+  });
+
+  test('should run custom global runner with default export', async () => {
+    const spy = jest.spyOn(console, 'log');
+    let runner = false;
+
+    const obj = parsePineFile({
+      test: (args: any) => console.log(args.name),
+    });
+
+    configure({
+      runner: {
+        default: async (pinefile: any, name: string, args: any) => {
+          return async () => {
+            expect(typeof pinefile.test._).toBe('function');
+            expect(name).toBe('test');
+            expect(args.name).toBe('test');
+            const task = api.resolveTask(obj, name);
+            runner = true;
+            if (task) {
+              await task(args);
+            }
+          };
+        },
+      },
+    });
+
+    await api.runTask(obj, 'test', {
+      name: 'test',
+    });
+
+    expect(spy.mock.calls[1][0]).toBe('test');
+    expect(runner).toBe(true);
+
+    spy.mockRestore();
+  });
+
+  test('should run custom global runner from file', async () => {
+    const spy = jest.spyOn(console, 'log');
+
+    const obj = parsePineFile({
+      test: (args: any) => console.log(args.name),
+    });
+
+    configure({
+      runner: `${__dirname}/fixtures/files/runner.js`,
+    });
+
+    await api.runTask(obj, 'test', {
+      name: 'test',
+    });
+
+    expect(spy.mock.calls[1][0]).toBe('test');
+    spy.mockRestore();
+  });
+
+  test('should run custom global runner from file with default export', async () => {
+    const spy = jest.spyOn(console, 'log');
+
+    const obj = parsePineFile({
+      test: (args: any) => console.log(args.name),
+    });
+
+    configure({
+      runner: `${__dirname}/fixtures/files/runner-default.js`,
     });
 
     await api.runTask(obj, 'test', {

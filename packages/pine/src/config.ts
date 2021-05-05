@@ -6,6 +6,12 @@ import { ArgumentsType, OptionsType } from './args';
 import { LogLevel } from './logger';
 import { PineFileType } from './file';
 
+type RunnerType = (
+  pinefile: PineFileType,
+  name: string,
+  args: ArgumentsType
+) => any;
+
 export type ConfigType = {
   /**
    * Dynamic config properties.
@@ -49,7 +55,7 @@ export type ConfigType = {
   /**
    * Global runner that can be used to customize the runner for all tasks.
    */
-  runner?: (pinefile: PineFileType, name: string, args: ArgumentsType) => any;
+  runner?: string | RunnerType | { default: RunnerType };
 
   /**
    * Task name of the function that is executing.

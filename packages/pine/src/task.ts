@@ -167,6 +167,20 @@ const execute = async (
   // use global runner if configured.
   if (typeof config.runner === 'function') {
     fn = config.runner;
+  } else if (
+    isObject(config.runner) &&
+    typeof config.runner === 'object' &&
+    config.runner?.default
+  ) {
+    fn = config.runner?.default;
+  } else if (typeof config.runner === 'string') {
+    try {
+      fn = require(config.runner);
+      fn = isObject(fn) ? fn.default : fn;
+    } catch (err) {
+      log.error('Failed to load runner file', config.runner);
+      process.exit(1);
+    }
   }
 
   // use default function in objects.
