@@ -31,9 +31,9 @@
     "@pinefile/utils": "^1.0.0-alpha.25",
     "bach": "^1.2.0",
     "chalk": "^4.1.1",
-    "core-js": "^3.11.2",
-    "date-fns": "^2.21.1",
-    "dotenv": "^8.2.0",
+    "core-js": "^3.12.0",
+    "date-fns": "^2.21.2",
+    "dotenv": "^9.0.0",
     "execa": "^5.0.0",
     "pify": "^5.0.0",
     "yargs": "^17.0.1"
