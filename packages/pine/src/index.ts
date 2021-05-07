@@ -6,6 +6,10 @@ import { resolveTask, runTask } from './task';
 const api = { runCLI, resolveTask, runTask };
 export { api };
 
+// types
+export { PineFileType } from './file';
+export { ArgumentsType, OptionsType } from './args';
+
 // plugins
 export { configure, getConfig } from './config';
 export { log, color, createLogger, LoggerOptions } from './logger';
