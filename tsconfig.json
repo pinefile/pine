@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "es2019",
     "lib": ["es2019"],
+    "allowJs": true,
     "declaration": true,
     "emitDeclarationOnly": false,
     "rootDirs": ["src"],
