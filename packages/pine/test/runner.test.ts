@@ -122,4 +122,46 @@ describe('pine', () => {
     expect(spy.mock.calls[1][0]).toBe('test');
     spy.mockRestore();
   });
+
+  test('should throw if string runner cannot be loaded', async () => {
+    const obj = parsePineFile({
+      test: (args: any) => console.log(args.name),
+    });
+
+    configure({
+      runner: 'not a function',
+    });
+
+    try {
+      await api.runTask(obj, 'test', {
+        name: 'test',
+      });
+      expect(false).toBeTruthy();
+    } catch (err) {
+      expect(err.message).toContain('Failed to load runner');
+    }
+  });
+
+  test('should throw if not functional runner', async () => {
+    const obj = parsePineFile({
+      test: (args: any) => console.log(args.name),
+    });
+
+    configure({
+      runner: {
+        default: 123 as any,
+      },
+    });
+
+    try {
+      await api.runTask(obj, 'test', {
+        name: 'test',
+      });
+      expect(false).toBeTruthy();
+    } catch (err) {
+      expect(err.message).toContain(
+        'Expected runner function to be a function, got number'
+      );
+    }
+  });
 });

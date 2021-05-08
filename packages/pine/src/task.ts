@@ -3,7 +3,7 @@ import bach from 'bach';
 import pify from 'pify';
 import { isObject } from '@pinefile/utils';
 import { ArgumentsType } from './args';
-import { getConfig } from './config';
+import { ConfigType, getConfig } from './config';
 import { PineFileType } from './file';
 import { log, color, timeInSecs } from './logger';
 
@@ -145,6 +145,38 @@ export const parallel = (...tasks: any[]): any => {
     );
 };
 
+const getRunner = (config: ConfigType): any => {
+  let runner: any = false;
+
+  if (typeof config.runner === 'function') {
+    runner = config.runner;
+  } else if (
+    isObject(config.runner) &&
+    typeof config.runner === 'object' &&
+    config.runner?.default
+  ) {
+    runner = config.runner?.default;
+  } else if (typeof config.runner === 'string') {
+    try {
+      runner = require(config.runner);
+      runner = isObject(runner) ? runner.default : runner;
+    } catch (err) {
+      err.message = `Failed to load runner ${err.message}`;
+      throw err;
+    }
+  }
+
+  if (runner !== false && typeof runner !== 'function') {
+    throw new Error(
+      `Expected runner function to be a function, got ${
+        runner === null ? 'null' : typeof runner
+      }`
+    );
+  }
+
+  return runner;
+};
+
 /**
  * Execute task in pinefile object.
  *
@@ -164,23 +196,9 @@ const execute = async (
   let fn = resolveTask(pinefile, name);
   let fnName = name;
 
-  // use global runner if configured.
-  if (typeof config.runner === 'function') {
-    fn = config.runner;
-  } else if (
-    isObject(config.runner) &&
-    typeof config.runner === 'object' &&
-    config.runner?.default
-  ) {
-    fn = config.runner?.default;
-  } else if (typeof config.runner === 'string') {
-    try {
-      fn = require(config.runner);
-      fn = isObject(fn) ? fn.default : fn;
-    } catch (err) {
-      log.error('Failed to load runner file', config.runner);
-      process.exit(1);
-    }
+  let runner = getRunner(config);
+  if (typeof runner === 'function') {
+    fn = runner;
   }
 
   // use default function in objects.
@@ -195,7 +213,6 @@ const execute = async (
     return;
   }
 
-  let runner: any;
   switch (fn.length) {
     case 3:
       // 3: plugin function.
