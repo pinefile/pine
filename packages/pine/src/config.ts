@@ -55,7 +55,7 @@ export type ConfigType = {
   /**
    * Global runner that can be used to customize the runner for all tasks.
    */
-  runner?: string | RunnerType | { default: RunnerType };
+  runner?: string | RunnerType | Array<any> | { default: RunnerType };
 
   /**
    * Task name of the function that is executing.

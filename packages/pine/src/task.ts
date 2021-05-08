@@ -145,15 +145,18 @@ export const parallel = (...tasks: any[]): any => {
     );
 };
 
-const getRunner = (config: ConfigType): any => {
+const getRunner = (
+  config: Partial<ConfigType>
+): { runner: any; options: { [key: string]: any } } => {
   let runner: any = false;
+  let options: any = {};
 
   if (typeof config.runner === 'function') {
     runner = config.runner;
   } else if (
     isObject(config.runner) &&
     typeof config.runner === 'object' &&
-    config.runner?.default
+    !Array.isArray(config.runner)
   ) {
     runner = config.runner?.default;
   } else if (typeof config.runner === 'string') {
@@ -164,6 +167,13 @@ const getRunner = (config: ConfigType): any => {
       err.message = `Failed to load runner ${err.message}`;
       throw err;
     }
+  } else if (
+    Array.isArray(config.runner) &&
+    config.runner.length >= 1 &&
+    !Array.isArray(config.runner[0])
+  ) {
+    runner = getRunner({ runner: config.runner[0] }).runner;
+    options = isObject(config.runner[1]) ? config.runner[1] : {};
   }
 
   if (runner !== false && typeof runner !== 'function') {
@@ -174,7 +184,7 @@ const getRunner = (config: ConfigType): any => {
     );
   }
 
-  return runner;
+  return { runner, options };
 };
 
 /**
@@ -196,7 +206,7 @@ const execute = async (
   let fn = resolveTask(pinefile, name);
   let fnName = name;
 
-  let runner = getRunner(config);
+  let { runner, options } = getRunner(config);
   if (typeof runner === 'function') {
     fn = runner;
   }
@@ -214,8 +224,12 @@ const execute = async (
   }
 
   switch (fn.length) {
+    case 4:
+      // runner function with options
+      runner = fn(pinefile, name, args, options);
+      break;
     case 3:
-      // 3: plugin function.
+      // 3: plugin or runner function.
       runner = fn(pinefile, name, args);
       break;
     default:
