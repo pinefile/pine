@@ -55,7 +55,7 @@ export type ConfigType = {
   /**
    * Global runner that can be used to customize the runner for all tasks.
    */
-  runner?: string | RunnerType | Array<any> | { default: RunnerType };
+  runner?: string | RunnerType | { default: RunnerType } | Array<any>;
 
   /**
    * Task name of the function that is executing.
@@ -141,9 +141,7 @@ const setEnvironment = (config: ConfigType) => {
   }
 };
 
-export const getConfig = (): ConfigType => {
-  return config;
-};
+export const getConfig = (): ConfigType => config;
 
 /**
  * Pine can be configured via the configure function, which accepts:

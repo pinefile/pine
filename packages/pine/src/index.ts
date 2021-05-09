@@ -10,7 +10,8 @@ export { api };
 export { PineFileType } from './file';
 export { ArgumentsType, OptionsType } from './args';
 
-// plugins
+// functions
+export { getArgs } from './args';
 export { configure, getConfig } from './config';
 export { log, color, createLogger, LoggerOptions } from './logger';
 export { parallel, series } from './task';

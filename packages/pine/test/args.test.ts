@@ -1,4 +1,4 @@
-import { configure } from '../src/config';
+import { configure, getArgs } from '../src';
 import { parse } from '../src/args';
 
 describe('args', () => {
@@ -16,8 +16,14 @@ describe('args', () => {
     expect(args.name).toBe('foo');
   });
 
-  test('parse', () => {
+  test('parse args', () => {
     const args = parse(['--bar', 'foo']);
     expect(args.bar).toBe('foo');
+  });
+
+  test('get parsed args', () => {
+    const args = parse(['--bar', 'foo']);
+    expect(args.bar).toBe('foo');
+    expect(getArgs().bar).toBe('foo');
   });
 });

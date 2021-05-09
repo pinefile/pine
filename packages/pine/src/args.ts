@@ -52,8 +52,12 @@ export const options = (): OptionsType => {
   };
 };
 
+let args: ArgumentsType = {};
+
+export const getArgs = (): ArgumentsType => args;
+
 export const parse = (argv: any[], opts?: OptionsType): ArgumentsType => {
-  return yargs
+  args = yargs
     .parserConfiguration({
       // https://github.com/yargs/yargs/issues/1011
       'boolean-negation': false,
@@ -62,4 +66,6 @@ export const parse = (argv: any[], opts?: OptionsType): ArgumentsType => {
     .options(opts ? opts : options())
     .pkgConf('pine', findDirname('package.json'))
     .parse(argv);
+
+  return args;
 };
