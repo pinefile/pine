@@ -2,15 +2,9 @@ import fs from 'fs';
 import path from 'path';
 import dotenv from 'dotenv';
 import { isObject } from '@pinefile/utils';
-import { ArgumentsType, OptionsType } from './args';
+import { OptionsType } from './args';
 import { LogLevel } from './logger';
-import { PineFileType } from './file';
-
-type RunnerType = (
-  pinefile: PineFileType,
-  name: string,
-  args: ArgumentsType
-) => any;
+import { RunnerType } from './runner';
 
 export type ConfigType = {
   /**

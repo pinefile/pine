@@ -3,8 +3,9 @@ import bach from 'bach';
 import pify from 'pify';
 import { isObject } from '@pinefile/utils';
 import { ArgumentsType } from './args';
-import { ConfigType, getConfig } from './config';
+import { getConfig } from './config';
 import { PineFileType } from './file';
+import { getRunner } from './runner';
 import { log, color, timeInSecs } from './logger';
 
 /**
@@ -143,48 +144,6 @@ export const parallel = (...tasks: any[]): any => {
         runTask(pinefile, task, args).then(cb)
       )
     );
-};
-
-const getRunner = (
-  config: Partial<ConfigType>
-): { runner: any; options: { [key: string]: any } } => {
-  let runner: any = false;
-  let options: any = {};
-
-  if (typeof config.runner === 'function') {
-    runner = config.runner;
-  } else if (
-    isObject(config.runner) &&
-    typeof config.runner === 'object' &&
-    !Array.isArray(config.runner)
-  ) {
-    runner = config.runner?.default;
-  } else if (typeof config.runner === 'string') {
-    try {
-      runner = require(config.runner);
-      runner = isObject(runner) ? runner.default : runner;
-    } catch (err) {
-      err.message = `Failed to load runner ${err.message}`;
-      throw err;
-    }
-  } else if (
-    Array.isArray(config.runner) &&
-    config.runner.length >= 1 &&
-    !Array.isArray(config.runner[0])
-  ) {
-    runner = getRunner({ runner: config.runner[0] }).runner;
-    options = isObject(config.runner[1]) ? config.runner[1] : {};
-  }
-
-  if (runner !== false && typeof runner !== 'function') {
-    throw new Error(
-      `Expected runner function to be a function, got ${
-        runner === null ? 'null' : typeof runner
-      }`
-    );
-  }
-
-  return { runner, options };
 };
 
 /**
