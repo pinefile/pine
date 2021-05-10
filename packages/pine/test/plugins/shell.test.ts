@@ -4,7 +4,7 @@ import os from 'os';
 import * as uuid from 'uuid';
 import { shell, shouldForceColor } from '../../src/plugins/shell';
 
-describe('shell', () => {
+describe('plugins/shell', () => {
   test('should run shell commands', async () => {
     [
       {
