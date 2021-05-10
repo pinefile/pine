@@ -6,7 +6,8 @@ import { PineFileType } from './file';
 export type RunnerType = (
   pinefile: PineFileType,
   name: string,
-  args: ArgumentsType
+  args: ArgumentsType,
+  options?: { [key: string]: any }
 ) => any;
 
 export const getRunner = (

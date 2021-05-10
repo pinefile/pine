@@ -7,8 +7,9 @@ const api = { runCLI, resolveTask, runTask };
 export { api };
 
 // types
-export { PineFileType } from './file';
 export { ArgumentsType, OptionsType } from './args';
+export { PineFileType } from './file';
+export { RunnerType } from './runner';
 
 // functions
 export { getArgs } from './args';
