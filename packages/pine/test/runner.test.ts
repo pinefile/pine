@@ -142,29 +142,6 @@ describe('pine', () => {
     }
   });
 
-  test('should throw if not functional runner', async () => {
-    const obj = parsePineFile({
-      test: (args: any) => console.log(args.name),
-    });
-
-    configure({
-      runner: {
-        default: 123 as any,
-      },
-    });
-
-    try {
-      await api.runTask(obj, 'test', {
-        name: 'test',
-      });
-      expect(false).toBeTruthy();
-    } catch (err) {
-      expect(err.message).toContain(
-        'Expected runner function to be a function, got number'
-      );
-    }
-  });
-
   test('should test runner with options', async () => {
     const spy = jest.spyOn(console, 'log');
     let runner = false;
@@ -201,6 +178,52 @@ describe('pine', () => {
 
     expect(spy.mock.calls[1][0]).toBe('foo');
     expect(runner).toBe(true);
+
+    spy.mockRestore();
+  });
+
+  test('should throw if not functional runner', async () => {
+    const obj = parsePineFile({
+      test: (args: any) => console.log(args.name),
+    });
+
+    configure({
+      runner: {
+        default: 123 as any,
+      },
+    });
+
+    try {
+      await api.runTask(obj, 'test', {
+        name: 'test',
+      });
+      expect(false).toBeTruthy();
+    } catch (err) {
+      expect(err.message).toContain(
+        'Expected runner function to be a function, got number'
+      );
+    }
+  });
+
+  test('should throw if functional runner not returning a function', async () => {
+    const spy = jest.spyOn(console, 'error');
+    const obj = parsePineFile({
+      test: (args: any) => console.log(args.name),
+    });
+
+    configure({
+      runner: {
+        default: (pinefile: any, name: string, args: any) => null,
+      },
+    });
+
+    await api.runTask(obj, 'test', {
+      name: 'test',
+    });
+
+    expect(spy.mock.calls[0][1].toString()).toContain(
+      'Error: Expected return value of runner function to be a function, got null'
+    );
 
     spy.mockRestore();
   });

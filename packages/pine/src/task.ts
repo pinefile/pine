@@ -164,6 +164,16 @@ const execute = async (
     runner = await runner;
   }
 
+  // create a empty runner and throw a error if not a function.
+  if (typeof runner !== 'function') {
+    const beforeType = runner === null ? 'null' : typeof runner;
+    runner = () => {
+      throw new Error(
+        `Expected return value of runner function to be a function, got ${beforeType}`
+      );
+    };
+  }
+
   // wrap runner with no arguments
   // with an callback function with
   // done function as a argument.
