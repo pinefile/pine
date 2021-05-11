@@ -205,7 +205,7 @@ describe('pine', () => {
     }
   });
 
-  test('should throw if functional runner not returning a function', async () => {
+  test('should log error message if functional runner not returning a function', async () => {
     const spy = jest.spyOn(console, 'error');
     const obj = parsePineFile({
       test: (args: any) => console.log(args.name),
