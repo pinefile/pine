@@ -4,5 +4,6 @@
     "outDir": "dist",
     "rootDir": "src"
   },
-  "exclude": ["dist", "test"]
+  "exclude": ["dist", "test"],
+  "references": [{ "path": "../pine" }]
 }

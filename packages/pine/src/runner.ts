@@ -3,11 +3,13 @@ import { ArgumentsType } from './args';
 import { ConfigType } from './config';
 import { PineFileType } from './file';
 
+type RunnerOptionsType = { [key: string]: any };
+
 export type RunnerType = (
   pinefile: PineFileType,
   name: string,
   args: ArgumentsType,
-  options?: { [key: string]: any }
+  options?: RunnerOptionsType
 ) => any;
 
 export const getRunner = (
@@ -51,3 +53,10 @@ export const getRunner = (
 
   return { runner, options };
 };
+
+export const createRunner = (fn: RunnerType) => async (
+  pinefile: PineFileType,
+  name: string,
+  args: ArgumentsType,
+  options?: RunnerOptionsType
+) => async () => await fn(pinefile, name, args, options);

@@ -9,5 +9,8 @@
   "main": "dist/index.js",
   "types": "dist",
   "author": "Fredrik Forsmo <fredrik.forsmo@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@pinefile/pine": "^1.0.0-alpha.27"
+  }
 }

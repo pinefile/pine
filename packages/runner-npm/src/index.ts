@@ -1,12 +1,18 @@
 import {
   api,
   getConfig,
-  log,
   run,
-  RunnerType,
   PineFileType,
   ArgumentsType,
 } from '@pinefile/pine';
+
+// type OptionsType = {
+//   [key: string]: any;
+// };
+
+// const defaultOptions: OptionsType = {
+//   npmClient: 'npm',
+// };
 
 const runner = async (
   pinefile: PineFileType,
@@ -23,10 +29,4 @@ const runner = async (
   }
 };
 
-const wrapper = (fn) => async (
-  pinefile: PineFileType,
-  name: string,
-  args: ArgumentsType
-) => async () => await fn(pinefile, name, args);
-
-export default wrapper(runner);
+export default api.createRunner(runner);

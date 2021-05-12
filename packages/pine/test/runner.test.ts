@@ -227,4 +227,44 @@ describe('pine', () => {
 
     spy.mockRestore();
   });
+
+  test.only('should create runner with create runner api function', async () => {
+    const spy = jest.spyOn(console, 'log');
+    let runner = false;
+
+    const obj = parsePineFile({
+      test: (args: any) => console.log(args.name),
+    });
+
+    const fn = api.createRunner(
+      async (pinefile: any, name: string, args: any, options: any) => {
+        expect(typeof pinefile.test._).toBe('function');
+        expect(name).toBe('test');
+        expect(options.name).toBe('foo');
+        const task = api.resolveTask(obj, name);
+        runner = true;
+        if (task) {
+          await task({
+            name: options.name,
+          });
+        }
+      }
+    );
+
+    configure({
+      runner: [
+        fn,
+        {
+          name: 'foo',
+        },
+      ],
+    });
+
+    await api.runTask(obj, 'test');
+
+    expect(spy.mock.calls[1][0]).toBe('foo');
+    expect(runner).toBe(true);
+
+    spy.mockRestore();
+  });
 });
