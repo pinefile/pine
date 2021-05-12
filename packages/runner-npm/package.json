@@ -1,0 +1,13 @@
+{
+  "name": "@pinefile/runner-npm",
+  "version": "1.0.0-alpha.27",
+  "description": "Pine npm runner",
+  "homepage": "https://github.com/pinefile/pine",
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.js",
+  "types": "dist",
+  "author": "Fredrik Forsmo <fredrik.forsmo@gmail.com>",
+  "license": "MIT"
+}
