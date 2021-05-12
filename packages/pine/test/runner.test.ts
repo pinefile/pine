@@ -228,7 +228,7 @@ describe('pine', () => {
     spy.mockRestore();
   });
 
-  test.only('should create runner with create runner api function', async () => {
+  test('should create runner with create runner api function', async () => {
     const spy = jest.spyOn(console, 'log');
     let runner = false;
 
