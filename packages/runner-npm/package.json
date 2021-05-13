@@ -12,5 +12,8 @@
   "license": "MIT",
   "dependencies": {
     "@pinefile/pine": "^1.0.0-alpha.27"
+  },
+  "scripts": {
+    "foo": "echo \"foo\""
   }
 }

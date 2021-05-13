@@ -11,13 +11,15 @@ const runner = async (
   name: string,
   args: ArgumentsType
 ) => {
-  const { root } = getConfig();
-  const pkg = require(`${root}/package.json`);
   const task = api.resolveTask(pinefile, name);
   if (task) {
     await task(args);
-  } else if (pkg.scripts[name]) {
-    await run(pkg.scripts[name]);
+  } else {
+    const { root } = getConfig();
+    const pkg = require(`${root}/package.json`);
+    if (pkg.scripts[name]) {
+      await run(pkg.scripts[name]);
+    }
   }
 };
 
