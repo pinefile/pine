@@ -6,14 +6,6 @@ import {
   ArgumentsType,
 } from '@pinefile/pine';
 
-// type OptionsType = {
-//   [key: string]: any;
-// };
-
-// const defaultOptions: OptionsType = {
-//   npmClient: 'npm',
-// };
-
 const runner = async (
   pinefile: PineFileType,
   name: string,
