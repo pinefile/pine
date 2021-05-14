@@ -16,6 +16,7 @@ const runner = async (
     await task(args);
   } else {
     const { root } = getConfig();
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const pkg = require(`${root}/package.json`);
     if (pkg.scripts[name]) {
       await run(pkg.scripts[name]);
