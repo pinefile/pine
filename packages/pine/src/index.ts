@@ -1,9 +1,10 @@
 import 'core-js/stable';
 import { runCLI } from './cli';
 import { resolveTask, runTask } from './task';
+import { createRunner } from './runner';
 
 // core
-const api = { runCLI, resolveTask, runTask };
+const api = { runCLI, resolveTask, runTask, createRunner };
 export { api };
 
 // types
