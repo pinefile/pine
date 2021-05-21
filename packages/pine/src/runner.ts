@@ -3,7 +3,7 @@ import { ArgumentsType } from './args';
 import { ConfigType } from './config';
 import { PineFileType } from './file';
 
-type RunnerOptionsType = { [key: string]: any };
+export type RunnerOptionsType = { [key: string]: any };
 
 export type RunnerType = (
   pinefile: PineFileType,

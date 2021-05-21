@@ -10,7 +10,7 @@ export { api };
 // types
 export { ArgumentsType, OptionsType } from './args';
 export { PineFileType } from './file';
-export { RunnerType } from './runner';
+export { RunnerType, RunnerOptionsType } from './runner';
 
 // functions
 export { getArgs } from './args';
