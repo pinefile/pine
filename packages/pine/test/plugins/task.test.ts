@@ -17,18 +17,18 @@ describe('plugins/task', () => {
     spyLog.mockRestore();
   });
 
-  test('should run pinefile with series of tasks', async (done) => {
+  test('should run pinefile with series of tasks', (done) => {
     const plugin = series('s1', 's2');
     const task = plugin(parsePineFile(pinefile), '');
 
-    await task(() => {
+    task(() => {
       done();
       expect(spyLog).toHaveBeenCalledWith('Cleaning...');
       expect(spyLog).toHaveBeenCalledWith('Building...');
     });
   });
 
-  test('should run series of functions', async (done) => {
+  test('should run series of functions', (done) => {
     const output: string[] = [];
     const tasks = [
       (ok: any) => {
@@ -41,13 +41,13 @@ describe('plugins/task', () => {
       },
     ];
 
-    await series(tasks);
-
-    done();
-    expect(output).toEqual(['echo one', 'echo two']);
+    series(tasks).then(() => {
+      done();
+      expect(output).toEqual(['echo one', 'echo two']);
+    });
   });
 
-  test('should run series of async functions', async (done) => {
+  test('should run series of async functions', (done) => {
     const output: string[] = [];
     const tasks = [
       async () => {
@@ -60,24 +60,24 @@ describe('plugins/task', () => {
       },
     ];
 
-    await series(tasks);
-
-    done();
-    expect(output).toEqual(['echo one', 'echo two']);
+    series(tasks).then(() => {
+      done();
+      expect(output).toEqual(['echo one', 'echo two']);
+    });
   });
 
-  test('should run pinefile with parallel of tasks', async (done) => {
+  test('should run pinefile with parallel of tasks', (done) => {
     const plugin = parallel('p1', 'p2');
     const task = plugin(parsePineFile(pinefile), '');
 
-    await task(() => {
+    task(() => {
       done();
       expect(spyLog).toHaveBeenCalledWith('Building...');
       expect(spyLog).toHaveBeenCalledWith('Cleaning...');
     });
   });
 
-  test('should run parallel of functions', async (done) => {
+  test('should run parallel of functions', (done) => {
     const output: string[] = [];
     const tasks = [
       (ok: any) => {
@@ -92,13 +92,13 @@ describe('plugins/task', () => {
       },
     ];
 
-    await parallel(tasks);
-
-    done();
-    expect(output).toEqual(['echo two', 'echo one']);
+    parallel(tasks).then(() => {
+      done();
+      expect(output).toEqual(['echo two', 'echo one']);
+    });
   });
 
-  test('should run parallel of async functions', async (done) => {
+  test('should run parallel of async functions', (done) => {
     const output: string[] = [];
     const tasks = [
       async () => {
@@ -111,9 +111,9 @@ describe('plugins/task', () => {
       },
     ];
 
-    await parallel(tasks);
-
-    done();
-    expect(output).toEqual(['echo two', 'echo one']);
+    parallel(tasks).then(() => {
+      done();
+      expect(output).toEqual(['echo two', 'echo one']);
+    });
   });
 });
