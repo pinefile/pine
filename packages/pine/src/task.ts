@@ -110,8 +110,8 @@ const execute = async (
   } else if (isObject(runner) && typeof runner.default === 'function') {
     fn = runner.default;
     fnExists =
-      typeof runner.exists === 'function'
-        ? runner.exists(pinefile, name, args, options)
+      typeof runner.taskExists === 'function'
+        ? runner.taskExists(pinefile, name, args, options)
         : typeof fn === 'function';
   } else if (typeof fn === 'function') {
     fnExists = true;

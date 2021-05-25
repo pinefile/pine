@@ -1,5 +1,5 @@
 import { configure } from '@pinefile/pine';
-import { exists, runner } from '../src';
+import { taskExists, runner } from '../src';
 
 let scripts = {};
 
@@ -67,8 +67,8 @@ describe('runner-npm', () => {
       },
     };
 
-    expect(exists(obj, 'foo', {})).toBeTruthy();
-    expect(exists(obj, 'test', {})).toBeTruthy();
-    expect(exists(obj, 'bar', {})).toBeFalsy();
+    expect(taskExists(obj, 'foo', {})).toBeTruthy();
+    expect(taskExists(obj, 'test', {})).toBeTruthy();
+    expect(taskExists(obj, 'bar', {})).toBeFalsy();
   });
 });

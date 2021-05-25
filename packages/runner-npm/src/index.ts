@@ -34,7 +34,7 @@ const resolveTask = (
   return false;
 };
 
-export const exists = (
+export const taskExists = (
   pinefile: PineFileType,
   name: string,
   args: ArgumentsType,
