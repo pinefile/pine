@@ -1,4 +1,4 @@
-import { camelCaseToDash, escapeArgs, isObject } from '../src';
+import { camelCaseToDash, escapeArgs, isObject, omit } from '../src';
 
 test('escapeArgs', () => {
   [
@@ -63,4 +63,8 @@ test('camelCaseToDash', () => {
   ].forEach((t) => {
     expect(camelCaseToDash(t.input)).toBe(t.output);
   });
+});
+
+test('omit', () => {
+  expect(omit('foo', { foo: true }).foo).toBeUndefined();
 });

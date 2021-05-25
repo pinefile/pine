@@ -17,3 +17,8 @@ export const isObject = (val: any): boolean =>
 
 export const camelCaseToDash = (str: string) =>
   str.replace(/([a-zA-Z])(?=[A-Z])/g, '$1-').toLowerCase();
+
+export const omit = (key: string, obj: any) => {
+  const { [key]: omitted, ...rest } = obj;
+  return rest;
+};

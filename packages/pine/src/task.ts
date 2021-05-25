@@ -71,14 +71,16 @@ const getFnName = (name: string, prefix = '', sep = ':'): string => {
   return names.concat(`${prefix}${lastName}`).join(sep);
 };
 
-const doneify = (fn: any, ...args: any[]) => async (done: any) => {
-  try {
-    await pify(fn, { excludeMain: true })(args);
-    done();
-  } catch (err) {
-    done(err);
-  }
-};
+const doneify =
+  (fn: any, ...args: any[]) =>
+  async (done: any) => {
+    try {
+      await pify(fn, { excludeMain: true })(args);
+      done();
+    } catch (err) {
+      done(err);
+    }
+  };
 
 /**
  * Execute task in pinefile object.
@@ -98,21 +100,32 @@ const execute = async (
 
   let fn = resolveTask(pinefile, name);
   let fnName = name;
+  let fnExists = false;
 
   // eslint-disable-next-line prefer-const
   let { runner, options } = getRunner(config);
   if (typeof runner === 'function') {
     fn = runner;
+    fnExists = true;
+  } else if (isObject(runner) && typeof runner.default === 'function') {
+    fn = runner.default;
+    fnExists =
+      typeof runner.exists === 'function'
+        ? runner.exists(pinefile, name, args, options)
+        : typeof fn === 'function';
+  } else if (typeof fn === 'function') {
+    fnExists = true;
   }
 
   // use default function in objects.
   if (isObject(fn) && fn.default) {
     fn = fn.default;
     fnName = name !== 'default' ? `${name}:default` : 'default';
+    fnExists = typeof fn === 'function';
   }
 
   // fail if no task function can be found
-  if (typeof fn !== 'function') {
+  if (!fnExists) {
     log.error(`Task ${color.cyan(`'${name}'`)} not found`);
     return;
   }
@@ -120,7 +133,11 @@ const execute = async (
   switch (fn.length) {
     case 4:
       // runner function with options
-      runner = fn(pinefile, name, args, options);
+      if (isObject(options) && Object.keys(options).length) {
+        runner = fn(pinefile, name, args, options);
+      } else {
+        runner = fn(pinefile, name, args);
+      }
       break;
     case 3:
       // 3: plugin or runner function.

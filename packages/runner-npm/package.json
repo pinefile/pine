@@ -14,6 +14,6 @@
     "@pinefile/pine": "^1.0.0-alpha.28"
   },
   "scripts": {
-    "foo": "echo \"foo\""
+    "foo": "echo foo"
   }
 }

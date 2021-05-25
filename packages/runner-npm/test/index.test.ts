@@ -1,5 +1,5 @@
 import { configure } from '@pinefile/pine';
-import runner from '../src';
+import { exists, runner } from '../src';
 
 let scripts = {};
 
@@ -41,10 +41,34 @@ describe('runner-npm', () => {
 
     spy.mockRestore();
   });
+
   test('should run task in package.json', async () => {
     const realRunner = await runner({}, 'foo', {});
     await realRunner();
 
-    expect(scripts['echo "foo"']).toBeTruthy();
+    expect(scripts['echo foo']).toBeTruthy();
+  });
+
+  test('should run task in package.json and pass args', async () => {
+    const realRunner = await runner({}, 'foo', {
+      _: ['bar'],
+    });
+    await realRunner();
+
+    expect(scripts['echo foo bar']).toBeTruthy();
+  });
+
+  test('should check if task or script exists', () => {
+    const obj = {
+      test: {
+        _: () => {
+          console.log('test');
+        },
+      },
+    };
+
+    expect(exists(obj, 'foo', {})).toBeTruthy();
+    expect(exists(obj, 'test', {})).toBeTruthy();
+    expect(exists(obj, 'bar', {})).toBeFalsy();
   });
 });
