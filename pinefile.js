@@ -1,9 +1,10 @@
 const isDev = process.env.PINE_ENV === 'development';
-const { log, run, getConfig } = require(`./packages/pine${
+const { log, run, getConfig, useRun } = require(`./packages/pine${
   isDev ? '/src' : ''
 }`);
 
-const npm = (c) => run(`npm run ${c}`);
+const jest = useRun('jest');
+const npm = useRun('npm run');
 
 module.exports = {
   build: async () => {
@@ -14,6 +15,6 @@ module.exports = {
     log.info(config);
   },
   test: async (argv) => {
-    await run(`jest ${argv._.join(' ')}`);
+    await jest(argv._.join(' '));
   },
 };

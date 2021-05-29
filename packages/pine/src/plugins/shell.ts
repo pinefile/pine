@@ -78,6 +78,11 @@ export const shell = (
   });
 };
 
+export const useShell =
+  (cmd: string) =>
+  (args: string, opts: Partial<Options> = {}) =>
+    shell(`${cmd} ${args}`, opts);
+
 /**
  * Run shell command.
  *
@@ -93,3 +98,8 @@ export const run = (cmd: string, opts: Partial<Options> = {}) =>
     stdout: 'inherit',
     stderr: 'inherit',
   });
+
+export const useRun =
+  (cmd: string) =>
+  (args: string, opts: Partial<Options> = {}) =>
+    run(`${cmd} ${args}`, opts);
