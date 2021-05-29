@@ -3,8 +3,6 @@ import { ArgumentsType } from './args';
 import { ConfigType } from './config';
 import { PineFileType } from './file';
 
-type object = { [key: string]: any };
-
 export type RunnerOptionsType = object;
 
 export type RunnerType = (
@@ -17,18 +15,6 @@ export type RunnerType = (
 const isValidRunnerObject = (runner: any) =>
   isObject(runner) &&
   (typeof runner.default === 'function' || typeof runner.runner === 'function');
-
-export const taskExists =
-  (runner: any) =>
-  (
-    pinefile: PineFileType,
-    name: string,
-    args: ArgumentsType,
-    options: RunnerOptionsType
-  ) =>
-    typeof runner.taskExists === 'function'
-      ? runner.taskExists(pinefile, name, args, options)
-      : typeof fn === 'function';
 
 export const getRunner = (config: Partial<ConfigType>): any => {
   let runner: any = false;
