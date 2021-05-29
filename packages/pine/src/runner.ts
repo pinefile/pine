@@ -18,8 +18,8 @@ const isValidRunnerObject = (runner: any) =>
 
 export const getRunner = (config: Partial<ConfigType>): any => {
   let runner: any = false;
-  let options: object = {};
-  let rest: object = {};
+  let options: Record<string, unknown> = {};
+  let rest: Record<string, unknown> = {};
 
   if (typeof config.runner === 'function') {
     runner = config.runner;
