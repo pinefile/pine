@@ -3,7 +3,7 @@ import { ArgumentsType } from './args';
 import { ConfigType } from './config';
 import { PineFileType } from './file';
 
-export type RunnerOptionsType = { [key: string]: any };
+export type RunnerOptionsType = Record<string, any>;
 
 export type RunnerType = (
   pinefile: PineFileType,
@@ -18,8 +18,8 @@ const isValidRunnerObject = (runner: any) =>
 
 export const getRunner = (config: Partial<ConfigType>): any => {
   let runner: any = false;
-  let options: Record<string, unknown> = {};
-  let rest: Record<string, unknown> = {};
+  let options: Record<string, any> = {};
+  let rest: Record<string, any> = {};
 
   if (typeof config.runner === 'function') {
     runner = config.runner;
