@@ -22,7 +22,7 @@ export type PineFileType = {
  * @param {string} obj
  * @param {string} sep
  *
- * @return {object}
+ * @returns {object}
  */
 export const parsePineFile = (obj: PineFileType, sep = ':') =>
   Object.keys(obj).reduce((prev: PineFileType, key: string) => {

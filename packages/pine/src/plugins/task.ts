@@ -9,7 +9,7 @@ import { runTask } from '../task';
  *
  * series('clean', 'build')
  *
- * @return {function|Promise}
+ * @returns {function|Promise}
  */
 export const series = (...tasks: any[]): any => {
   if (typeof tasks[0] === 'function') {
@@ -30,8 +30,8 @@ export const series = (...tasks: any[]): any => {
 
   return (pinefile: PineFileType, _: string, args: ArgumentsType) =>
     bach.series(
-      ...tasks.map((task) => (cb: any) =>
-        runTask(pinefile, task, args).then(cb)
+      ...tasks.map(
+        (task) => (cb: any) => runTask(pinefile, task, args).then(cb)
       )
     );
 };
@@ -41,7 +41,7 @@ export const series = (...tasks: any[]): any => {
  *
  * parallel('clean', 'build')
  *
- * @return {function|Promise}
+ * @returns {function|Promise}
  */
 export const parallel = (...tasks: any[]): any => {
   if (typeof tasks[0] === 'function') {
@@ -62,8 +62,8 @@ export const parallel = (...tasks: any[]): any => {
 
   return (pinefile: PineFileType, _: string, args: ArgumentsType) =>
     bach.parallel(
-      ...tasks.map((task) => (cb: any) =>
-        runTask(pinefile, task, args).then(cb)
+      ...tasks.map(
+        (task) => (cb: any) => runTask(pinefile, task, args).then(cb)
       )
     );
 };

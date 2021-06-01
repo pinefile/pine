@@ -38,7 +38,7 @@ export const shouldForceColor = (env: NodeJS.ProcessEnv = {}): boolean => {
  * @param {string} cmd
  * @param {object} opts
  *
- * @return {Promise}
+ * @returns {Promise}
  */
 export const shell = (
   cmd: string,
@@ -84,7 +84,7 @@ export const shell = (
  * @param {string} cmd
  * @param {object} opts
  *
- * @return {Promise}
+ * @returns {Promise}
  */
 export const run = (cmd: string, opts: Partial<Options> = {}) =>
   shell(cmd, {

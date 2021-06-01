@@ -11,7 +11,7 @@ import { log, color, timeInSecs } from './logger';
  *
  * @param  {object} val
  *
- * @return {boolean}
+ * @returns {boolean}
  */
 export const validTaskValue = (val: any) => {
   return (
@@ -29,7 +29,7 @@ export const validTaskValue = (val: any) => {
  * @param {string} key
  * @param {string} sep
  *
- * @return {function|boolean}
+ * @returns {function|boolean}
  */
 export const resolveTask = (obj: PineFileType, key: string, sep = ':'): any => {
   if (!key) {
@@ -63,7 +63,7 @@ export const resolveTask = (obj: PineFileType, key: string, sep = ':'): any => {
  * @param {string} prefix
  * @param {string} sep
  *
- * @return {string}
+ * @returns {string}
  */
 const getFnName = (name: string, prefix = '', sep = ':'): string => {
   const names = name.split(sep);
@@ -89,7 +89,7 @@ const doneify =
  * @param {string} name
  * @param {array}  args
  *
- * @return {Promise}
+ * @returns {Promise}
  */
 const execute = async (
   pinefile: PineFileType,
@@ -225,7 +225,7 @@ const execute = async (
  * @param {string} name
  * @param {object} args
  *
- * @return {Promise}
+ * @returns {Promise}
  */
 export const runTask = async (
   pinefile: PineFileType,
