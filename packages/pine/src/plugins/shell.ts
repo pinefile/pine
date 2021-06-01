@@ -78,6 +78,13 @@ export const shell = (
   });
 };
 
+/**
+ * Create a shell function with predefined command.
+ *
+ * @param {string} cmd
+ *
+ * @return
+ */
 export const useShell =
   (cmd: string) =>
   (args: string, opts: Partial<Options> = {}) =>
@@ -99,6 +106,13 @@ export const run = (cmd: string, opts: Partial<Options> = {}) =>
     stderr: 'inherit',
   });
 
+/**
+ * Create a run function with predefined command.
+ *
+ * @param {string} cmd
+ *
+ * @return
+ */
 export const useRun =
   (cmd: string) =>
   (args: string, opts: Partial<Options> = {}) =>
