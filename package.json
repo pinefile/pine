@@ -25,8 +25,8 @@
     "@types/jest": "^26.0.23",
     "@types/uuid": "^8.3.0",
     "@types/yargs": "17.0.0",
-    "@typescript-eslint/eslint-plugin": "^4.26.1",
-    "@typescript-eslint/parser": "^4.26.1",
+    "@typescript-eslint/eslint-plugin": "^4.27.0",
+    "@typescript-eslint/parser": "^4.27.0",
     "eslint": "^7.28.0",
     "jest": "27.0.4",
     "lerna": "^4.0.0",
@@ -34,7 +34,7 @@
     "rimraf": "^3.0.2",
     "ts-jest": "^27.0.3",
     "ts-node": "^9.1.1",
-    "typescript": "^4.3.2",
+    "typescript": "^4.3.4",
     "uuid": "^8.3.2"
   },
   "pine": {}
