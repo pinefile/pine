@@ -35,10 +35,12 @@ export const npmRun = async (
 
   const tasks = pkgs.map((p: string) => async () => {
     const pkg = { scripts: {}, ...require(p) };
-    await pineRun(pkg.scripts[script], {
-      ...shellOptions,
-      cwd: path.dirname(p),
-    });
+    if (pkg.scripts[script]) {
+      await pineRun(pkg.scripts[script], {
+        ...shellOptions,
+        cwd: path.dirname(p),
+      });
+    }
   });
 
   if (options.parallel) {
