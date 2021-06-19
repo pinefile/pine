@@ -8,6 +8,7 @@ import {
   parallel,
   ShellOptionsType,
   getConfig,
+  ConfigType,
 } from '@pinefile/pine';
 
 export type NPMRunOptionsType = {
@@ -20,23 +21,31 @@ const appendRoot = (root: string, workspaces: string[]) =>
     fs.existsSync(workspace) ? workspace : path.join(root, workspace)
   );
 
+const mergeConfig = (
+  config: ConfigType,
+  opts: NPMRunOptionsType
+): NPMRunOptionsType => ({
+  ...opts,
+  workspaces: appendRoot(config.root, [
+    ...opts.workspaces,
+    ...(config.workspaces instanceof Array ? config.workspaces : []),
+  ]),
+});
+
 export const npmRun = async (
   script: string,
   opts: Partial<NPMRunOptionsType> = {},
   shellOptions: Partial<ShellOptionsType> = {}
 ) => {
-  const { workspaces, ...options }: NPMRunOptionsType = {
+  const config = getConfig();
+  const { workspaces, ...options }: NPMRunOptionsType = mergeConfig(config, {
     parallel: false,
     workspaces: [],
     ...opts,
-  };
-
-  const { root } = getConfig();
+  });
 
   const pattern = `${
-    workspaces.length > 1
-      ? `{${appendRoot(root, workspaces).join(',')}}`
-      : appendRoot(root, workspaces)[0]
+    workspaces.length > 1 ? `{${workspaces.join(',')}}` : workspaces[0]
   }/*/package.json`;
 
   const pkgs = glob.sync(pattern);
