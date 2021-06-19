@@ -1,0 +1,17 @@
+{
+  "name": "@pinefile/monorepo",
+  "version": "1.0.0-alpha.28",
+  "description": "Pine monorepo functions",
+  "homepage": "https://github.com/pinefile/pine",
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.js",
+  "types": "dist",
+  "author": "Fredrik Forsmo <fredrik.forsmo@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@pinefile/pine": "^1.0.0-alpha.28",
+    "glob": "^7.1.7"
+  }
+}

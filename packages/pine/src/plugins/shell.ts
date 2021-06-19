@@ -32,6 +32,8 @@ export const shouldForceColor = (env: NodeJS.ProcessEnv = {}): boolean => {
   return !!Math.min(parseInt(env.FORCE_COLOR, 10), 3);
 };
 
+export type ShellOptionsType = Options;
+
 /**
  * Run shell command.
  *
@@ -42,7 +44,7 @@ export const shouldForceColor = (env: NodeJS.ProcessEnv = {}): boolean => {
  */
 export const shell = (
   cmd: string,
-  opts: Partial<Options> = {}
+  opts: Partial<ShellOptionsType> = {}
 ): Promise<any> => {
   const s = cmd.split(/\s/);
 
@@ -86,7 +88,7 @@ export const shell = (
  *
  * @returns {Promise}
  */
-export const run = (cmd: string, opts: Partial<Options> = {}) =>
+export const run = (cmd: string, opts: Partial<ShellOptionsType> = {}) =>
   shell(cmd, {
     ...opts,
     stdin: 'inherit',

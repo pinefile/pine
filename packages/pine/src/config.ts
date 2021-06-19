@@ -3,7 +3,7 @@ import path from 'path';
 import dotenv from 'dotenv';
 import { isObject } from '@pinefile/utils';
 import { OptionsType } from './args';
-import { LogLevel } from './logger';
+import { LogLevelType } from './logger';
 import { RunnerType } from './runner';
 
 export type ConfigType = {
@@ -27,7 +27,7 @@ export type ConfigType = {
    *
    * @default 'info'
    */
-  logLevel: LogLevel;
+  logLevel: LogLevelType;
 
   /**
    * Yargs options, key-value pairs.

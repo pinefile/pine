@@ -12,9 +12,9 @@ const formatDate = (date: Date) => chalk.gray(format(date, '[kk:mm:ss]'));
 const newDate = () => new Date();
 
 export type LogType = 'error' | 'warn' | 'info';
-export type LogLevel = LogType | 'silent';
+export type LogLevelType = LogType | 'silent';
 
-const LogLevels: Record<LogLevel, number> = {
+const LogLevels: Record<LogLevelType, number> = {
   silent: 0,
   error: 1,
   warn: 2,
@@ -22,15 +22,15 @@ const LogLevels: Record<LogLevel, number> = {
 };
 
 const output = (
-  type: LogLevel,
+  type: LogLevelType,
   message: Array<string | Error>,
-  options: Partial<LoggerOptions> = {}
+  options: Partial<LoggerOptionsType> = {}
 ) => {
   const logLevel = (
     process.env.LOG_LEVEL ||
     getConfig().logLevel ||
     ''
-  ).toLowerCase() as LogLevel;
+  ).toLowerCase() as LogLevelType;
 
   if (LogLevels[logLevel] >= LogLevels[type]) {
     const date = formatDate(newDate());
@@ -53,13 +53,13 @@ export const timeInSecs = (time: number) => {
   return `${seconds}.${milliseconds}s`;
 };
 
-export type LoggerOptions = {
+export type LoggerOptionsType = {
   prefix: string;
 };
 class Logger {
-  private options: LoggerOptions;
+  private options: LoggerOptionsType;
 
-  constructor(options: Partial<LoggerOptions> = {}) {
+  constructor(options: Partial<LoggerOptionsType> = {}) {
     this.options = {
       prefix: '',
       ...options,
@@ -79,7 +79,7 @@ class Logger {
   }
 }
 
-export const createLogger = (options: Partial<LoggerOptions> = {}) => {
+export const createLogger = (options: Partial<LoggerOptionsType> = {}) => {
   return new Logger(options);
 };
 

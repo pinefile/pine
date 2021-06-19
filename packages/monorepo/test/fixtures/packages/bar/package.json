@@ -1,0 +1,8 @@
+{
+  "name": "bar",
+  "scripts": {
+    "build": "echo 'building bar'",
+    "pwd": "echo 'bar' && echo $PWD",
+    "pine": "pine"
+  }
+}
