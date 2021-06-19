@@ -1,5 +1,6 @@
 // @ts-ignore
 import glob from 'glob';
+import fs from 'fs';
 import path from 'path';
 import {
   series,
@@ -14,6 +15,11 @@ export type NPMRunOptionsType = {
   workspaces: string[];
 };
 
+const appendRoot = (root: string, workspaces: string[]) =>
+  workspaces.map((workspace: string) =>
+    fs.existsSync(workspace) ? workspace : path.join(root, workspace)
+  );
+
 export const npmRun = async (
   script: string,
   opts: Partial<NPMRunOptionsType> = {},
@@ -27,8 +33,10 @@ export const npmRun = async (
 
   const { root } = getConfig();
 
-  const pattern = `${root.length ? root + '/' : ''}${
-    workspaces.length > 1 ? `{${workspaces.join(',')}}` : workspaces[0]
+  const pattern = `${
+    workspaces.length > 1
+      ? `{${appendRoot(root, workspaces).join(',')}}`
+      : appendRoot(root, workspaces)[0]
   }/*/package.json`;
 
   const pkgs = glob.sync(pattern);

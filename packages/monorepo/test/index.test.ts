@@ -1,4 +1,4 @@
-import { shell } from '@pinefile/pine';
+import { configure, shell } from '@pinefile/pine';
 import { npmRun } from '../src';
 
 let scripts = {};
@@ -20,8 +20,10 @@ describe('monorepo', () => {
   });
 
   test('should run build script in every workspace', async () => {
+    configure({ root: __dirname });
+
     await npmRun('build', {
-      workspaces: [`${__dirname}/fixtures/packages`],
+      workspaces: ['fixtures/packages'],
     });
 
     expect(scripts["echo 'building bar'"]).toBeDefined();
