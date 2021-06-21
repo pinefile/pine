@@ -10,7 +10,11 @@ import {
   ShellOptionsType,
   getConfig,
   ConfigType,
+  log,
+  color,
 } from '@pinefile/pine';
+
+type PackageType = Record<string, any>;
 
 export type NPMRunOptionsType = {
   scope: string | string[];
@@ -98,19 +102,24 @@ export const npmRun = async (
       ...require(p),
     }));
 
-  let pkgNames = pkgs.map((pkg: Record<string, any>) => pkg.name);
+  let pkgNames = pkgs.map((pkg: PackageType) => pkg.name);
 
   pkgNames = filterPackages(options.scope, pkgNames);
-  pkgs = pkgs.filter((pkg: Record<string, any>) => pkgNames.includes(pkg.name));
+  pkgs = pkgs.filter((pkg: PackageType) => pkgNames.includes(pkg.name));
 
-  const tasks = pkgs.map((pkg: Record<string, any>) => async () => {
-    if (pkg.scripts[script]) {
+  const tasks = pkgs
+    .filter((pkg: PackageType) => !!pkg.scripts[script])
+    .map((pkg: PackageType) => async () => {
       await pineRun(pkg.scripts[script], {
         ...shellOptions,
         cwd: path.dirname(pkg.location),
       });
-    }
-  });
+    });
+
+  if (!tasks.length) {
+    log.info(`Script ${color.cyan(`'${script}'`)} not found in packages`);
+    return;
+  }
 
   if (options.parallel) {
     await parallel(tasks);
