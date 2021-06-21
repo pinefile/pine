@@ -47,4 +47,15 @@ describe('monorepo', () => {
       'packages/monorepo/test/fixtures/packages/foo'
     );
   });
+
+  test('should run build script in for scoped packages', async () => {
+    configure({ root: __dirname, workspaces: ['fixtures/packages'] });
+
+    await npmRun('build', {
+      scope: 'foo',
+    });
+
+    expect(scripts["echo 'building bar'"]).toBeUndefined();
+    expect(scripts["echo 'building foo'"]).toBeDefined();
+  });
 });

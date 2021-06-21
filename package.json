@@ -12,6 +12,7 @@
     "compile": "lerna exec --stream -- tsc",
     "clean": "lerna exec --stream -- rm -rf ./dist tsconfig.tsbuildinfo",
     "pine:prod": "./packages/pine/bin/pine",
+    "pine:ts": "ts-node ./packages/pine/bin/pine",
     "pine:dev": "PINE_ENV=development ts-node ./packages/pine/bin/pine",
     "format": "prettier --write 'packages/**/src/**/*.ts' packages/**/test/**/*.ts",
     "lint": "eslint packages/**/src --ext .ts",

@@ -1,5 +1,6 @@
 // @ts-ignore
 import glob from 'glob';
+import multimatch from 'multimatch';
 import fs from 'fs';
 import path from 'path';
 import {
@@ -12,6 +13,7 @@ import {
 } from '@pinefile/pine';
 
 export type NPMRunOptionsType = {
+  scope: string | string[];
   parallel: boolean;
   workspaces: string[];
 };
@@ -32,6 +34,44 @@ const mergeConfig = (
   ]),
 });
 
+const filterPackages = (args: string | string[], pkgNames: string[]) => {
+  const results: string[] = [];
+  const search = !Array.isArray(args) ? [args] : args;
+
+  if (!search.length) {
+    return pkgNames;
+  }
+
+  const scoped = search.filter((n) => n.startsWith('@') || n.startsWith('!@'));
+
+  if (scoped.length > 0) {
+    results.push(...multimatch(pkgNames, scoped));
+  }
+
+  const unscoped = search.filter(
+    (n) => !n.startsWith('@') && !n.startsWith('!@')
+  );
+
+  if (unscoped.length > 0) {
+    const pkgMap = pkgNames.reduce((prev, cur) => {
+      const name = cur.replace(/^@[^/]+\//, '');
+      return {
+        ...prev,
+        [name]: (prev[name] || []).concat(cur),
+      };
+    }, {});
+
+    const matched = multimatch(Object.keys(pkgMap), unscoped);
+    for (const name of matched) {
+      for (const pkg of pkgMap[name]) {
+        results.push(pkg);
+      }
+    }
+  }
+
+  return [...new Set(results)];
+};
+
 export const npmRun = async (
   script: string,
   opts: Partial<NPMRunOptionsType> = {},
@@ -39,8 +79,9 @@ export const npmRun = async (
 ) => {
   const config = getConfig();
   const { workspaces, ...options }: NPMRunOptionsType = mergeConfig(config, {
+    scope: [],
     parallel: false,
-    workspaces: [],
+    workspaces: ['packages'],
     ...opts,
   });
 
@@ -48,14 +89,25 @@ export const npmRun = async (
     workspaces.length > 1 ? `{${workspaces.join(',')}}` : workspaces[0]
   }/*/package.json`;
 
-  const pkgs = glob.sync(pattern);
+  let pkgs = glob
+    .sync(pattern)
+    .map((p: string) => path.resolve(p))
+    .map((p: string) => ({
+      scripts: {},
+      location: p,
+      ...require(p),
+    }));
 
-  const tasks = pkgs.map((p: string) => async () => {
-    const pkg = { scripts: {}, ...require(p) };
+  let pkgNames = pkgs.map((pkg: Record<string, any>) => pkg.name);
+
+  pkgNames = filterPackages(options.scope, pkgNames);
+  pkgs = pkgs.filter((pkg: Record<string, any>) => pkgNames.includes(pkg.name));
+
+  const tasks = pkgs.map((pkg: Record<string, any>) => async () => {
     if (pkg.scripts[script]) {
       await pineRun(pkg.scripts[script], {
         ...shellOptions,
-        cwd: path.dirname(p),
+        cwd: path.dirname(pkg.location),
       });
     }
   });
