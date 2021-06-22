@@ -1,7 +1,7 @@
 {
   "name": "foo",
   "scripts": {
-    "build": "sleepecho 'building foo';",
+    "build": "echo 'building foo'",
     "slow": "sleep 5; echo 'done'",
     "pwd": "echo 'foo' && echo $PWD",
     "pine": "pine"
