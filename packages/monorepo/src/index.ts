@@ -22,6 +22,22 @@ export type NPMRunOptionsType = {
   workspaces: string[];
 };
 
+let colorWheelCurrent = 0;
+const colorWheel = [
+  color.cyan,
+  color.magenta,
+  color.blue,
+  color.yellow,
+  color.green,
+  color.red,
+];
+
+const pkgColor = (p: string) => {
+  const fn = colorWheel[colorWheelCurrent % colorWheel.length];
+  colorWheelCurrent++;
+  return `${fn(p)}`;
+};
+
 const appendRoot = (root: string, workspaces: string[]) =>
   workspaces.map((workspace: string) =>
     fs.existsSync(workspace) ? workspace : path.join(root, workspace)
@@ -110,6 +126,7 @@ export const npmRun = async (
   const tasks = pkgs
     .filter((pkg: PackageType) => !!pkg.scripts[script])
     .map((pkg: PackageType) => async () => {
+      log.info(pkgColor(`${pkg.name}: ${script}`));
       await pineRun(pkg.scripts[script], {
         ...shellOptions,
         cwd: path.dirname(pkg.location),

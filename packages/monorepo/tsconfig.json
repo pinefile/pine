@@ -5,5 +5,5 @@
     "rootDir": "src"
   },
   "exclude": ["dist", "test"],
-  "references": [{ "path": "../pine" }]
+  "references": [{ "path": "../pine" }, { "path": "../utils" }]
 }

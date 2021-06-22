@@ -2,6 +2,7 @@
   "name": "bar",
   "scripts": {
     "build": "echo 'building bar'",
+    "slow": "sleep 5; echo 'done'",
     "pwd": "echo 'bar' && echo $PWD",
     "pine": "pine"
   }
