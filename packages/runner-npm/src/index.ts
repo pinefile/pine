@@ -2,21 +2,21 @@ import {
   api,
   getConfig,
   run,
-  PineFileType,
-  ArgumentsType,
-  RunnerOptionsType,
+  PineFile,
+  Arguments,
+  RunnerOptions,
 } from '@pinefile/pine';
 
-const getPkg = (options: RunnerOptionsType = {}) => {
+const getPkg = (options: RunnerOptions = {}) => {
   const { root } = { ...getConfig(), ...options };
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   return require(`${root}/package.json`);
 };
 
 const resolveTask = (
-  pinefile: PineFileType,
+  pinefile: PineFile,
   name: string,
-  options: RunnerOptionsType = {}
+  options: RunnerOptions = {}
 ) => {
   const task = api.resolveTask(pinefile, name);
   if (task) {
@@ -25,7 +25,7 @@ const resolveTask = (
 
   const pkg = getPkg(options);
   if (pkg.scripts[name]) {
-    return async (args: ArgumentsType) => {
+    return async (args: Arguments) => {
       const str = (args._ || []).join(' ');
       await run(`${pkg.scripts[name]}${str.length ? ` ${str}` : ''}`);
     };
@@ -35,18 +35,18 @@ const resolveTask = (
 };
 
 export const taskExists = (
-  pinefile: PineFileType,
+  pinefile: PineFile,
   name: string,
-  args: ArgumentsType,
-  options: RunnerOptionsType = {}
+  args: Arguments,
+  options: RunnerOptions = {}
 ): boolean => !!resolveTask(pinefile, name, options);
 
 export const runner = api.createRunner(
   async (
-    pinefile: PineFileType,
+    pinefile: PineFile,
     name: string,
-    args: ArgumentsType,
-    options: RunnerOptionsType = {}
+    args: Arguments,
+    options: RunnerOptions = {}
   ) => {
     const task = resolveTask(pinefile, name, options);
 

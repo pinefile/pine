@@ -2,11 +2,11 @@ import fs from 'fs';
 import path from 'path';
 import dotenv from 'dotenv';
 import { isObject } from '@pinefile/utils';
-import { OptionsType } from './args';
-import { LogLevelType } from './logger';
-import { RunnerType } from './runner';
+import { Options } from './args';
+import { LogLevel } from './logger';
+import { Runner } from './runner';
 
-export type ConfigType = {
+export type Config = {
   /**
    * Dynamic config properties.
    */
@@ -27,14 +27,14 @@ export type ConfigType = {
    *
    * @default 'info'
    */
-  logLevel: LogLevelType;
+  logLevel: LogLevel;
 
   /**
    * Yargs options, key-value pairs.
    *
    * @link https://yargs.js.org/docs/#api-reference-optionskey-opt
    */
-  options: OptionsType;
+  options: Options;
 
   /**
    * Packages to preload before Pinefile is loaded.
@@ -49,7 +49,7 @@ export type ConfigType = {
   /**
    * Global runner that can be used to customize the runner for all tasks.
    */
-  runner?: string | RunnerType | Record<string, any> | Array<any>;
+  runner?: string | Runner | Record<string, any> | Array<any>;
 
   /**
    * Task name of the function that is executing.
@@ -62,9 +62,9 @@ export type ConfigType = {
  *
  * configure((config, task) => config)
  */
-export type ConfigFunctionType = (cfg: ConfigType) => ConfigType;
+export type ConfigFunction = (cfg: Config) => Config;
 
-let config: ConfigType = {
+let config: Config = {
   dotenv: [],
   env: {},
   logLevel: 'info',
@@ -74,7 +74,7 @@ let config: ConfigType = {
   task: '',
 };
 
-const loadDotenv = (config: ConfigType) => {
+const loadDotenv = (config: Config) => {
   if (!Array.isArray(config.dotenv)) {
     return;
   }
@@ -110,7 +110,7 @@ const loadDotenv = (config: ConfigType) => {
   config.dotenv = [];
 };
 
-const loadModules = (config: ConfigType) => {
+const loadModules = (config: Config) => {
   if (!Array.isArray(config.require)) {
     return;
   }
@@ -122,7 +122,7 @@ const loadModules = (config: ConfigType) => {
   });
 };
 
-const setEnvironment = (config: ConfigType) => {
+const setEnvironment = (config: Config) => {
   if (!isObject(config.env)) {
     return;
   }
@@ -135,7 +135,7 @@ const setEnvironment = (config: ConfigType) => {
   }
 };
 
-export const getConfig = (): ConfigType => config;
+export const getConfig = (): Config => config;
 
 /**
  * Pine can be configured via the configure function, which accepts:
@@ -154,8 +154,8 @@ export const getConfig = (): ConfigType => config;
  *   }))
  */
 export const configure = (
-  newConfig: Partial<ConfigType> | ConfigFunctionType
-): ConfigType => {
+  newConfig: Partial<Config> | ConfigFunction
+): Config => {
   if (typeof newConfig === 'function') {
     newConfig = newConfig(config);
   }

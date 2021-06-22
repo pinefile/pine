@@ -1,7 +1,7 @@
 // @ts-ignore
 import bach from 'bach';
-import { ArgumentsType } from '../args';
-import { PineFileType } from '../file';
+import { Arguments } from '../args';
+import { PineFile } from '../file';
 import { runTask } from '../task';
 
 /**
@@ -28,7 +28,7 @@ export const series = (...tasks: any[]): any => {
     return series(...tasks[0]);
   }
 
-  return (pinefile: PineFileType, _: string, args: ArgumentsType) =>
+  return (pinefile: PineFile, _: string, args: Arguments) =>
     bach.series(
       ...tasks.map(
         (task) => (cb: any) => runTask(pinefile, task, args).then(cb)
@@ -60,7 +60,7 @@ export const parallel = (...tasks: any[]): any => {
     return parallel(...tasks[0]);
   }
 
-  return (pinefile: PineFileType, _: string, args: ArgumentsType) =>
+  return (pinefile: PineFile, _: string, args: Arguments) =>
     bach.parallel(
       ...tasks.map(
         (task) => (cb: any) => runTask(pinefile, task, args).then(cb)

@@ -1,8 +1,8 @@
 import pify from 'pify';
 import { isObject } from '@pinefile/utils';
-import { ArgumentsType } from './args';
+import { Arguments } from './args';
 import { getConfig } from './config';
-import { PineFileType } from './file';
+import { PineFile } from './file';
 import { getRunner } from './runner';
 import { log, color, timeInSecs } from './logger';
 
@@ -31,7 +31,7 @@ export const validTaskValue = (val: any) => {
  *
  * @returns {function|boolean}
  */
-export const resolveTask = (obj: PineFileType, key: string, sep = ':'): any => {
+export const resolveTask = (obj: PineFile, key: string, sep = ':'): any => {
   if (!key) {
     return false;
   }
@@ -92,9 +92,9 @@ const doneify =
  * @returns {Promise}
  */
 const execute = async (
-  pinefile: PineFileType,
+  pinefile: PineFile,
   name: string,
-  args: ArgumentsType
+  args: Arguments
 ): Promise<void> => {
   const config = getConfig();
 
@@ -228,9 +228,9 @@ const execute = async (
  * @returns {Promise}
  */
 export const runTask = async (
-  pinefile: PineFileType,
+  pinefile: PineFile,
   name: string,
-  args: ArgumentsType = {}
+  args: Arguments = {}
 ) => {
   return await execute(pinefile, name, args);
 };

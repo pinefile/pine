@@ -8,13 +8,13 @@ const api = { runCLI, resolveTask, runTask, createRunner };
 export { api };
 
 // types
-export { ArgumentsType, OptionsType } from './args';
-export { PineFileType } from './file';
-export { RunnerType, RunnerOptionsType } from './runner';
+export { Arguments, Options } from './args';
+export { PineFile } from './file';
+export { Runner, RunnerOptions } from './runner';
 
 // functions
 export { getArgs } from './args';
-export { configure, getConfig, ConfigType, ConfigFunctionType } from './config';
-export { log, color, createLogger, LoggerOptionsType } from './logger';
+export { configure, getConfig, Config, ConfigFunction } from './config';
+export { log, color, createLogger, LoggerOptions } from './logger';
 export * from './plugins/task';
-export { shell, run, ShellOptionsType } from './plugins/shell';
+export { shell, run, ShellOptions } from './plugins/shell';

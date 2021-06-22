@@ -6,16 +6,16 @@ import {
   series,
   run as pineRun,
   parallel,
-  ShellOptionsType,
+  ShellOptions,
   getConfig,
-  ConfigType,
+  Config,
   log,
   color,
 } from '@pinefile/pine';
 
-type PackageType = Record<string, any>;
+type Package = Record<string, any>;
 
-export type NPMRunOptionsType = {
+export type NPMRunOptions = {
   scope: string | string[];
   parallel: boolean;
   workspaces: string[];
@@ -42,10 +42,7 @@ const appendRoot = (root: string, workspaces: string[]) =>
     fs.existsSync(workspace) ? workspace : path.join(root, workspace)
   );
 
-const mergeConfig = (
-  config: ConfigType,
-  opts: NPMRunOptionsType
-): NPMRunOptionsType => ({
+const mergeConfig = (config: Config, opts: NPMRunOptions): NPMRunOptions => ({
   ...opts,
   workspaces: appendRoot(config.root, [
     ...opts.workspaces,
@@ -93,11 +90,11 @@ const filterPackages = (args: string | string[], pkgNames: string[]) => {
 
 export const npmRun = async (
   script: string,
-  opts: Partial<NPMRunOptionsType> = {},
-  shellOptions: Partial<ShellOptionsType> = {}
+  opts: Partial<NPMRunOptions> = {},
+  shellOptions: Partial<ShellOptions> = {}
 ) => {
   const config = getConfig();
-  const { workspaces, ...options }: NPMRunOptionsType = mergeConfig(config, {
+  const { workspaces, ...options }: NPMRunOptions = mergeConfig(config, {
     scope: [],
     parallel: false,
     workspaces: ['packages'],
@@ -117,14 +114,14 @@ export const npmRun = async (
       ...require(p),
     }));
 
-  let pkgNames = pkgs.map((pkg: PackageType) => pkg.name);
+  let pkgNames = pkgs.map((pkg: Package) => pkg.name);
 
   pkgNames = filterPackages(options.scope, pkgNames);
-  pkgs = pkgs.filter((pkg: PackageType) => pkgNames.includes(pkg.name));
+  pkgs = pkgs.filter((pkg: Package) => pkgNames.includes(pkg.name));
 
   const tasks = pkgs
-    .filter((pkg: PackageType) => !!pkg.scripts[script])
-    .map((pkg: PackageType) => async () => {
+    .filter((pkg: Package) => !!pkg.scripts[script])
+    .map((pkg: Package) => async () => {
       log.info(pkgColor(`${pkg.name}: ${script}`));
       await pineRun(pkg.scripts[script], {
         ...shellOptions,

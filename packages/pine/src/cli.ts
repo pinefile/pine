@@ -1,9 +1,9 @@
 import { camelCaseToDash, isObject } from '@pinefile/utils';
 import { parse, options } from './args';
 import { runTask, validTaskValue } from './task';
-import { findFile, findDirname, loadPineFile, PineFileType } from './file';
+import { findFile, findDirname, loadPineFile, PineFile } from './file';
 import { log, setup as setupLogger } from './logger';
-import { configure, getConfig, ConfigType } from './config';
+import { configure, getConfig, Config } from './config';
 
 /**
  * Print help text.
@@ -38,7 +38,7 @@ Options:`);
  * @param {object} pineModule
  * @param {string} prefix
  */
-const printTasks = (pineModule: PineFileType, prefix = '') => {
+const printTasks = (pineModule: PineFile, prefix = '') => {
   try {
     const keys = Object.keys(pineModule);
 
@@ -75,7 +75,7 @@ export const runCLI = async (argv: any[]): Promise<any> => {
 
     setupLogger(args);
 
-    configure((config: ConfigType) => ({
+    configure((config: Config) => ({
       dotenv: args.dotenv ? ['.env'] : [],
       env: {
         ...(!args.noColor ? { FORCE_COLOR: '1' } : {}),

@@ -8,7 +8,7 @@ const PINE_FILE_ORDER = Object.freeze([
   'pinefile.ts',
 ]);
 
-export type PineFileType = {
+export type PineFile = {
   [key: string]: any;
 };
 
@@ -24,8 +24,8 @@ export type PineFileType = {
  *
  * @returns {object}
  */
-export const parsePineFile = (obj: PineFileType, sep = ':') =>
-  Object.keys(obj).reduce((prev: PineFileType, key: string) => {
+export const parsePineFile = (obj: PineFile, sep = ':') =>
+  Object.keys(obj).reduce((prev: PineFile, key: string) => {
     if (isObject(obj[key])) {
       prev[key] = parsePineFile(obj[key]);
     } else if (key.indexOf(sep) !== -1) {
@@ -48,7 +48,7 @@ export const parsePineFile = (obj: PineFileType, sep = ':') =>
     return prev;
   }, {});
 
-export const loadPineFile = (file: string): PineFileType => {
+export const loadPineFile = (file: string): PineFile => {
   // eslint-disable-next-line
   let pineModule = require(file);
   pineModule = isObject(pineModule.default) ? pineModule.default : pineModule;

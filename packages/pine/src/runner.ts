@@ -1,22 +1,22 @@
 import { isObject, omit } from '@pinefile/utils';
-import { ArgumentsType } from './args';
-import { ConfigType } from './config';
-import { PineFileType } from './file';
+import { Arguments } from './args';
+import { Config } from './config';
+import { PineFile } from './file';
 
-export type RunnerOptionsType = Record<string, any>;
+export type RunnerOptions = Record<string, any>;
 
-export type RunnerType = (
-  pinefile: PineFileType,
+export type Runner = (
+  pinefile: PineFile,
   name: string,
-  args: ArgumentsType,
-  options?: RunnerOptionsType
+  args: Arguments,
+  options?: RunnerOptions
 ) => any;
 
 const isValidRunnerObject = (runner: any) =>
   isObject(runner) &&
   (typeof runner.default === 'function' || typeof runner.runner === 'function');
 
-export const getRunner = (config: Partial<ConfigType>): any => {
+export const getRunner = (config: Partial<Config>): any => {
   let runner: any = false;
   let options: Record<string, any> = {};
   let rest: Record<string, any> = {};
@@ -64,12 +64,12 @@ export const getRunner = (config: Partial<ConfigType>): any => {
 };
 
 export const createRunner =
-  (fn: RunnerType) =>
+  (fn: Runner) =>
   async (
-    pinefile: PineFileType,
+    pinefile: PineFile,
     name: string,
-    args: ArgumentsType,
-    options?: RunnerOptionsType
+    args: Arguments,
+    options?: RunnerOptions
   ) =>
   async () =>
     await fn(pinefile, name, args, options);

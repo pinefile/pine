@@ -3,11 +3,11 @@ import { isObject } from '@pinefile/utils';
 import { findDirname } from './file';
 import { getConfig } from './config';
 
-export type ArgumentsType = {
+export type Arguments = {
   [key in keyof YArguments<any>]: YArguments<any>[key];
 };
 
-const defaultOptions: OptionsType = {
+const defaultOptions: Options = {
   help: {
     type: 'boolean',
     default: false,
@@ -40,11 +40,11 @@ const defaultOptions: OptionsType = {
   },
 };
 
-export type OptionsType = {
+export type Options = {
   [key: string]: YOptions;
 };
 
-export const options = (): OptionsType => {
+export const options = (): Options => {
   const conf = getConfig();
   return {
     ...defaultOptions,
@@ -52,11 +52,11 @@ export const options = (): OptionsType => {
   };
 };
 
-let args: ArgumentsType = {};
+let args: Arguments = {};
 
-export const getArgs = (): ArgumentsType => args;
+export const getArgs = (): Arguments => args;
 
-export const parse = (argv: any[], opts?: OptionsType): ArgumentsType => {
+export const parse = (argv: any[], opts?: Options): Arguments => {
   args = yargs
     .parserConfiguration({
       // https://github.com/yargs/yargs/issues/1011
