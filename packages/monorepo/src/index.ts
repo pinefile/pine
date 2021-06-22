@@ -1,4 +1,3 @@
-// @ts-ignore
 import glob from 'glob';
 import multimatch from 'multimatch';
 import fs from 'fs';
