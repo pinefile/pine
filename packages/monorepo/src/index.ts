@@ -15,10 +15,16 @@ import {
 
 type Package = Record<string, any>;
 
-export type NPMRunOptions = {
+type BaseRunOptions = {
   scope: string | string[];
   parallel: boolean;
   workspaces: string[];
+};
+
+export type ExecRunOptions = BaseRunOptions;
+
+export type NPMRunOptions = BaseRunOptions & {
+  exec: boolean;
 };
 
 let colorWheelCurrent = 0;
@@ -95,6 +101,7 @@ export const npmRun = async (
 ) => {
   const config = getConfig();
   const { workspaces, ...options }: NPMRunOptions = mergeConfig(config, {
+    exec: false,
     scope: [],
     parallel: false,
     workspaces: ['packages'],
@@ -119,6 +126,13 @@ export const npmRun = async (
   pkgNames = filterPackages(options.scope, pkgNames);
   pkgs = pkgs.filter((pkg: Package) => pkgNames.includes(pkg.name));
 
+  if (options.exec) {
+    pkgs = pkgs.map((pkg: Package) => ({
+      ...pkg,
+      scripts: { [script]: script },
+    }));
+  }
+
   const tasks = pkgs
     .filter((pkg: Package) => !!pkg.scripts[script])
     .map((pkg: Package) => async () => {
@@ -140,3 +154,17 @@ export const npmRun = async (
     await series(tasks);
   }
 };
+
+export const execRun = async (
+  script: string,
+  opts: Partial<ExecRunOptions> = {},
+  shellOptions: Partial<ShellOptions> = {}
+) =>
+  npmRun(
+    script,
+    {
+      ...opts,
+      exec: true,
+    },
+    shellOptions
+  );
