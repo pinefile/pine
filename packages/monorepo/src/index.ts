@@ -51,7 +51,7 @@ const appendRoot = (root: string, workspaces: string[]) =>
 const mergeConfig = (config: Config, opts: NPMRunOptions): NPMRunOptions => ({
   ...opts,
   workspaces: appendRoot(config.root, [
-    ...opts.workspaces,
+    ...(config.workspaces instanceof Array ? [] : opts.workspaces),
     ...(config.workspaces instanceof Array ? config.workspaces : []),
   ]),
 });
