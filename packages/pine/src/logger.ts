@@ -1,5 +1,5 @@
 import chalk, { Chalk } from 'chalk';
-import { newDate, formatDate } from '@pinefile/utils';
+import format from 'date-fns/format';
 import { ArgumentsType } from './args';
 import { getConfig } from './config';
 
@@ -7,6 +7,9 @@ export let color: Chalk = chalk;
 export const setup = (args: ArgumentsType) => {
   color = new chalk.Instance({ level: args.noColor ? 0 : 1 });
 };
+
+const formatDate = (date: Date) => chalk.gray(format(date, '[kk:mm:ss]'));
+const newDate = () => new Date();
 
 export type LogType = 'error' | 'warn' | 'info';
 export type LogLevelType = LogType | 'silent';
