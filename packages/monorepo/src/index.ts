@@ -13,11 +13,17 @@ import {
   color,
 } from '@pinefile/pine';
 
+const chunkArray = (arr: any[], size: number): any[] =>
+  arr.length > size
+    ? [arr.slice(0, size), ...chunkArray(arr.slice(size), size)]
+    : [arr];
+
 type Package = Record<string, any>;
 
 type BaseRunOptions = {
   scope: string | string[];
   parallel: boolean;
+  parallelCount: number;
   workspaces: string[];
 };
 
@@ -104,6 +110,7 @@ export const npmRun = async (
     exec: false,
     scope: [],
     parallel: false,
+    parallelCount: 5,
     workspaces: ['packages'],
     ...opts,
   });
@@ -148,10 +155,14 @@ export const npmRun = async (
     return;
   }
 
-  if (options.parallel) {
-    await parallel(tasks);
-  } else {
-    await series(tasks);
+  if (!options.parallel) {
+    return await series(tasks);
+  }
+
+  const chunks = chunkArray(tasks, options.parallelCount);
+
+  for (let i = 0, l = chunks.length; i < l; i++) {
+    await parallel(chunks[i]);
   }
 };
 
