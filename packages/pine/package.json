@@ -30,12 +30,12 @@
   "dependencies": {
     "@pinefile/utils": "^1.0.0-alpha.28",
     "bach": "^1.2.0",
-    "chalk": "^4.1.1",
-    "date-fns": "^2.22.1",
-    "core-js": "^3.15.2",
+    "chalk": "^4.1.2",
+    "date-fns": "^2.23.0",
+    "core-js": "^3.16.2",
     "dotenv": "^10.0.0",
     "execa": "^5.1.1",
     "pify": "^5.0.0",
-    "yargs": "^17.0.1"
+    "yargs": "^17.1.1"
   }
 }
