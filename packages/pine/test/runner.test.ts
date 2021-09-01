@@ -172,7 +172,7 @@ describe('pine', () => {
         name: 'test',
       });
       expect(false).toBeTruthy();
-    } catch (err) {
+    } catch (err: any) {
       expect(err.message).toContain('Failed to load runner');
     }
   });

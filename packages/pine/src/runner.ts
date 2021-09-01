@@ -28,11 +28,9 @@ export const getRunner = (config: Partial<Config>): any => {
   } else if (typeof config.runner === 'string') {
     try {
       runner = require(config.runner);
-    } catch (err) {
-      if (err instanceof Error) {
-        err.message = `Failed to load runner ${err.message}`;
-        throw err;
-      }
+    } catch (err: any) {
+      err.message = `Failed to load runner ${err.message}`;
+      throw err;
     }
   } else if (
     Array.isArray(config.runner) &&
