@@ -74,6 +74,9 @@ let config: Config = {
   task: '',
 };
 
+const isError = (error: any): error is NodeJS.ErrnoException =>
+  error instanceof Error;
+
 const loadDotenv = (config: Config) => {
   if (!Array.isArray(config.dotenv)) {
     return;
@@ -101,7 +104,7 @@ const loadDotenv = (config: Config) => {
         throw result.error;
       }
     } catch (err) {
-      if (err.code !== 'ENOENT') {
+      if (isError(err) && err.code !== 'ENOENT') {
         throw err;
       }
     }

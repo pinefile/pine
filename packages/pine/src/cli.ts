@@ -110,7 +110,9 @@ export const runCLI = async (argv: any[]): Promise<any> => {
       _: args._,
     });
   } catch (err) {
-    log.error(err);
+    if (err instanceof Error) {
+      log.error(err);
+    }
     return;
   }
 };
