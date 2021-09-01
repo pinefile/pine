@@ -8,7 +8,6 @@ import {
   parallel,
   ShellOptions,
   getConfig,
-  Config,
   log,
   color,
 } from '@pinefile/pine';
@@ -20,18 +19,25 @@ const chunkArray = (arr: any[], size: number): any[] =>
 
 type Package = Record<string, any>;
 
-type BaseRunOptions = {
+type BaseOptions = {
   scope: string | string[];
-  parallel: boolean;
-  parallelCount: number;
   workspaces: string[];
 };
 
-export type ExecRunOptions = BaseRunOptions;
+type BaseRunOptions = BaseOptions & {
+  parallel: boolean;
+  parallelCount: number;
+};
+
+export type FindPackagesOptions = BaseOptions & {
+  pattern: string;
+};
 
 export type NPMRunOptions = BaseRunOptions & {
   exec: boolean;
 };
+
+export type ExecRunOptions = BaseRunOptions;
 
 let colorWheelCurrent = 0;
 const colorWheel = [
@@ -54,13 +60,16 @@ const appendRoot = (root: string, workspaces: string[]) =>
     fs.existsSync(workspace) ? workspace : path.join(root, workspace)
   );
 
-const mergeConfig = (config: Config, opts: NPMRunOptions): NPMRunOptions => ({
-  ...opts,
-  workspaces: appendRoot(config.root, [
-    ...(config.workspaces instanceof Array ? [] : opts.workspaces),
-    ...(config.workspaces instanceof Array ? config.workspaces : []),
-  ]),
-});
+const mergeConfig = <T>(opts: T): T => {
+  const config = getConfig();
+  return {
+    ...opts,
+    workspaces: appendRoot(config.root, [
+      ...(config.workspaces instanceof Array ? [] : (opts as any).workspaces),
+      ...(config.workspaces instanceof Array ? config.workspaces : []),
+    ]),
+  };
+};
 
 const filterPackages = (args: string | string[], pkgNames: string[]) => {
   const results: string[] = [];
@@ -100,26 +109,21 @@ const filterPackages = (args: string | string[], pkgNames: string[]) => {
   return [...new Set(results)];
 };
 
-export const npmRun = async (
-  script: string,
-  opts: Partial<NPMRunOptions> = {},
-  shellOptions: Partial<ShellOptions> = {}
-) => {
-  const config = getConfig();
-  const { workspaces, ...options }: NPMRunOptions = mergeConfig(config, {
-    exec: false,
+export const findPackages = (opts: Partial<FindPackagesOptions> = {}) => {
+  const { workspaces, ...options } = mergeConfig<FindPackagesOptions>({
+    pattern: '',
     scope: [],
-    parallel: false,
-    parallelCount: 5,
     workspaces: ['packages'],
     ...opts,
   });
 
-  const pattern = `${
-    workspaces.length > 1 ? `{${workspaces.join(',')}}` : workspaces[0]
-  }/*/package.json`;
+  const pattern = options.pattern
+    ? options.pattern
+    : `${
+        workspaces.length > 1 ? `{${workspaces.join(',')}}` : workspaces[0]
+      }/*/package.json`;
 
-  let pkgs = glob
+  return glob
     .sync(pattern)
     .map((p: string) => path.resolve(p))
     .map((p: string) => ({
@@ -127,7 +131,23 @@ export const npmRun = async (
       location: p,
       ...require(p),
     }));
+};
 
+export const npmRun = async (
+  script: string,
+  opts: Partial<NPMRunOptions> = {},
+  shellOptions: Partial<ShellOptions> = {}
+) => {
+  const options = mergeConfig<NPMRunOptions>({
+    exec: false,
+    scope: [],
+    parallel: false,
+    parallelCount: 5,
+    workspaces: [],
+    ...opts,
+  });
+
+  let pkgs = findPackages({ workspaces: options.workspaces });
   let pkgNames = pkgs.map((pkg: Package) => pkg.name);
 
   pkgNames = filterPackages(options.scope, pkgNames);

@@ -1,6 +1,6 @@
 import { configure, shell } from '@pinefile/pine';
 import glob from 'glob';
-import { execRun, npmRun } from '../src';
+import { execRun, findPackages, npmRun } from '../src';
 
 let scripts = {};
 
@@ -68,5 +68,13 @@ describe('monorepo', () => {
     const pkgs = glob.sync(`${__dirname}/fixtures/packages/*/package.json`);
 
     expect(scripts['echo "pine"'].length).toBe(pkgs.length);
+  });
+
+  test('should find packages in every workspace', async () => {
+    configure({ root: __dirname, workspaces: ['fixtures/packages'] });
+
+    const packages = findPackages().map((p) => p.name);
+
+    expect(['bar', 'foo', 'pub']).toStrictEqual(packages);
   });
 });
