@@ -67,7 +67,7 @@ const printTasks = (pineModule: PineFile, prefix = '') => {
   }
 };
 
-export const runCLI = async (argv: any[]): Promise<any> => {
+export const runCLI = async (argv: any[], load = true): Promise<any> => {
   try {
     const args = parse(argv);
     const pineFile = findFile(args.file);
@@ -89,6 +89,10 @@ export const runCLI = async (argv: any[]): Promise<any> => {
       ],
       task: name,
     }));
+
+    if (!load) {
+      return;
+    }
 
     const pineModule = loadPineFile(pineFile);
 
