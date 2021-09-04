@@ -36,6 +36,15 @@ describe('monorepo', () => {
     expect(scripts["echo 'building foo'"]).toBeDefined();
   });
 
+  test('should run build script in every workspace with template string', async () => {
+    configure({ root: __dirname, workspaces: ['fixtures/packages'] });
+
+    await npmRun`build`;
+
+    expect(scripts["echo 'building bar'"]).toBeDefined();
+    expect(scripts["echo 'building foo'"]).toBeDefined();
+  });
+
   test('should run pwd script in every workspace', async () => {
     await npmRun('pwd', {
       workspaces: [`${__dirname}/fixtures/packages`],

@@ -134,10 +134,11 @@ export const findPackages = (opts: Partial<FindPackagesOptions> = {}) => {
 };
 
 export const npmRun = async (
-  script: string,
+  cmd: string | string[] | TemplateStringsArray,
   opts: Partial<NPMRunOptions> = {},
   shellOptions: Partial<ShellOptions> = {}
 ) => {
+  const script = cmd instanceof Array ? cmd.join(' ') : cmd;
   const options = mergeConfig<NPMRunOptions>({
     exec: false,
     scope: [],
@@ -187,7 +188,7 @@ export const npmRun = async (
 };
 
 export const execRun = async (
-  script: string,
+  script: string | string[] | TemplateStringsArray,
   opts: Partial<ExecRunOptions> = {},
   shellOptions: Partial<ShellOptions> = {}
 ) =>

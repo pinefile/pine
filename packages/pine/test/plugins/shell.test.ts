@@ -21,6 +21,11 @@ describe('plugins/shell', () => {
     });
   });
 
+  test('should run shell commands with template string', async () => {
+    const output = await shell`echo "hello"`;
+    expect(output).toContain('hello');
+  });
+
   test('should throw when exit code is greater than 0', async () => {
     try {
       await shell('exit 1');

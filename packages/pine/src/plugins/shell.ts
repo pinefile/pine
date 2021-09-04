@@ -43,10 +43,10 @@ export type ShellOptions = Options;
  * @returns {Promise}
  */
 export const shell = (
-  cmd: string,
+  cmd: string | string[] | TemplateStringsArray,
   opts: Partial<ShellOptions> = {}
 ): Promise<any> => {
-  const s = cmd.split(/\s/);
+  const s = (cmd instanceof Array ? cmd.join(' ') : cmd).split(/\s/);
 
   return new Promise((resolve, reject) => {
     const sp = execa(s[0], s.slice(1), {
