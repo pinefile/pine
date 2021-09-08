@@ -13,7 +13,7 @@ export { PineFile } from './file';
 export { Runner, RunnerOptions } from './runner';
 
 // functions
-export { getArgs } from './args';
+export { filterArgs, getArgs } from './args';
 export { configure, getConfig, Config, ConfigFunction } from './config';
 export { log, color, createLogger, LoggerOptions } from './logger';
 export * from './plugins/task';

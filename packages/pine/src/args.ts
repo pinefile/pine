@@ -1,5 +1,5 @@
 import yargs, { Arguments as YArguments, Options as YOptions } from 'yargs';
-import { isObject } from '@pinefile/utils';
+import { isObject, omit } from '@pinefile/utils';
 import { findDirname } from './file';
 import { getConfig } from './config';
 
@@ -66,6 +66,21 @@ export const parse = (argv: any[], opts?: Options): Arguments => {
     .options(opts ? opts : options())
     .pkgConf('pine', findDirname('package.json'))
     .parse(argv);
+
+  // remove keys with dashes, e.g 'no-color' and keep 'noColor'
+  Object.keys(args).forEach((key: string) => {
+    if (key.indexOf('-') !== -1) {
+      args = omit(key, args);
+    }
+  });
+
+  return args;
+};
+
+export const filterArgs = (args: Record<string, any>) => {
+  Object.keys(defaultOptions).forEach(
+    (key: string) => (args = omit(key, args))
+  );
 
   return args;
 };
