@@ -71,11 +71,11 @@ export class Logger {
   }
 }
 
-let _internalLogger: Logger;
+export const createLogger = (options: Partial<LoggerOptions> = {}): Logger =>
+  new Logger(options);
+
+let _internalLogger: Logger = createLogger();
 
 export const internalLog = () => _internalLogger;
-
-export const createLogger = (
-  options: Partial<LoggerOptions> = {},
-  logger?: Logger
-): Logger => (_internalLogger = logger || new Logger(options));
+export const setLogger = (logger?: Logger): Logger =>
+  (_internalLogger = logger || _internalLogger || createLogger());
