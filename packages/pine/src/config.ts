@@ -3,7 +3,7 @@ import path from 'path';
 import dotenv from 'dotenv';
 import { isObject } from '@pinefile/utils';
 import { Options } from './args';
-import { LogLevel } from './logger';
+import { LogLevel, createLogger, Logger } from './logger';
 import { Runner } from './runner';
 
 export type Config = {
@@ -28,6 +28,11 @@ export type Config = {
    * @default 'info'
    */
   logLevel: LogLevel;
+
+  /**
+   * Set custom logger.
+   */
+  logger?: Logger;
 
   /**
    * Yargs options, key-value pairs.
@@ -138,6 +143,8 @@ const setEnvironment = (config: Config) => {
   }
 };
 
+const setLogger = (config: Config) => createLogger({}, config?.logger);
+
 export const getConfig = (): Config => config;
 
 /**
@@ -171,6 +178,7 @@ export const configure = (
   loadDotenv(config);
   loadModules(config);
   setEnvironment(config);
+  setLogger(config);
 
   return config;
 };

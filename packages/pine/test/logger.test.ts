@@ -1,4 +1,5 @@
-import { log, createLogger } from '../src/logger';
+import { configure, log, createLogger, Logger } from '../src';
+import { internalLog } from '../src/logger';
 
 describe('logger', () => {
   test('can log info', () => {
@@ -49,5 +50,29 @@ describe('logger', () => {
     expect(spyLog.mock.calls[0][2]).toBe('info');
 
     spyLog.mockRestore();
+  });
+
+  test('with custom logger', () => {
+    class CustomLogger extends Logger {
+      info(...message: Array<string | Error>) {
+        expect(message[0]).toBe('info');
+      }
+
+      warn(...message: Array<string | Error>) {
+        expect(message[0]).toBe('warn');
+      }
+
+      error(...message: Array<string | Error>) {
+        expect(message[0]).toBe('error');
+      }
+    }
+
+    configure({
+      logger: new CustomLogger(),
+    });
+
+    internalLog().info('info');
+    internalLog().warn('warn');
+    internalLog().error('error');
   });
 });

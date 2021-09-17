@@ -1,18 +1,16 @@
-import chalk, { Chalk } from 'chalk';
 import format from 'date-fns/format';
-import { Arguments } from './args';
+import { color } from './color';
 import { getConfig } from './config';
 
-export let color: Chalk = chalk;
-export const setup = (args: Arguments) => {
-  color = new chalk.Instance({ level: args.noColor ? 0 : 1 });
-};
-
-const formatDate = (date: Date) => chalk.gray(format(date, '[kk:mm:ss]'));
+const formatDate = (date: Date) => color.gray(format(date, '[kk:mm:ss]'));
 const newDate = () => new Date();
 
 export type Log = 'error' | 'warn' | 'info';
 export type LogLevel = Log | 'silent';
+
+export type LoggerOptions = {
+  prefix: string;
+};
 
 const LogLevels: Record<LogLevel, number> = {
   silent: 0,
@@ -53,17 +51,11 @@ export const timeInSecs = (time: number) => {
   return `${seconds}.${milliseconds}s`;
 };
 
-export type LoggerOptions = {
-  prefix: string;
-};
-class Logger {
+export class Logger {
   private options: LoggerOptions;
 
   constructor(options: Partial<LoggerOptions> = {}) {
-    this.options = {
-      prefix: '',
-      ...options,
-    };
+    this.options = { prefix: '', ...options };
   }
 
   info(...message: Array<string | Error>) {
@@ -79,8 +71,11 @@ class Logger {
   }
 }
 
-export const createLogger = (options: Partial<LoggerOptions> = {}) => {
-  return new Logger(options);
-};
+let _internalLogger: Logger;
 
-export const log = createLogger();
+export const internalLog = () => _internalLogger;
+
+export const createLogger = (
+  options: Partial<LoggerOptions> = {},
+  logger?: Logger
+): Logger => (_internalLogger = logger || new Logger(options));

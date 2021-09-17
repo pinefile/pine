@@ -1,10 +1,11 @@
 import pify from 'pify';
 import { isObject } from '@pinefile/utils';
 import { Arguments } from './args';
+import { color } from './color';
 import { getConfig } from './config';
 import { PineFile } from './file';
 import { getRunner } from './runner';
-import { log, color, timeInSecs } from './logger';
+import { internalLog, timeInSecs } from './logger';
 
 /**
  * Determine if input value is a valid task value.
@@ -126,7 +127,7 @@ const execute = async (
 
   // fail if no task function can be found
   if (!fnExists) {
-    log.error(`Task ${color.cyan(`'${name}'`)} not found`);
+    internalLog().error(`Task ${color.cyan(`'${name}'`)} not found`);
     return;
   }
 
@@ -174,7 +175,7 @@ const execute = async (
   }
 
   const startTime = Date.now();
-  log.info(`Starting ${color.cyan(`'${name}'`)}`);
+  internalLog().info(`Starting ${color.cyan(`'${name}'`)}`);
 
   // await for runner if Promise
   if (runner instanceof Promise) {
@@ -199,11 +200,11 @@ const execute = async (
   }
 
   return await runner(async (err: any) => {
-    if (err) log.error(err);
+    if (err) internalLog().error(err);
 
     const time = Date.now() - startTime;
 
-    log.info(
+    internalLog().info(
       `Finished ${color.cyan(`'${name}'`)} after ${color.magenta(
         timeInSecs(time)
       )}`

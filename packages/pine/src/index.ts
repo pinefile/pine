@@ -14,7 +14,11 @@ export { Runner, RunnerOptions } from './runner';
 
 // functions
 export { filterArgs, getArgs } from './args';
+export { color } from './color';
 export { configure, getConfig, Config, ConfigFunction } from './config';
-export { log, color, createLogger, LoggerOptions } from './logger';
-export * from './plugins/task';
+export { createLogger, Logger, LoggerOptions } from './logger';
+
+// plugin functions.
+export * from './plugins/log';
 export { shell, run, ShellOptions } from './plugins/shell';
+export * from './plugins/task';
