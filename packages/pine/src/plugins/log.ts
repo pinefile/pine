@@ -1,3 +1,3 @@
 import { createLogger } from '../logger';
 
-export let log = createLogger();
+export const log = createLogger();
