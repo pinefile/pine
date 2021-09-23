@@ -3,16 +3,16 @@ import { runCLI } from './cli';
 import { resolveTask, runTask } from './task';
 import { createRunner } from './runner';
 
-// core
+// api functions
 const api = { runCLI, resolveTask, runTask, createRunner };
 export { api };
 
-// types
+// typescript types
 export { Arguments, Options } from './args';
 export { PineFile } from './file';
 export { Runner, RunnerOptions } from './runner';
 
-// functions
+// core functions
 export { filterArgs, getArgs } from './args';
 export { color } from './color';
 export { configure, getConfig, Config, ConfigFunction } from './config';
