@@ -5,7 +5,6 @@
     "allowJs": true,
     "declaration": true,
     "emitDeclarationOnly": false,
-    "rootDirs": ["src"],
     "noEmit": false,
     "strict": true,
     "moduleResolution": "node",
@@ -21,5 +20,12 @@
     "noUnusedLocals": true,
     "module": "commonjs",
     "composite": true
-  }
+  },
+  "exclude": ["packages/**/tests/**", "packages/**/dist/**"],
+  "references": [
+    { "path": "./packages/utils" },
+    { "path": "./packages/pine" },
+    { "path": "./packages/monorepo" },
+    { "path": "./packages/runner-npm" }
+  ]
 }
