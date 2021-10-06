@@ -1,8 +1,8 @@
-exports.default = function (argv) {
+exports.default = function () {
   console.log('Default...');
 };
 
-exports.build = function (argv) {
+exports.build = function () {
   console.log('Building...');
 };
 

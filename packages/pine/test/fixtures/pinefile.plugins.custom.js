@@ -1,6 +1,5 @@
-const { extend } = require('../../src');
-const { echo } = require('./plugins/echo')
-const { npm } = require('./plugins/npm')
+const { echo } = require('./plugins/echo');
+const { npm } = require('./plugins/npm');
 
 exports.echo = function (argv) {
   echo('Echo...');

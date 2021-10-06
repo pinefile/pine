@@ -1,5 +1,6 @@
 import { api, configure } from '../src';
 import { parsePineFile } from '../src/file';
+// @ts-ignore
 import pinefile from './fixtures/pinefile.runner';
 
 describe('pine', () => {
