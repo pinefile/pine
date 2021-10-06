@@ -7,7 +7,6 @@
   "version": "1.0.0",
   "scripts": {
     "foo": "echo foo",
-    "lerna": "lerna",
     "build": "yarn clean && yarn compile",
     "compile": "tsc --build",
     "clean": "yarn workspaces run rimraf -rf ./dist tsconfig.tsbuildinfo",
