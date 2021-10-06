@@ -9,7 +9,7 @@
     "foo": "echo foo",
     "lerna": "lerna",
     "build": "yarn clean && yarn compile",
-    "compile": "yarn workspaces run tsc",
+    "compile": "tsc --build",
     "clean": "yarn workspaces run rimraf -rf ./dist tsconfig.tsbuildinfo",
     "pine:prod": "./packages/pine/bin/pine",
     "pine:ts": "ts-node ./packages/pine/bin/pine",

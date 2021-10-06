@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es2019",
     "lib": ["es2019"],
-    "allowJs": true,
+    "allowJs": false,
     "declaration": true,
     "emitDeclarationOnly": false,
     "noEmit": false,
@@ -21,7 +21,7 @@
     "module": "commonjs",
     "composite": true
   },
-  "exclude": ["packages/**/tests/**", "packages/**/dist/**"],
+  "exclude": ["packages/**/test/**", "packages/**/dist/**"],
   "references": [
     { "path": "./packages/utils" },
     { "path": "./packages/pine" },
