@@ -1,10 +1,10 @@
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
 const tasks = {
-  lerna: require('./tasks/lerna'),
-  'lerna:prestring': () => console.log('lerna:prestring'),
-  'lerna:string': () => console.log('lerna:string'),
-  'lerna:poststring': () => console.log('lerna:prestring'),
+  monorepo: require('./tasks/monorepo'),
+  'monorepo:prestring': () => console.log('monorepo:prestring'),
+  'monorepo:string': () => console.log('monorepo:string'),
+  'monorepo:poststring': () => console.log('monorepo:prestring'),
 };
 
 tasks.s1 = async () => {

@@ -46,20 +46,20 @@ describe('pine', () => {
   });
 
   test('should run sub commands', async () => {
-    await testCallOrder('tasks', 'lerna:build', [
-      'lerna:prebuild',
-      'lerna:build',
-      'lerna:postbuild',
+    await testCallOrder('tasks', 'monorepo:build', [
+      'monorepo:prebuild',
+      'monorepo:build',
+      'monorepo:postbuild',
     ]);
-    await testCallOrder('tasks', 'lerna', [
-      'lerna:predefault',
-      'lerna:default',
-      'lerna:postdefault',
+    await testCallOrder('tasks', 'monorepo', [
+      'monorepo:predefault',
+      'monorepo:default',
+      'monorepo:postdefault',
     ]);
-    await testCallOrder('tasks', 'lerna:string', [
-      'lerna:prestring',
-      'lerna:string',
-      'lerna:poststring',
+    await testCallOrder('tasks', 'monorepo:string', [
+      'monorepo:prestring',
+      'monorepo:string',
+      'monorepo:poststring',
     ]);
   });
 
