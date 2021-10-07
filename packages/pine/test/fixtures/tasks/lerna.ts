@@ -1,4 +1,4 @@
-const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+import { delay } from '../../utils';
 
 module.exports = {
   predefault: () => console.log('lerna:predefault'),

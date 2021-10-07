@@ -1,8 +1,8 @@
 import { parallel, series } from '../../src';
 import { parsePineFile } from '../../src/file';
+import { delay } from '../utils';
+// @ts-ignore
 import pinefile from '../fixtures/pinefile.tasks';
-
-const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 jest.setTimeout(10000);
 
