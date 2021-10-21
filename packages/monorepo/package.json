@@ -13,9 +13,9 @@
   "dependencies": {
     "@pinefile/pine": "^1.1.0",
     "glob": "^7.2.0",
-    "multimatch": "^5.0.0"
+    "multimatch": "5.0.0"
   },
   "devDependencies": {
-    "@types/glob": "^7.1.4"
+    "@types/glob": "^7.2.0"
   }
 }
