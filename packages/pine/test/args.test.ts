@@ -35,10 +35,10 @@ describe('args', () => {
   });
 
   test('filter args', () => {
-    const args = parse(['--no-color', '--foo']);
-    console.log(args);
+    const args = parse(['--no-color', '-f', '--foo']);
     expect(args.noColor).toBeTruthy();
     const filtered = filterArgs(args);
     expect(filtered.noColor).toBeUndefined();
+    expect(filtered.f).toBeUndefined();
   });
 });

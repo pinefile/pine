@@ -13,6 +13,7 @@ const help = (): void => {
   const opts = options();
   const keys = Object.keys(opts).map((key) => ({
     key,
+    alias: opts[key].alias,
     flag: camelCaseToDash(key),
   }));
 
@@ -29,7 +30,11 @@ Options:`);
       space += ' ';
     }
 
-    console.log(`  --${key.flag}${space}${opts[key.key].desc}`);
+    console.log(
+      `  ${key.alias ? `-${key.alias}, ` : `    `}--${key.flag}${space}${
+        opts[key.key].desc
+      }`
+    );
   });
 };
 
@@ -83,7 +88,7 @@ export const runCLI = async (argv: any[]): Promise<any> => {
         ...config.env,
       },
       root: findDirname(pineFile),
-      logLevel: args.logLevel,
+      logLevel: args.quiet ? 'silent' : args.logLevel,
       require: [
         ...(Array.isArray(args.require) ? args.require : []),
         ...config.require,

@@ -9,11 +9,13 @@ export type Arguments = {
 
 const defaultOptions: Options = {
   help: {
+    alias: 'h',
     type: 'boolean',
     default: false,
     desc: 'Print help and available tasks',
   },
   file: {
+    alias: 'f',
     type: 'string',
     default: '',
     desc: 'Path to the Pine file',
@@ -34,9 +36,16 @@ const defaultOptions: Options = {
     desc: 'Set log level: info | warn | error | silent',
   },
   require: {
+    alias: 'r',
     type: 'array',
     default: [],
     desc: 'Packages to preload before Pinefile is loaded',
+  },
+  quiet: {
+    alias: 'q',
+    type: 'boolean',
+    default: false,
+    desc: 'Sets the log level to silent',
   },
 };
 
@@ -78,9 +87,12 @@ export const parse = (argv: any[], opts?: Options): Arguments => {
 };
 
 export const filterArgs = (args: Record<string, any>) => {
-  Object.keys(defaultOptions).forEach(
-    (key: string) => (args = omit(key, args))
-  );
+  Object.keys(defaultOptions).forEach((key: string) => {
+    if (defaultOptions[key].alias) {
+      args = omit(defaultOptions[key].alias as string, args);
+    }
+    args = omit(key, args);
+  });
 
   return args;
 };
