@@ -10,6 +10,7 @@ export type LogLevel = Log | 'silent';
 
 export type LoggerOptions = {
   prefix: string;
+  logLevel?: LogLevel;
 };
 
 const LogLevels: Record<LogLevel, number> = {
@@ -24,11 +25,13 @@ const output = (
   message: Array<string | Error>,
   options: Partial<LoggerOptions> = {}
 ) => {
-  const logLevel = (
-    process.env.LOG_LEVEL ||
-    getConfig().logLevel ||
-    ''
-  ).toLowerCase() as LogLevel;
+  const logLevel = options.logLevel
+    ? options.logLevel
+    : ((
+        process.env.LOG_LEVEL ||
+        getConfig().logLevel ||
+        ''
+      ).toLowerCase() as LogLevel);
 
   if (LogLevels[logLevel] >= LogLevels[type]) {
     const date = formatDate(newDate());

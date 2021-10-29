@@ -1,3 +1,5 @@
 import { createLogger } from '../logger';
 
-export const log = createLogger();
+export const log = createLogger({
+  logLevel: 'info',
+});

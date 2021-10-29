@@ -29,7 +29,7 @@ const defaultOptions: Options = {
     desc: 'Disabling of color',
   },
   logLevel: {
-    type: 'boolean',
+    type: 'string',
     default: 'info',
     desc: 'Set log level: info | warn | error | silent.',
   },
