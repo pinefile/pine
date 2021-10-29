@@ -16,7 +16,7 @@ const defaultOptions: Options = {
   file: {
     type: 'string',
     default: '',
-    desc: 'Path to Pipefile or pipefile.js',
+    desc: 'Path to the Pine file',
   },
   dotenv: {
     type: 'boolean',
@@ -31,7 +31,7 @@ const defaultOptions: Options = {
   logLevel: {
     type: 'string',
     default: 'info',
-    desc: 'Set log level: info | warn | error | silent.',
+    desc: 'Set log level: info | warn | error | silent',
   },
   require: {
     type: 'array',
