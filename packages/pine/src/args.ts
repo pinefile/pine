@@ -1,6 +1,7 @@
 import yargs, { Arguments as YArguments, Options as YOptions } from 'yargs';
 import { isObject, omit } from '@pinefile/utils';
-import { findDirname } from './file';
+import path from 'path';
+import { findFile } from './file';
 import { getConfig } from './config';
 
 export type Arguments = {
@@ -73,7 +74,7 @@ export const parse = (argv: any[], opts?: Options): Arguments => {
     })
     .help(false)
     .options(opts ? opts : options())
-    .pkgConf('pine', findDirname('package.json'))
+    .pkgConf('pine', path.dirname(findFile('package.json')))
     .parse(argv);
 
   // remove keys with dashes, e.g 'no-color' and keep 'noColor'

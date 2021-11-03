@@ -3,7 +3,7 @@ import { parse, options } from './args';
 import { setupColor } from './color';
 import { configure, getConfig, Config } from './config';
 import { runTask, validTaskValue } from './task';
-import { findFile, findDirname, loadPineFile, PineFile } from './file';
+import { loadPineFile, PineFile } from './file';
 import { internalLog } from './logger';
 
 /**
@@ -41,12 +41,12 @@ Options:`);
 /**
  * Print tasks from Pinefile.
  *
- * @param {object} pineModule
+ * @param {object} pineFile
  * @param {string} prefix
  */
-const printTasks = (pineModule: PineFile, prefix = '') => {
+const printTasks = (pineFile: PineFile, prefix = '') => {
   try {
-    const keys = Object.keys(pineModule);
+    const keys = Object.keys(pineFile);
 
     if (!prefix) {
       console.log('\nTasks:');
@@ -54,18 +54,18 @@ const printTasks = (pineModule: PineFile, prefix = '') => {
 
     keys.sort((a, b) => a.localeCompare(b));
     keys.forEach((key) => {
-      if (!validTaskValue(pineModule[key])) {
+      if (!validTaskValue(pineFile[key])) {
         return;
       }
 
-      if (isObject(pineModule[key]) && pineModule[key]._) {
-        delete pineModule[key]._;
+      if (isObject(pineFile[key]) && pineFile[key]._) {
+        delete pineFile[key]._;
       }
 
       console.log(`  ${prefix}${key}`);
 
-      if (isObject(pineModule[key]) && Object.keys(pineModule[key]).length) {
-        printTasks(pineModule[key], `${prefix}${key}:`);
+      if (isObject(pineFile[key]) && Object.keys(pineFile[key]).length) {
+        printTasks(pineFile[key], `${prefix}${key}:`);
       }
     });
   } catch (err) {
@@ -76,7 +76,7 @@ const printTasks = (pineModule: PineFile, prefix = '') => {
 export const runCLI = async (argv: any[]): Promise<any> => {
   try {
     const args = parse(argv);
-    const pineFile = findFile(args.file);
+    const { dirname, pineFile } = loadPineFile(args.file);
     const name = args._.shift() || 'default';
 
     setupColor(args);
@@ -87,7 +87,7 @@ export const runCLI = async (argv: any[]): Promise<any> => {
         ...(!args.noColor ? { FORCE_COLOR: '1' } : {}),
         ...config.env,
       },
-      root: findDirname(pineFile),
+      root: dirname,
       logLevel: args.quiet ? 'silent' : args.logLevel,
       require: [
         ...(Array.isArray(args.require) ? args.require : []),
@@ -96,11 +96,9 @@ export const runCLI = async (argv: any[]): Promise<any> => {
       task: name,
     }));
 
-    const pineModule = loadPineFile(pineFile);
-
     if (args.help) {
       help();
-      printTasks(pineModule);
+      printTasks(pineFile);
       return;
     }
 
@@ -110,7 +108,7 @@ export const runCLI = async (argv: any[]): Promise<any> => {
         ? parse(argv, config.options)
         : {};
 
-    return await runTask(pineModule, name, {
+    return await runTask(pineFile, name, {
       ...args,
       ...configArgs,
       _: args._,

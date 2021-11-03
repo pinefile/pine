@@ -1,15 +1,16 @@
 import 'core-js/stable';
 import { runCLI } from './cli';
+import { loadPineFile } from './file';
 import { resolveTask, runTask } from './task';
 import { createRunner } from './runner';
 
 // api functions
-const api = { runCLI, resolveTask, runTask, createRunner };
+const api = { runCLI, resolveTask, runTask, createRunner, loadPineFile };
 export { api };
 
 // typescript types
 export { Arguments, Options } from './args';
-export { PineFile } from './file';
+export { PineFile, PineFileInfo } from './file';
 export { Runner, RunnerOptions } from './runner';
 
 // core functions
