@@ -93,6 +93,7 @@ export const findFile = (file = ''): string => {
 
 export const loadPineFile = (input: string): PineFileInfo => {
   const file = findFile(input);
+  // eslint-disable-next-line
   const body = require(file);
 
   return {
