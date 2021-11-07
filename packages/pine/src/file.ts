@@ -55,7 +55,13 @@ export type PineFileInfo = {
  * @returns {object}
  */
 export const parsePineFile = (pineFile: PineFile, sep = ':'): PineFile => {
-  const obj = isObject(pineFile.default) ? pineFile.default : pineFile;
+  let obj = isObject(pineFile.default) ? pineFile.default : pineFile;
+
+  // convert non-object to object with default key.
+  if (!isObject(obj)) {
+    obj = { default: obj };
+  }
+
   return Object.keys(obj).reduce((prev: PineFile, key: string) => {
     if (isObject(obj[key])) {
       prev[key] = parsePineFile(obj[key]);

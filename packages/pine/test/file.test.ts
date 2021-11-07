@@ -79,4 +79,10 @@ describe('file', () => {
       expect(output as any).toEqual(test.output);
     });
   });
+
+  test('should parse pinefile function', () => {
+    const task = parsePineFile(() => {});
+
+    expect(typeof task.default._).toBe('function');
+  });
 });
