@@ -1,5 +1,16 @@
 # @pinefile/monorepo
 
+## 1.3.0
+
+### Minor Changes
+
+- [`9632e1a`](https://github.com/pinefile/pine/commit/9632e1aca9199b356faa1981acda039661c7e85b) Thanks [@frozzare](https://github.com/frozzare)! - - Bump Pine version
+
+### Patch Changes
+
+- Updated dependencies [[`9632e1a`](https://github.com/pinefile/pine/commit/9632e1aca9199b356faa1981acda039661c7e85b)]:
+  - @pinefile/pine@1.3.0
+
 ## 1.2.0
 
 ### Minor Changes
