@@ -4,8 +4,10 @@
 
 ### Minor Changes
 
-- [`9632e1a`](https://github.com/pinefile/pine/commit/9632e1aca9199b356faa1981acda039661c7e85b) Thanks [@frozzare](https://github.com/frozzare)! - - Support function in default export, e.g `module.exports = () => {}`
-  - Export `loadPineFile` function as an api-function
+- [`9632e1a`](https://github.com/pinefile/pine/commit/9632e1aca9199b356faa1981acda039661c7e85b) Thanks [@frozzare](https://github.com/frozzare)!
+
+- Support function in default export, e.g `module.exports = () => {}`
+- Export `loadPineFile` function as an api-function
 
 ## 1.2.0
 

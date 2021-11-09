@@ -4,7 +4,7 @@
 
 ### Minor Changes
 
-- [`9632e1a`](https://github.com/pinefile/pine/commit/9632e1aca9199b356faa1981acda039661c7e85b) Thanks [@frozzare](https://github.com/frozzare)! - - Bump Pine version
+- [`9632e1a`](https://github.com/pinefile/pine/commit/9632e1aca9199b356faa1981acda039661c7e85b) Thanks [@frozzare](https://github.com/frozzare)! - Bump Pine version
 
 ### Patch Changes
 
