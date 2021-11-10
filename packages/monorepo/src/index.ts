@@ -1,7 +1,8 @@
-import glob from 'glob';
-import multimatch from 'multimatch';
 import fs from 'fs';
 import path from 'path';
+import os from 'os';
+import glob from 'glob';
+import multimatch from 'multimatch';
 import {
   series,
   run as pineRun,
@@ -157,7 +158,7 @@ export const npmRun = async (
     exec: false,
     scope: [],
     parallel: false,
-    parallelCount: 5,
+    parallelCount: os.cpus().length,
     workspaces: [],
     ...opts,
   });
