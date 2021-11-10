@@ -3,8 +3,12 @@
   "changelog": ["@changesets/changelog-github", { "repo": "pinefile/pine" }],
   "commit": false,
   "linked": [
-    ["@pinefile/pine", "@pinefile/monorepo", "@pinefile/runner-npm"],
-    ["@pinefile/pine", "@pinefile/utils"]
+    [
+      "@pinefile/pine",
+      "@pinefile/monorepo",
+      "@pinefile/runner-npm",
+      "@pinefile/utils"
+    ]
   ],
   "access": "public",
   "baseBranch": "master",
