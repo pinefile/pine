@@ -69,6 +69,17 @@ describe('monorepo', () => {
     expect(scripts["echo 'building foo'"]).toBeDefined();
   });
 
+  test('should run build script in for unscoped packages', async () => {
+    configure({ root: __dirname, workspaces: ['fixtures/packages'] });
+
+    await npmRun('build', {
+      scope: '!foo',
+    });
+
+    expect(scripts["echo 'building bar'"]).toBeDefined();
+    expect(scripts["echo 'building foo'"]).toBeUndefined();
+  });
+
   test('should execute echo script in for all packages', async () => {
     configure({ root: __dirname, workspaces: ['fixtures/packages'] });
 
@@ -85,5 +96,35 @@ describe('monorepo', () => {
     const packages = findPackages().map((p) => p.name);
 
     expect(['bar', 'foo', 'pub']).toStrictEqual(packages);
+  });
+
+  test('should exclude packages in every workspace', async () => {
+    configure({ root: __dirname, workspaces: ['fixtures/packages'] });
+
+    const packages = findPackages({
+      scope: '!foo',
+    }).map((p) => p.name);
+
+    expect(['bar', 'pub']).toStrictEqual(packages);
+  });
+
+  test('should exclude scoped packages in every workspace', async () => {
+    configure({ root: __dirname, workspaces: ['fixtures/packages2'] });
+
+    const packages = findPackages({
+      scope: '!@packages2/git',
+    }).map((p) => p.name);
+
+    expect(['@packages2/jit']).toStrictEqual(packages);
+  });
+
+  test('should include scoped packages in every workspace', async () => {
+    configure({ root: __dirname, workspaces: ['fixtures/packages2'] });
+
+    const packages = findPackages({
+      scope: '@packages2/git',
+    }).map((p) => p.name);
+
+    expect(['@packages2/git']).toStrictEqual(packages);
   });
 });
