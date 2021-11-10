@@ -1,7 +1,8 @@
-import glob from 'glob';
-import multimatch from 'multimatch';
 import fs from 'fs';
 import path from 'path';
+import os from 'os';
+import glob from 'glob';
+import multimatch from 'multimatch';
 import {
   series,
   run as pineRun,
@@ -82,7 +83,10 @@ const filterPackages = (args: string | string[], pkgNames: string[]) => {
   const scoped = search.filter((n) => n.startsWith('@') || n.startsWith('!@'));
 
   if (scoped.length > 0) {
-    results.push(...multimatch(pkgNames, scoped));
+    const exclamation = scoped.some((n) => n.startsWith('!'));
+    results.push(
+      ...multimatch(pkgNames, [...(exclamation ? ['**'] : []), ...scoped])
+    );
   }
 
   const unscoped = search.filter(
@@ -98,7 +102,12 @@ const filterPackages = (args: string | string[], pkgNames: string[]) => {
       };
     }, {});
 
-    const matched = multimatch(Object.keys(pkgMap), unscoped);
+    const exclamation = unscoped.some((n) => n.startsWith('!'));
+    const matched = multimatch(Object.keys(pkgMap), [
+      ...(exclamation ? ['*'] : []),
+      ...unscoped,
+    ]);
+
     for (const name of matched) {
       for (const pkg of pkgMap[name]) {
         results.push(pkg);
@@ -123,7 +132,7 @@ export const findPackages = (opts: Partial<FindPackagesOptions> = {}) => {
         workspaces.length > 1 ? `{${workspaces.join(',')}}` : workspaces[0]
       }/*/package.json`;
 
-  return glob
+  const pkgs = glob
     .sync(pattern)
     .map((p: string) => path.resolve(p))
     .map((p: string) => ({
@@ -131,6 +140,12 @@ export const findPackages = (opts: Partial<FindPackagesOptions> = {}) => {
       location: p,
       ...require(p),
     }));
+
+  const pkgsNames = pkgs.map((p) => p.name);
+
+  return filterPackages(options.scope, pkgsNames).map((name) =>
+    pkgs.find((p) => p.name === name)
+  );
 };
 
 export const npmRun = async (
@@ -143,16 +158,15 @@ export const npmRun = async (
     exec: false,
     scope: [],
     parallel: false,
-    parallelCount: 5,
+    parallelCount: os.cpus().length,
     workspaces: [],
     ...opts,
   });
 
-  let pkgs = findPackages({ workspaces: options.workspaces });
-  let pkgNames = pkgs.map((pkg: Package) => pkg.name);
-
-  pkgNames = filterPackages(options.scope, pkgNames);
-  pkgs = pkgs.filter((pkg: Package) => pkgNames.includes(pkg.name));
+  let pkgs = findPackages({
+    scope: options.scope,
+    workspaces: options.workspaces,
+  });
 
   if (options.exec) {
     pkgs = pkgs.map((pkg: Package) => ({
