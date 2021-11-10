@@ -24,13 +24,47 @@ export const validTaskValue = (val: any) => {
 };
 
 /**
+ * Bind `this` for task functions to parent object.
+ *
+ * @param {object} obj
+ * @param {function} fn
+ *
+ * @returns {object|boolean}
+ */
+const bindTask = (obj: PineFile, task: any): PineFile | boolean => {
+  if (!validTaskValue(task)) {
+    return false;
+  }
+
+  if (!isObject(task) || !task._) {
+    return { ...task, default: bindTask(task, task.default) };
+  }
+
+  return {
+    ...task,
+    _: task._.bind(
+      new Proxy(obj, {
+        get(target: PineFile, handler: string) {
+          if (
+            isObject(target[handler]) &&
+            typeof target[handler]._ === 'function'
+          ) {
+            return target[handler]._;
+          }
+        },
+      })
+    ),
+  };
+};
+
+/**
  * Resolve task function by name.
  *
- * @param {string} obj
+ * @param {object} obj
  * @param {string} key
  * @param {string} sep
  *
- * @returns {function|boolean}
+ * @returns {function|object|boolean}
  */
 export const resolveTask = (obj: PineFile, key: string, sep = ':'): any => {
   if (!key) {
@@ -38,11 +72,13 @@ export const resolveTask = (obj: PineFile, key: string, sep = ':'): any => {
   }
 
   const properties = (Array.isArray(key) ? key : key.split(sep)) as string[];
-  const task = properties.reduce((prev: any[], cur: string) => {
-    return prev[cur] || false;
-  }, obj as any) as any;
+  const task = properties.reduce<PineFile>(
+    (prev: PineFile, cur: string) =>
+      (bindTask(prev, prev[cur]) || {}) as PineFile,
+    obj
+  );
 
-  if (!isObject(task) && !validTaskValue(task)) {
+  if (!validTaskValue(task)) {
     return false;
   }
 

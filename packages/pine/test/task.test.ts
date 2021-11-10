@@ -16,7 +16,29 @@ describe('task', () => {
         i: () => true,
       },
       j: {
-        _: () => true,
+        default: () => true,
+      },
+      m: {
+        n: () => true,
+        default() {
+          return this.n();
+        },
+        o: {
+          p() {
+            return true;
+          },
+          q() {
+            return this.p();
+          },
+        },
+      },
+      r: {
+        s() {
+          return true;
+        },
+        t() {
+          return this.t();
+        },
       },
     });
 
@@ -48,7 +70,7 @@ describe('task', () => {
       },
       {
         input: 'j',
-        type: 'function',
+        type: 'object',
         output: true,
       },
       {
@@ -62,6 +84,26 @@ describe('task', () => {
         output: false,
       },
       {
+        input: 'm',
+        type: 'object',
+        output: true,
+      },
+      {
+        input: 'm:n',
+        type: 'function',
+        output: true,
+      },
+      {
+        input: 'm:o:q',
+        type: 'function',
+        output: true,
+      },
+      {
+        input: 'r:s',
+        type: 'function',
+        output: true,
+      },
+      {
         input: undefined,
         type: 'boolean',
         output: false,
@@ -71,7 +113,10 @@ describe('task', () => {
     tests.forEach((test) => {
       const output = resolveTask(tasks, test.input as any);
       expect(typeof output).toBe(test.type);
-      expect(output ? output() : output).toBe(test.output);
+
+      const fn =
+        typeof output === 'object' && output.default ? output.default : output;
+      expect(typeof fn === 'function' ? fn() : output).toBe(test.output);
     });
   });
 
