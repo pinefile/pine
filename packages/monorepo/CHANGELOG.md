@@ -1,5 +1,11 @@
 # @pinefile/monorepo
 
+## 1.3.1
+
+### Patch Changes
+
+- [#9](https://github.com/pinefile/pine/pull/9) [`03a69df`](https://github.com/pinefile/pine/commit/03a69dfb61b3915afaf25969ea3080be67dff474) Thanks [@frozzare](https://github.com/frozzare)! - Fix monorepo scope option for scoped and unscoped packages and default `parallelCount` to `os.cpus().length`
+
 ## 1.3.0
 
 ### Minor Changes
