@@ -1,5 +1,11 @@
 # @pinefile/pine
 
+## 1.5.0
+
+### Minor Changes
+
+- [`4042316`](https://github.com/pinefile/pine/commit/4042316a0616ad99313eb03fb054b74d129b4daf) Thanks [@frozzare](https://github.com/frozzare)! - Just a test run
+
 ## 1.4.0
 
 ### Minor Changes
