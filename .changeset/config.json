@@ -5,6 +5,6 @@
   "linked": [["@pinefile/pine", "@pinefile/monorepo", "@pinefile/runner-npm"]],
   "access": "public",
   "baseBranch": "master",
-  "updateInternalDependencies": "patch",
+  "updateInternalDependencies": "minor",
   "ignore": []
 }
