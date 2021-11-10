@@ -1,5 +1,11 @@
 # @pinefile/pine
 
+## 1.4.0
+
+### Minor Changes
+
+- [#10](https://github.com/pinefile/pine/pull/10) [`ae94431`](https://github.com/pinefile/pine/commit/ae9443110f106cbdd235b9589af8baa9fc55e4cf) Thanks [@frozzare](https://github.com/frozzare)! - Add support for this keyword in task functions
+
 ## 1.3.0
 
 ### Minor Changes

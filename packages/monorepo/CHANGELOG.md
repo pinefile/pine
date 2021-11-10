@@ -1,5 +1,16 @@
 # @pinefile/monorepo
 
+## 1.4.0
+
+### Minor Changes
+
+- [`b9aff94`](https://github.com/pinefile/pine/commit/b9aff940033bb0c459607042f713750b5487547c) Thanks [@frozzare](https://github.com/frozzare)! - Bump `@pinefile/pine` to latest version
+
+### Patch Changes
+
+- Updated dependencies [[`ae94431`](https://github.com/pinefile/pine/commit/ae9443110f106cbdd235b9589af8baa9fc55e4cf)]:
+  - @pinefile/pine@1.4.0
+
 ## 1.3.1
 
 ### Patch Changes
