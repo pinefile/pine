@@ -2,7 +2,10 @@
   "$schema": "https://unpkg.com/@changesets/config@1.6.1/schema.json",
   "changelog": ["@changesets/changelog-github", { "repo": "pinefile/pine" }],
   "commit": false,
-  "linked": [["@pinefile/pine", "@pinefile/monorepo", "@pinefile/runner-npm"]],
+  "linked": [
+    ["@pinefile/pine", "@pinefile/monorepo", "@pinefile/runner-npm"],
+    ["@pinefile/pine", "@pinefile/utils"]
+  ],
   "access": "public",
   "baseBranch": "master",
   "updateInternalDependencies": "minor",
