@@ -5,7 +5,7 @@ import glob from 'glob';
 import multimatch from 'multimatch';
 import {
   series,
-  run as pineRun,
+  shell,
   parallel,
   ShellOptions,
   getConfig,
@@ -178,17 +178,23 @@ export const npmRun = async (
   const tasks = pkgs
     .filter((pkg: Package) => !!pkg.scripts[script])
     .map((pkg: Package) => async () => {
-      log.info(pkgColor(`${pkg.name}: ${script}`));
-      await pineRun(pkg.scripts[script], {
-        ...shellOptions,
-        cwd: path.dirname(pkg.location),
-      });
+      try {
+        const output = await shell(pkg.scripts[script], {
+          ...shellOptions,
+          cwd: path.dirname(pkg.location),
+        });
+        log.info(`${pkgColor(`${pkg.name}`)}: ${output}`);
+      } catch (err: any) {
+        log.error(`${pkgColor(`${pkg.name}`)}:`, err);
+      }
     });
 
   if (!tasks.length) {
     log.info(`Script ${color.cyan(`'${script}'`)} not found in packages`);
     return;
   }
+
+  log.info(`Executing command in ${pkgs.length} packages: "${script}"`);
 
   if (!options.parallel) {
     return await series(tasks);
