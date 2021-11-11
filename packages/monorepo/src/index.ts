@@ -183,9 +183,9 @@ export const npmRun = async (
           ...shellOptions,
           cwd: path.dirname(pkg.location),
         });
-        log.info(`${pkgColor(`${pkg.name}: ${script}`)}: ${output}`);
+        log.info(`${pkgColor(`${pkg.name}`)}: ${output}`);
       } catch (err) {
-        log.error(`${pkgColor(`${pkg.name}: ${script}`)}: ${output}`);
+        log.error(`${pkgColor(`${pkg.name}`)}:`, err);
       }
     });
 
