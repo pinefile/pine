@@ -1,16 +1,16 @@
-import { configure, shell } from '@pinefile/pine';
+import { configure } from '@pinefile/pine';
 import glob from 'glob';
 import { execRun, findPackages, npmRun } from '../src';
 
 let scripts = {};
 
 jest.mock('@pinefile/pine', () => {
-  const actual = jest.requireActual('@pinefile/pine');
+  const actual = jest.requireActual('@pinefile/pine') as any;
   return {
     ...actual,
-    run: async (cmd: string, opts: any = {}) => {
-      const actual = await shell(cmd, opts);
-      scripts[cmd] = (scripts[cmd] || []).concat(actual);
+    shell: async (cmd: string, opts: any = {}) => {
+      const output = await actual.shell(cmd, opts);
+      scripts[cmd] = (scripts[cmd] || []).concat(output);
     },
   };
 });

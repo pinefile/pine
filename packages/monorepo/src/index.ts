@@ -5,7 +5,7 @@ import glob from 'glob';
 import multimatch from 'multimatch';
 import {
   series,
-  exec as pineExec,
+  shell,
   parallel,
   ShellOptions,
   getConfig,
@@ -179,12 +179,12 @@ export const npmRun = async (
     .filter((pkg: Package) => !!pkg.scripts[script])
     .map((pkg: Package) => async () => {
       try {
-        const output = await pineExec(pkg.scripts[script], {
+        const output = await shell(pkg.scripts[script], {
           ...shellOptions,
           cwd: path.dirname(pkg.location),
         });
         log.info(`${pkgColor(`${pkg.name}`)}: ${output}`);
-      } catch (err) {
+      } catch (err: any) {
         log.error(`${pkgColor(`${pkg.name}`)}:`, err);
       }
     });
