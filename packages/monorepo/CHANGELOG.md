@@ -1,5 +1,11 @@
 # @pinefile/monorepo
 
+## 1.4.1
+
+### Patch Changes
+
+- [#14](https://github.com/pinefile/pine/pull/14) [`3635b6e`](https://github.com/pinefile/pine/commit/3635b6e9de672702ea01d5f11460724703260fa2) Thanks [@frozzare](https://github.com/frozzare)! - Improve logging of output for monorepo scripts
+
 ## 1.4.0
 
 ### Minor Changes
