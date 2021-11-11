@@ -194,6 +194,8 @@ export const npmRun = async (
     return;
   }
 
+  log.info(`Executing command in ${pkgs.length} packages: "${script}"`);
+
   if (!options.parallel) {
     return await series(tasks);
   }
