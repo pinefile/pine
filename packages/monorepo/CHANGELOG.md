@@ -1,5 +1,12 @@
 # @pinefile/monorepo
 
+## 1.4.2
+
+### Patch Changes
+
+- Updated dependencies [[`cc50176`](https://github.com/pinefile/pine/commit/cc50176e91adb5bf0af881854ca7453eda22f177)]:
+  - @pinefile/pine@1.4.1
+
 ## 1.4.1
 
 ### Patch Changes
