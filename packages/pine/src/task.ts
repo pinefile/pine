@@ -59,6 +59,37 @@ const bindTask = (obj: PineFile, task: any): PineFile | boolean => {
 };
 
 /**
+ * Run script.
+ *
+ * @param {string} script
+ * @param {object} config
+ */
+const runScript = async (script: string, config: Config) =>
+  // slice 3 = start of arguments without name.
+  await run(`${script} ${process.argv.slice(3).join(' ')}`);
+
+/**
+ * Resolve script.
+ *
+ * @param {string} name
+ * @param {object} config
+ * @param {string} sep
+ *
+ * @returns {object|string}
+ */
+export const resolveScript = (
+  name: string,
+  config: Partial<Config>,
+  sep = ':'
+) => {
+  const properties = (Array.isArray(name) ? name : name.split(sep)) as string[];
+  return properties.reduce<any>(
+    (prev: any, cur: string) => (prev ? prev[cur] : ''),
+    config.scripts
+  ) as any;
+};
+
+/**
  * Resolve task function by name.
  *
  * @param {object} obj
@@ -161,8 +192,14 @@ const execute = async (
     fnExists = typeof fn === 'function';
   }
 
-  // fail if no task function can be found
   if (!fnExists) {
+    // test if task is a script for something
+    const script = resolveScript(name, { scripts: pinefile });
+    if (script) {
+      return await runScript(script._, config);
+    }
+
+    // fail if no task function can be found
     internalLog().error(`Task ${color.cyan(`'${name}'`)} not found`);
     return;
   }
@@ -256,25 +293,6 @@ const execute = async (
 };
 
 /**
- * Resolve alias
- *
- * @param {string} name
- * @param {object} config
- * @param {string} sep
- *
- * @returns {string}
- */
-export const resolveAlias = (name: string, config: Config, sep = ':') => {
-  const properties = (Array.isArray(name) ? name : name.split(sep)) as string[];
-  const alias = properties.reduce<any>(
-    (prev: any, cur: string) => (prev ? prev[cur] : ''),
-    config.aliases
-  ) as string;
-
-  return alias;
-};
-
-/**
  * Run task in pinefile.
  *
  * @param {object} pinefile
@@ -289,15 +307,10 @@ export const runTask = async (
   args: Arguments = {}
 ) => {
   const config = getConfig();
-  const alias = resolveAlias(name, config);
+  const script = resolveScript(name, config);
 
-  if (alias) {
-    if (!alias.startsWith('pine:')) {
-      const args = process.argv.slice(3).join(' ');
-      return await run(`${alias} ${args}`);
-    } else {
-      name = alias.replace(/^pine\:/, '');
-    }
+  if (script) {
+    return await runScript(script, config);
   }
 
   return await execute(pinefile, name, args, config);

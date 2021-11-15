@@ -13,11 +13,6 @@ export type Config = {
   [key: string]: any;
 
   /**
-   * Object key/value of aliases
-   */
-  aliases: Record<string, string>;
-
-  /**
    * Array of dotenv files to load from root.
    */
   dotenv: string[];
@@ -62,6 +57,11 @@ export type Config = {
   runner?: string | Runner | Record<string, any> | Array<any>;
 
   /**
+   * Object key/value of scripts.
+   */
+  scripts: Record<string, string>;
+
+  /**
    * Task name of the function that is executing.
    */
   task: string;
@@ -75,13 +75,13 @@ export type Config = {
 export type ConfigFunction = (cfg: Config) => Config;
 
 let config: Config = {
-  aliases: {},
   dotenv: [],
   env: {},
   logLevel: 'info',
   options: {},
   root: '',
   require: [],
+  scripts: {},
   task: '',
 };
 
