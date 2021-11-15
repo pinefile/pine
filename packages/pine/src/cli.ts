@@ -1,9 +1,10 @@
+import path from 'path';
 import { camelCaseToDash, isObject } from '@pinefile/utils';
 import { parse, options } from './args';
 import { setupColor } from './color';
 import { configure, getConfig, Config } from './config';
 import { runTask, validTaskValue } from './task';
-import { loadPineFile, PineFile } from './file';
+import { loadPineFile, PineFile, findFile } from './file';
 import { internalLog } from './logger';
 
 /**
@@ -76,18 +77,19 @@ const printTasks = (pineFile: PineFile, prefix = '') => {
 export const runCLI = async (argv: any[]): Promise<any> => {
   try {
     const args = parse(argv);
-    const { dirname, pineFile } = loadPineFile(args.file);
+    const file = findFile(args.file);
     const name = args._.shift() || 'default';
 
     setupColor(args);
 
+    // configure before pinefile is loaded
     configure((config: Config) => ({
       dotenv: args.dotenv ? ['.env'] : [],
       env: {
         ...(!args.noColor ? { FORCE_COLOR: '1' } : {}),
         ...config.env,
       },
-      root: dirname,
+      root: path.dirname(file),
       logLevel: args.quiet ? 'silent' : args.logLevel,
       require: [
         ...(Array.isArray(args.require) ? args.require : []),
@@ -95,6 +97,8 @@ export const runCLI = async (argv: any[]): Promise<any> => {
       ],
       task: name,
     }));
+
+    const { pineFile } = loadPineFile(file);
 
     if (args.help) {
       help();
