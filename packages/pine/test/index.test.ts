@@ -1,5 +1,8 @@
 import { api, getConfig, configure } from '../src';
 
+// @ts-ignore
+global.getConfig = getConfig;
+
 describe('pine', () => {
   beforeEach(() => {
     jest.resetModules();
@@ -126,5 +129,13 @@ describe('pine', () => {
       expect(getConfig().task).toBe(test.task);
       spy.mockRestore();
     });
+  });
+
+  test('should verify that configure is runned in the right order', () => {
+    const spy = jest.spyOn(console, 'log');
+    runTask('config', 'config');
+    expect(spy).toHaveBeenCalledWith('config');
+    expect(getConfig().task).toBe('config');
+    spy.mockRestore();
   });
 });
