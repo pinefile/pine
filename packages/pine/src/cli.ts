@@ -2,7 +2,7 @@ import path from 'path';
 import { camelCaseToDash, isObject } from '@pinefile/utils';
 import { parse, options } from './args';
 import { setupColor } from './color';
-import { configure, Config, getConfig } from './config';
+import { configure, getConfig, Config } from './config';
 import { runTask, validTaskValue } from './task';
 import { loadPineFile, PineFile, findFile } from './file';
 import { internalLog } from './logger';
