@@ -13,6 +13,11 @@ export type Config = {
   [key: string]: any;
 
   /**
+   * Object key/value of aliases
+   */
+  aliases: Record<string, string>;
+
+  /**
    * Array of dotenv files to load from root.
    */
   dotenv: string[];
@@ -70,6 +75,7 @@ export type Config = {
 export type ConfigFunction = (cfg: Config) => Config;
 
 let config: Config = {
+  aliases: {},
   dotenv: [],
   env: {},
   logLevel: 'info',

@@ -2,10 +2,11 @@ import pify from 'pify';
 import { isObject } from '@pinefile/utils';
 import { Arguments } from './args';
 import { color } from './color';
-import { getConfig } from './config';
+import { getConfig, Config } from './config';
 import { PineFile } from './file';
 import { getRunner } from './runner';
 import { internalLog, timeInSecs } from './logger';
+import { run } from './plugins/shell';
 
 /**
  * Determine if input value is a valid task value.
@@ -131,10 +132,9 @@ const doneify =
 const execute = async (
   pinefile: PineFile,
   name: string,
-  args: Arguments
+  args: Arguments,
+  config: Config
 ): Promise<void> => {
-  const config = getConfig();
-
   let fn = resolveTask(pinefile, name);
   let fnName = name;
   let fnExists = false;
@@ -207,7 +207,7 @@ const execute = async (
   const preName = getFnName(fnName, 'pre');
   const preFunc = resolveTask(pinefile, preName);
   if (preFunc) {
-    await execute(pinefile, preName, args);
+    await execute(pinefile, preName, args, config);
   }
 
   const startTime = Date.now();
@@ -250,9 +250,19 @@ const execute = async (
     const postName = getFnName(fnName, 'post');
     const postFunc = resolveTask(pinefile, postName);
     if (postFunc) {
-      await execute(pinefile, postName, args);
+      await execute(pinefile, postName, args, config);
     }
   });
+};
+
+export const resolveAlias = (name: string, config: Config, sep = ':') => {
+  const properties = (Array.isArray(name) ? name : name.split(sep)) as string[];
+  const alias = properties.reduce<any>(
+    (prev: any, cur: string) => prev[cur],
+    config.aliases
+  ) as string;
+
+  return alias;
 };
 
 /**
@@ -269,5 +279,18 @@ export const runTask = async (
   name: string,
   args: Arguments = {}
 ) => {
-  return await execute(pinefile, name, args);
+  const config = getConfig();
+  const alias = resolveAlias(name, config);
+
+  if (alias) {
+    if (!alias.startsWith('pine:')) {
+      const args = process.argv.slice(3).join(' ');
+      console.log(`$ ${alias} ${args}`);
+      return await run(`${alias} ${args}`);
+    } else {
+      name = alias.replace(/^pine\:/, '');
+    }
+  }
+
+  return await execute(pinefile, name, args, config);
 };
