@@ -267,7 +267,7 @@ const execute = async (
 export const resolveAlias = (name: string, config: Config, sep = ':') => {
   const properties = (Array.isArray(name) ? name : name.split(sep)) as string[];
   const alias = properties.reduce<any>(
-    (prev: any, cur: string) => prev[cur],
+    (prev: any, cur: string) => (prev ? prev[cur] : ''),
     config.aliases
   ) as string;
 

@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import os from 'os';
 import * as uuid from 'uuid';
-import { shell, shouldForceColor } from '../../src/plugins/shell';
+import { shell, shouldForceColor } from '../src/shell';
 
 describe('plugins/shell', () => {
   test('should run shell commands', async () => {
