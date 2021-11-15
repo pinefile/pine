@@ -6,7 +6,7 @@ import { getConfig, Config } from './config';
 import { PineFile } from './file';
 import { getRunner } from './runner';
 import { internalLog, timeInSecs } from './logger';
-import { run } from './plugins/shell';
+import { run } from './shell';
 
 /**
  * Determine if input value is a valid task value.
@@ -255,6 +255,15 @@ const execute = async (
   });
 };
 
+/**
+ * Resolve alias
+ *
+ * @param {string} name
+ * @param {object} config
+ * @param {string} sep
+ *
+ * @returns {string}
+ */
 export const resolveAlias = (name: string, config: Config, sep = ':') => {
   const properties = (Array.isArray(name) ? name : name.split(sep)) as string[];
   const alias = properties.reduce<any>(
@@ -285,7 +294,6 @@ export const runTask = async (
   if (alias) {
     if (!alias.startsWith('pine:')) {
       const args = process.argv.slice(3).join(' ');
-      console.log(`$ ${alias} ${args}`);
       return await run(`${alias} ${args}`);
     } else {
       name = alias.replace(/^pine\:/, '');

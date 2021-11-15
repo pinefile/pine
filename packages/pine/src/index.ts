@@ -18,8 +18,8 @@ export { filterArgs, getArgs } from './args';
 export { color } from './color';
 export { configure, getConfig, Config, ConfigFunction } from './config';
 export { createLogger, Logger, LoggerOptions } from './logger';
+export { shell, run, ShellOptions } from './shell';
 
 // plugin functions.
 export * from './plugins/log';
-export { shell, run, ShellOptions } from './plugins/shell';
 export * from './plugins/task';
