@@ -121,7 +121,7 @@ const loadDotenv = (config: Config) => {
     }
   });
 
-  // config.dotenv = [];
+  config.dotenv = [];
 };
 
 const loadModules = (config: Config) => {
