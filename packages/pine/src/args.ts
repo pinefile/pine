@@ -1,5 +1,6 @@
 import yargs, { Arguments as YArguments, Options as YOptions } from 'yargs';
 import { isObject, omit } from '@pinefile/utils';
+import unparse from 'yargs-unparser';
 import path from 'path';
 import { findFile } from './file';
 import { getConfig } from './config';
@@ -87,7 +88,7 @@ export const parse = (argv: any[], opts?: Options): Arguments => {
   return args;
 };
 
-export const filterArgs = (args: Record<string, any>) => {
+export const filterArgs = (args: Arguments): Arguments => {
   Object.keys(defaultOptions).forEach((key: string) => {
     if (defaultOptions[key].alias) {
       args = omit(defaultOptions[key].alias as string, args);
@@ -97,3 +98,10 @@ export const filterArgs = (args: Record<string, any>) => {
 
   return args;
 };
+
+export const unparseArgs = (args: Arguments) =>
+  unparse({
+    ...args,
+    _: args._,
+    $0: args.$0,
+  });

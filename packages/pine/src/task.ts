@@ -1,6 +1,6 @@
 import pify from 'pify';
 import { isObject } from '@pinefile/utils';
-import { Arguments } from './args';
+import { Arguments, filterArgs, unparseArgs } from './args';
 import { color } from './color';
 import { getConfig, Config } from './config';
 import { PineFile } from './file';
@@ -62,11 +62,10 @@ const bindTask = (obj: PineFile, task: any): PineFile | boolean => {
  * Run script.
  *
  * @param {string} script
- * @param {object} config
+ * @param {object} args
  */
-const runScript = async (script: string, config: Config) =>
-  // slice 3 = start of arguments without name.
-  await run(`${script} ${process.argv.slice(3).join(' ')}`);
+const runScript = async (script: string, args: Arguments) =>
+  await run(`${script} ${unparseArgs(filterArgs(args))}`);
 
 /**
  * Resolve script.
@@ -196,7 +195,7 @@ const execute = async (
     // test if task is a script for something
     const script = resolveScript(name, { scripts: pinefile });
     if (script) {
-      return await runScript(script._, config);
+      return await runScript(script._, args);
     }
 
     // fail if no task function can be found
@@ -310,7 +309,7 @@ export const runTask = async (
   const script = resolveScript(name, config);
 
   if (script) {
-    return await runScript(script, config);
+    return await runScript(script, args);
   }
 
   return await execute(pinefile, name, args, config);
