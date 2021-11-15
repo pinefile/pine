@@ -1,5 +1,11 @@
 # @pinefile/pine
 
+## 1.4.1
+
+### Patch Changes
+
+- [#16](https://github.com/pinefile/pine/pull/16) [`cc50176`](https://github.com/pinefile/pine/commit/cc50176e91adb5bf0af881854ca7453eda22f177) Thanks [@frozzare](https://github.com/frozzare)! - Fix configure in cli to be runned before load of pinefile
+
 ## 1.4.0
 
 ### Minor Changes
