@@ -25,17 +25,17 @@
   "license": "MIT",
   "devDependencies": {
     "@types/pify": "^5.0.1",
-    "@types/yargs": "^17.0.7"
+    "@types/yargs": "^17.0.8"
   },
   "dependencies": {
     "@pinefile/utils": "^1.2.0",
     "bach": "^1.2.0",
     "chalk": "^4.1.2",
-    "core-js": "^3.19.2",
+    "core-js": "^3.20.1",
     "date-fns": "^2.27.0",
     "dotenv": "^10.0.0",
     "execa": "^5.1.1",
     "pify": "^5.0.0",
-    "yargs": "^17.3.0"
+    "yargs": "^17.3.1"
   }
 }
