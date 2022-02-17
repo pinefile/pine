@@ -1,4 +1,3 @@
-import 'core-js/stable';
 import { runCLI } from './cli';
 import { loadPineFile } from './file';
 import { resolveTask, runTask } from './task';
