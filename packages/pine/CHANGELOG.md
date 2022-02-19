@@ -1,5 +1,11 @@
 # @pinefile/pine
 
+## 1.5.0
+
+### Minor Changes
+
+- [#18](https://github.com/pinefile/pine/pull/18) [`fc6ad61`](https://github.com/pinefile/pine/commit/fc6ad61b071c48cbbb275a066cd1a5e31c6fba26) Thanks [@frozzare](https://github.com/frozzare)! - Bump dependencies
+
 ## 1.4.1
 
 ### Patch Changes
