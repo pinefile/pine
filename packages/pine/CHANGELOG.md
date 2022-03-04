@@ -1,5 +1,11 @@
 # @pinefile/pine
 
+## 1.5.1
+
+### Patch Changes
+
+- [#27](https://github.com/pinefile/pine/pull/27) [`914e401`](https://github.com/pinefile/pine/commit/914e4011f727edd2d32c0062b5156306e1ce4a17) Thanks [@frozzare](https://github.com/frozzare)! - Bump dependencies and fix multimatch version
+
 ## 1.5.0
 
 ### Minor Changes

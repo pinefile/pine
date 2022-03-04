@@ -1,5 +1,14 @@
 # @pinefile/monorepo
 
+## 1.4.4
+
+### Patch Changes
+
+- [#27](https://github.com/pinefile/pine/pull/27) [`914e401`](https://github.com/pinefile/pine/commit/914e4011f727edd2d32c0062b5156306e1ce4a17) Thanks [@frozzare](https://github.com/frozzare)! - Bump dependencies and fix multimatch version
+
+- Updated dependencies [[`914e401`](https://github.com/pinefile/pine/commit/914e4011f727edd2d32c0062b5156306e1ce4a17)]:
+  - @pinefile/pine@1.5.1
+
 ## 1.4.3
 
 ### Patch Changes

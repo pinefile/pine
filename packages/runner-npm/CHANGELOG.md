@@ -1,5 +1,12 @@
 # @pinefile/runner-npm
 
+## 1.4.3
+
+### Patch Changes
+
+- Updated dependencies [[`914e401`](https://github.com/pinefile/pine/commit/914e4011f727edd2d32c0062b5156306e1ce4a17)]:
+  - @pinefile/pine@1.5.1
+
 ## 1.4.2
 
 ### Patch Changes
