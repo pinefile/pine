@@ -9,6 +9,7 @@
     "foo": "echo foo",
     "build": "yarn clean && yarn compile",
     "compile": "tsc --build",
+    "postcompile": "yarn workspaces run rimraf src/**/*{.js,.d.ts}",
     "clean": "yarn workspaces run rimraf -rf ./dist tsconfig.tsbuildinfo",
     "pine:prod": "./packages/pine/bin/pine",
     "pine:ts": "ts-node ./packages/pine/bin/pine",
