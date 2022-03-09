@@ -4,7 +4,7 @@ import { parse, options } from './args';
 import { setupColor } from './color';
 import { configure, getConfig, Config } from './config';
 import { runTask, validTaskValue } from './task';
-import { loadPineFile, PineFile, findFile } from './file';
+import { loadPineFile, PineFile, findFile, findGlobalFile } from './file';
 import { internalLog } from './logger';
 
 /**
@@ -76,8 +76,19 @@ const printTasks = (pineFile: PineFile, prefix = '') => {
 
 export const runCLI = async (argv: any[]): Promise<any> => {
   try {
-    const args = parse(argv);
-    const file = findFile(args.file);
+    const global = argv[0] === 'global';
+    const args = parse(global ? argv.slice(1) : argv);
+    const file = global ? findGlobalFile() : findFile(args.file);
+
+    if (!file) {
+      internalLog().error(
+        global
+          ? 'No global pinefile was found in your home folder or ~/.pine directory.'
+          : 'No pinefile was found.'
+      );
+      return;
+    }
+
     const name = args._.shift() || 'default';
 
     setupColor(args);

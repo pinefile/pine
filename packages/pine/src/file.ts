@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import os from 'os';
 import { isObject, merge } from '@pinefile/utils';
 
 const PINE_FILE_ORDER = Object.freeze([
@@ -10,7 +11,6 @@ const PINE_FILE_ORDER = Object.freeze([
 
 const resolveFilePathByTraversing = (
   pathToResolve: string,
-  cwd: string,
   file = ''
 ): string => {
   const customFile = path.resolve(pathToResolve, file);
@@ -27,11 +27,11 @@ const resolveFilePathByTraversing = (
 
   // system root
   if (pathToResolve === path.dirname(pathToResolve)) {
-    throw new Error('Could not find any pinefile');
+    return '';
   }
 
   // go up a level and try it again
-  return resolveFilePathByTraversing(path.dirname(pathToResolve), cwd);
+  return resolveFilePathByTraversing(path.dirname(pathToResolve));
 };
 
 export type PineFile = Record<string, any>;
@@ -94,7 +94,7 @@ export const findFile = (file = ''): string => {
     return file;
   }
 
-  return resolveFilePathByTraversing(path.resolve('.'), process.cwd(), file);
+  return resolveFilePathByTraversing(path.resolve('.'), file);
 };
 
 export const loadPineFile = (input: string): PineFileInfo => {
@@ -109,3 +109,6 @@ export const loadPineFile = (input: string): PineFileInfo => {
     pineFile: parsePineFile(body),
   };
 };
+
+export const findGlobalFile = (): string =>
+  resolveFilePathByTraversing(path.join(os.homedir(), '.pine'));
