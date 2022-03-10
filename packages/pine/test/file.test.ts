@@ -1,4 +1,7 @@
-import { parsePineFile } from '../src/file';
+import path from 'path';
+import fs from 'fs';
+import os from 'os';
+import { findGlobalFile, parsePineFile } from '../src/file';
 
 describe('file', () => {
   test('should parse pinefile object', () => {
@@ -84,5 +87,13 @@ describe('file', () => {
     const task = parsePineFile(() => {});
 
     expect(typeof task.default._).toBe('function');
+  });
+
+  test('should find global file', () => {
+    const filePath = path.join(os.homedir(), 'pinefile.js');
+    fs.writeFileSync(filePath, '');
+    const file = findGlobalFile();
+    expect(file).toBe(filePath);
+    fs.unlinkSync(filePath);
   });
 });
