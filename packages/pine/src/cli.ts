@@ -129,7 +129,7 @@ export const runCLI = async (argv: any[]): Promise<any> => {
     if (!file) {
       internalLog().error(
         global
-          ? 'No global pinefile was found in your home folder or ~/.pine directory.'
+          ? 'No global pinefile was found in your home folder or the ~/.pine directory.'
           : 'No pinefile was found.'
       );
       return;
