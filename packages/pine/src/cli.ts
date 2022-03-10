@@ -10,7 +10,7 @@ import { internalLog } from './logger';
 /**
  * Print help options.
  */
-const printOptions = (): void => {
+const printOptions = () => {
   const opts = options();
   const keys = Object.keys(opts).map((key) => ({
     key,
@@ -43,7 +43,7 @@ Options:`);
 /**
  * Print help commands.
  */
-const printCommands = (): void => {
+const printCommands = () => {
   const commands = [
     {
       key: 'global',
@@ -71,7 +71,7 @@ Commands:`);
 /**
  * Print help text.
  */
-const help = (): void => {
+const help = () => {
   console.log(`Usage: pine <task> <options>`);
   printOptions();
   printCommands();
