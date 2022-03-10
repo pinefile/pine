@@ -72,7 +72,7 @@ Commands:`);
  * Print help text.
  */
 const help = () => {
-  console.log(`Usage: pine <task> <options>`);
+  console.log(`Usage: pine [<command>] <task> <options>`);
   printOptions();
   printCommands();
 };
@@ -127,11 +127,15 @@ export const runCLI = async (argv: any[]): Promise<any> => {
     const file = global ? findGlobalFile() : findFile(args.file);
 
     if (!file) {
-      internalLog().error(
-        global
-          ? 'No global pinefile was found in your home folder or the ~/.pine directory.'
-          : 'No pinefile was found.'
-      );
+      if (args.help) {
+        help();
+      } else {
+        internalLog().error(
+          global
+            ? 'No global pinefile was found in your home folder or the ~/.pine directory.'
+            : 'No pinefile was found.'
+        );
+      }
       return;
     }
 
