@@ -4,13 +4,13 @@ import { parse, options } from './args';
 import { setupColor } from './color';
 import { configure, getConfig, Config } from './config';
 import { runTask, validTaskValue } from './task';
-import { loadPineFile, PineFile, findFile } from './file';
+import { loadPineFile, PineFile, findFile, findGlobalFile } from './file';
 import { internalLog } from './logger';
 
 /**
- * Print help text.
+ * Print help options.
  */
-const help = (): void => {
+const printOptions = () => {
   const opts = options();
   const keys = Object.keys(opts).map((key) => ({
     key,
@@ -21,9 +21,10 @@ const help = (): void => {
   const len =
     keys.reduce((c, v) => (c.flag.length > v.flag.length ? c : v)).flag.length +
     2;
-  console.log(`Usage: pine <task> <options>
 
+  console.log(`
 Options:`);
+
   keys.forEach((key) => {
     let space = '';
 
@@ -40,17 +41,55 @@ Options:`);
 };
 
 /**
+ * Print help commands.
+ */
+const printCommands = () => {
+  const commands = [
+    {
+      key: 'global',
+      desc: 'Run tasks in global pinefile',
+    },
+  ];
+
+  console.log(`
+Commands:`);
+
+  const len =
+    commands.reduce((c, v) => (c.key.length > v.key.length ? c : v)).key
+      .length + 2;
+  commands.forEach((key) => {
+    let space = '';
+
+    for (let i = 0; i < len - key.key.length; i++) {
+      space += ' ';
+    }
+
+    console.log(`  ${key.key}${space}${key.desc}`);
+  });
+};
+
+/**
+ * Print help text.
+ */
+const help = () => {
+  console.log(`Usage: pine <task> <options>`);
+  printOptions();
+  printCommands();
+};
+
+/**
  * Print tasks from Pinefile.
  *
- * @param {object} pineFile
- * @param {string} prefix
+ * @param {object}  pineFile
+ * @param {boolean} global
+ * @param {string}  prefix
  */
-const printTasks = (pineFile: PineFile, prefix = '') => {
+const printTasks = (pineFile: PineFile, global: boolean, prefix = '') => {
   try {
     const keys = Object.keys(pineFile);
 
     if (!prefix) {
-      console.log('\nTasks:');
+      console.log(`\nTasks (${global ? 'global' : 'local'}):`);
     }
 
     keys.sort((a, b) => a.localeCompare(b));
@@ -66,7 +105,7 @@ const printTasks = (pineFile: PineFile, prefix = '') => {
       console.log(`  ${prefix}${key}`);
 
       if (isObject(pineFile[key]) && Object.keys(pineFile[key]).length) {
-        printTasks(pineFile[key], `${prefix}${key}:`);
+        printTasks(pineFile[key], global, `${prefix}${key}:`);
       }
     });
   } catch (err) {
@@ -74,10 +113,28 @@ const printTasks = (pineFile: PineFile, prefix = '') => {
   }
 };
 
+/**
+ * Run Pine CLI.
+ *
+ * @param   {array} argv
+ *
+ * @returns {Promise}
+ */
 export const runCLI = async (argv: any[]): Promise<any> => {
   try {
-    const args = parse(argv);
-    const file = findFile(args.file);
+    const global = argv[0] === 'global';
+    const args = parse(global ? argv.slice(1) : argv);
+    const file = global ? findGlobalFile() : findFile(args.file);
+
+    if (!file) {
+      internalLog().error(
+        global
+          ? 'No global pinefile was found in your home folder or the ~/.pine directory.'
+          : 'No pinefile was found.'
+      );
+      return;
+    }
+
     const name = args._.shift() || 'default';
 
     setupColor(args);
@@ -102,7 +159,7 @@ export const runCLI = async (argv: any[]): Promise<any> => {
 
     if (args.help) {
       help();
-      printTasks(pineFile);
+      printTasks(pineFile, global);
       return;
     }
 
