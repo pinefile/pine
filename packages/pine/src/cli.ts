@@ -8,9 +8,9 @@ import { loadPineFile, PineFile, findFile, findGlobalFile } from './file';
 import { internalLog } from './logger';
 
 /**
- * Print help text.
+ * Print help options.
  */
-const help = (): void => {
+const printOptions = (): void => {
   const opts = options();
   const keys = Object.keys(opts).map((key) => ({
     key,
@@ -21,9 +21,10 @@ const help = (): void => {
   const len =
     keys.reduce((c, v) => (c.flag.length > v.flag.length ? c : v)).flag.length +
     2;
-  console.log(`Usage: pine <task> <options>
 
+  console.log(`
 Options:`);
+
   keys.forEach((key) => {
     let space = '';
 
@@ -37,6 +38,43 @@ Options:`);
       }`
     );
   });
+};
+
+/**
+ * Print help commands.
+ */
+const printCommands = (): void => {
+  const commands = [
+    {
+      key: 'global',
+      desc: 'Run tasks in global pinefile',
+    },
+  ];
+
+  console.log(`
+Commands:`);
+
+  const len =
+    commands.reduce((c, v) => (c.key.length > v.key.length ? c : v)).key
+      .length + 2;
+  commands.forEach((key) => {
+    let space = '';
+
+    for (let i = 0; i < len - key.key.length; i++) {
+      space += ' ';
+    }
+
+    console.log(`  ${key.key}${space}${key.desc}`);
+  });
+};
+
+/**
+ * Print help text.
+ */
+const help = (): void => {
+  console.log(`Usage: pine <task> <options>`);
+  printOptions();
+  printCommands();
 };
 
 /**
@@ -74,6 +112,13 @@ const printTasks = (pineFile: PineFile, prefix = '') => {
   }
 };
 
+/**
+ * Run CLI.
+ *
+ * @param   {array} argv
+ *
+ * @returns {Promise}
+ */
 export const runCLI = async (argv: any[]): Promise<any> => {
   try {
     const global = argv[0] === 'global';
