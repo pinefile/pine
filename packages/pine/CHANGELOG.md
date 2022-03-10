@@ -1,5 +1,13 @@
 # @pinefile/pine
 
+## 1.6.0
+
+### Minor Changes
+
+- [#29](https://github.com/pinefile/pine/pull/29) [`2b0d7a6`](https://github.com/pinefile/pine/commit/2b0d7a6ba3a5a3a22dbab9ff86100427dc3f81ac) Thanks [@frozzare](https://github.com/frozzare)!
+- Add support for global Pinefiles
+- Fix issue with `--file` flag where some Pinefiles couldn't be loaded right.
+
 ## 1.5.1
 
 ### Patch Changes
