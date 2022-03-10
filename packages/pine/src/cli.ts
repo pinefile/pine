@@ -114,7 +114,7 @@ const printTasks = (pineFile: PineFile, global: boolean, prefix = '') => {
 };
 
 /**
- * Run CLI.
+ * Run Pine CLI.
  *
  * @param   {array} argv
  *
