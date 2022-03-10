@@ -80,15 +80,16 @@ const help = () => {
 /**
  * Print tasks from Pinefile.
  *
- * @param {object} pineFile
- * @param {string} prefix
+ * @param {object}  pineFile
+ * @param {boolean} global
+ * @param {string}  prefix
  */
-const printTasks = (pineFile: PineFile, prefix = '') => {
+const printTasks = (pineFile: PineFile, global: boolean, prefix = '') => {
   try {
     const keys = Object.keys(pineFile);
 
     if (!prefix) {
-      console.log('\nTasks:');
+      console.log(`\nTasks (${global ? 'global' : 'local'}):`);
     }
 
     keys.sort((a, b) => a.localeCompare(b));
@@ -104,7 +105,7 @@ const printTasks = (pineFile: PineFile, prefix = '') => {
       console.log(`  ${prefix}${key}`);
 
       if (isObject(pineFile[key]) && Object.keys(pineFile[key]).length) {
-        printTasks(pineFile[key], `${prefix}${key}:`);
+        printTasks(pineFile[key], global, `${prefix}${key}:`);
       }
     });
   } catch (err) {
@@ -158,7 +159,7 @@ export const runCLI = async (argv: any[]): Promise<any> => {
 
     if (args.help) {
       help();
-      printTasks(pineFile);
+      printTasks(pineFile, global);
       return;
     }
 
