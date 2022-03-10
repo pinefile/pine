@@ -1,5 +1,11 @@
 # @pinefile/pine
 
+## 1.6.1
+
+### Patch Changes
+
+- [`3257182`](https://github.com/pinefile/pine/commit/32571820ba1aa22f589bbc81d8d98c8a9920e0b4) Thanks [@frozzare](https://github.com/frozzare)! - Fix issue where help text could not be displayed when no pinefile was loaded
+
 ## 1.6.0
 
 ### Minor Changes
