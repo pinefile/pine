@@ -8,3 +8,4 @@ tsconfig.tsbuildinfo
 .env
 packages/*/src/**/*.js
 packages/*/src/**/*.d.ts
+coverage/
