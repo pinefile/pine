@@ -1,5 +1,12 @@
 # @pinefile/monorepo
 
+## 1.4.7
+
+### Patch Changes
+
+- Updated dependencies [[`2ab1897`](https://github.com/pinefile/pine/commit/2ab1897c085d57746a7a99bf5a80ee34a385c14d)]:
+  - @pinefile/pine@1.6.2
+
 ## 1.4.6
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @pinefile/pine
 
+## 1.6.2
+
+### Patch Changes
+
+- [`2ab1897`](https://github.com/pinefile/pine/commit/2ab1897c085d57746a7a99bf5a80ee34a385c14d) Thanks [@frozzare](https://github.com/frozzare)! - Fix order of how global pinefile is loaded
+
 ## 1.6.1
 
 ### Patch Changes
