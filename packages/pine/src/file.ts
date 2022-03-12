@@ -111,4 +111,12 @@ export const loadPineFile = (input: string): PineFileInfo => {
 };
 
 export const findGlobalFile = (): string =>
-  resolveFilePathByTraversing(path.join(os.homedir(), '.pine'));
+  ['', '.pine'].reduce(
+    (prev, cur) =>
+      prev ||
+      PINE_FILE_ORDER.map((file) => path.join(os.homedir(), cur, file)).find(
+        isFile
+      ) ||
+      '',
+    ''
+  );
