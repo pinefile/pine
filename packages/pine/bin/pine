@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 
+try {
+  require("esbuild-register");
+} catch (e) {}
+
 const isDev = process.env.PINE_ENV === "development";
 const { api } = require(isDev ? "../src" : "../dist");
 
