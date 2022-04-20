@@ -23,6 +23,11 @@ export type Config = {
   env: NodeJS.ProcessEnv;
 
   /**
+   * Use esbuild or not.
+   */
+  esbuild: boolean;
+
+  /**
    * Log level.
    *
    * @default 'info'
@@ -72,6 +77,7 @@ export type ConfigFunction = (cfg: Config) => Config;
 let config: Config = {
   dotenv: [],
   env: {},
+  esbuild: true,
   logLevel: 'info',
   options: {},
   root: '',
