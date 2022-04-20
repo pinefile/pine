@@ -153,6 +153,7 @@ export const runCLI = async (argv: any[]): Promise<any> => {
       root: path.dirname(file),
       logLevel: args.quiet ? 'silent' : args.logLevel,
       require: [
+        'esbuild-register',
         ...(Array.isArray(args.require) ? args.require : []),
         ...config.require,
       ],

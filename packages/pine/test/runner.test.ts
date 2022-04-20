@@ -3,7 +3,7 @@ import { parsePineFile } from '../src/file';
 // @ts-ignore
 import pinefile from './fixtures/pinefile.runner';
 
-describe('pine', () => {
+describe.skip('pine', () => {
   Object.keys(pinefile).forEach((task) => {
     test(`should run custom runner: ${task}`, async () => {
       const spy = jest.spyOn(console, 'log');

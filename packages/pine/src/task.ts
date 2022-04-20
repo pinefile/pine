@@ -2,9 +2,9 @@ import pify from 'pify';
 import { isObject } from '@pinefile/utils';
 import { Arguments } from './args';
 import { color } from './color';
-import { getConfig } from './config';
+// import { getConfig } from './config';
 import { PineFile } from './file';
-import { getRunner } from './runner';
+// import { getRunner } from './runner';
 import { internalLog, timeInSecs } from './logger';
 
 /**
@@ -133,26 +133,27 @@ const execute = async (
   name: string,
   args: Arguments
 ): Promise<void> => {
-  const config = getConfig();
+  // const config = getConfig();
 
   let fn = resolveTask(pinefile, name);
   let fnName = name;
-  let fnExists = false;
+  let fnExists = true;
+  let runner = null;
 
   // eslint-disable-next-line prefer-const
-  let { runner, options } = getRunner(config);
-  if (typeof runner === 'function') {
-    fn = runner;
-    fnExists = true;
-  } else if (isObject(runner) && typeof runner.default === 'function') {
-    fn = runner.default;
-    fnExists =
-      typeof runner.taskExists === 'function'
-        ? runner.taskExists(pinefile, name, args, options)
-        : typeof fn === 'function';
-  } else if (typeof fn === 'function') {
-    fnExists = true;
-  }
+  // let { runner, options } = getRunner(config);
+  // if (typeof runner === 'function') {
+  //   fn = runner;
+  //   fnExists = true;
+  // } else if (isObject(runner) && typeof runner.default === 'function') {
+  //   fn = runner.default;
+  //   fnExists =
+  //     typeof runner.taskExists === 'function'
+  //       ? runner.taskExists(pinefile, name, args, options)
+  //       : typeof fn === 'function';
+  // } else if (typeof fn === 'function') {
+  //   fnExists = true;
+  // }
 
   // use default function in objects.
   if (isObject(fn) && fn.default) {
@@ -168,14 +169,14 @@ const execute = async (
   }
 
   switch (fn.length) {
-    case 4:
-      // runner function with options
-      if (isObject(options) && Object.keys(options).length) {
-        runner = fn(pinefile, name, args, options);
-      } else {
-        runner = fn(pinefile, name, args);
-      }
-      break;
+    // case 4:
+    //   // runner function with options
+    //   if (isObject(options) && Object.keys(options).length) {
+    //     runner = fn(pinefile, name, args, options);
+    //   } else {
+    //     runner = fn(pinefile, name, args);
+    //   }
+    //   break;
     case 3:
       // 3: plugin or runner function.
       runner = fn(pinefile, name, args);

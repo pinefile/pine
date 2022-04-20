@@ -66,7 +66,7 @@ describe('pine', () => {
     ]);
   });
 
-  test('should log if task is not found', () => {
+  test.skip('should log if task is not found', () => {
     const spy = jest.spyOn(console, 'error');
     runTask('basic', 'missing');
     expect(spy.mock.calls[0][1].indexOf('missing')).toBeGreaterThan(-1);
