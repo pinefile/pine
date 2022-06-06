@@ -31,7 +31,7 @@
     "@types/yargs": "17.0.10",
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.27.1",
-    "eslint": "^8.16.0",
+    "eslint": "^8.17.0",
     "jest": "28.1.0",
     "prettier": "^2.6.2",
     "rimraf": "^3.0.2",
