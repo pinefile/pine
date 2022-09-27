@@ -1,6 +1,6 @@
 import {
   api,
-  config,
+  getConfig,
   run,
   PineFile,
   Arguments,
@@ -8,7 +8,7 @@ import {
 } from '@pinefile/pine';
 
 const getPkg = (options: RunnerOptions = {}) => {
-  const { root } = { ...config(), ...options };
+  const { root } = { ...getConfig(), ...options };
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   return require(`${root}/package.json`);
 };

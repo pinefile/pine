@@ -2,7 +2,7 @@ import yargs, { Arguments as YArguments, Options as YOptions } from 'yargs';
 import { isObject, omit } from '@pinefile/utils';
 import path from 'path';
 import { findFile } from './file';
-import { config } from './config';
+import { getConfig } from './config';
 
 export type Arguments = {
   [key in keyof YArguments<any>]: YArguments<any>[key];
@@ -55,7 +55,7 @@ export type Options = {
 };
 
 export const options = (): Options => {
-  const conf = config();
+  const conf = getConfig();
   return {
     ...defaultOptions,
     ...(isObject(conf.options) ? conf.options : {}),

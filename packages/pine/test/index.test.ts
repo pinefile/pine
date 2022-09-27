@@ -1,7 +1,7 @@
-import { api, config, configure } from '../src';
+import { api, getConfig, configure } from '../src';
 
 // @ts-ignore
-global.config = config;
+global.getConfig = getConfig;
 
 describe('pine', () => {
   beforeEach(() => {
@@ -82,7 +82,7 @@ describe('pine', () => {
     );
     expect(spy).toHaveBeenCalledWith('Required...');
     expect(spy).toHaveBeenCalledWith('Building...');
-    expect(config().task).toBe('build');
+    expect(getConfig().task).toBe('build');
     spy.mockRestore();
   });
 
@@ -98,7 +98,7 @@ describe('pine', () => {
     const spy = jest.spyOn(console, 'log');
     runTask('basic', 'sayhello');
     expect(spy).toHaveBeenCalledWith('Hello world');
-    expect(config().task).toBe('sayhello');
+    expect(getConfig().task).toBe('sayhello');
     spy.mockRestore();
   });
 
@@ -126,7 +126,7 @@ describe('pine', () => {
       const spy = jest.spyOn(console, 'log');
       runTask('basic', test.task);
       expect(spy).toHaveBeenCalledWith(test.output);
-      expect(config().task).toBe(test.task);
+      expect(getConfig().task).toBe(test.task);
       spy.mockRestore();
     });
   });
@@ -135,7 +135,7 @@ describe('pine', () => {
     const spy = jest.spyOn(console, 'log');
     runTask('config', 'config');
     expect(spy).toHaveBeenCalledWith('config');
-    expect(config().task).toBe('config');
+    expect(getConfig().task).toBe('config');
     spy.mockRestore();
   });
 });

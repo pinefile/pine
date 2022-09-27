@@ -15,7 +15,7 @@ export { Runner, RunnerOptions } from './runner';
 // core functions
 export { filterArgs, getArgs } from './args';
 export { color } from './color';
-export { configure, config, Config, ConfigFunction } from './config';
+export { configure, getConfig, Config, ConfigFunction } from './config';
 export { createLogger, Logger, LoggerOptions } from './logger';
 
 // plugin functions.

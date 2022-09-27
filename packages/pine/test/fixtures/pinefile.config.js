@@ -1,2 +1,2 @@
-console.log(config().task);
+console.log(getConfig().task);
 exports.config = () => {};

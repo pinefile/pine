@@ -1,6 +1,6 @@
 import format from 'date-fns/format';
 import { color } from './color';
-import { config } from './config';
+import { getConfig } from './config';
 
 const formatDate = (date: Date) => color.gray(format(date, '[kk:mm:ss]'));
 const newDate = () => new Date();
@@ -29,7 +29,7 @@ const output = (
     ? options.logLevel
     : ((
         process.env.LOG_LEVEL ||
-        config().logLevel ||
+        getConfig().logLevel ||
         ''
       ).toLowerCase() as LogLevel);
 
