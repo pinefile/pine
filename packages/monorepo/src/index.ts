@@ -8,7 +8,7 @@ import {
   shell,
   parallel,
   ShellOptions,
-  getConfig,
+  config,
   log,
   color,
 } from '@pinefile/pine';
@@ -62,7 +62,7 @@ const appendRoot = (root: string, workspaces: string[]) =>
   );
 
 const mergeConfig = <T>(opts: T): T => {
-  const config = getConfig();
+  const config = config();
   return {
     ...opts,
     workspaces: appendRoot(config.root, [

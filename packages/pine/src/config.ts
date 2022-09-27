@@ -149,7 +149,7 @@ const setEnvironment = (config: Config) => {
   }
 };
 
-export const getConfig = (): Config => config;
+export const config = (): Config => config;
 
 /**
  * Pine can be configured via the configure function, which accepts:

@@ -1,4 +1,4 @@
-import { configure, getConfig } from '../src/config';
+import { configure, config } from '../src/config';
 
 describe('config', () => {
   let originalConfig: any = {};
@@ -27,7 +27,7 @@ describe('config', () => {
     });
 
     expect(conf.options.name.default).toEqual('world');
-    expect(conf).toEqual(getConfig());
+    expect(conf).toEqual(config());
   });
 
   test('set environment variables', () => {

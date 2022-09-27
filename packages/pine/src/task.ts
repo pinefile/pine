@@ -2,7 +2,7 @@ import pify from 'pify';
 import { isObject } from '@pinefile/utils';
 import { Arguments } from './args';
 import { color } from './color';
-// import { getConfig } from './config';
+// import { config } from './config';
 import { PineFile } from './file';
 // import { getRunner } from './runner';
 import { internalLog, timeInSecs } from './logger';
@@ -133,7 +133,7 @@ const execute = async (
   name: string,
   args: Arguments
 ): Promise<void> => {
-  // const config = getConfig();
+  // const config = config();
 
   let fn = resolveTask(pinefile, name);
   let fnName = name;

@@ -2,7 +2,7 @@ import path from 'path';
 import { camelCaseToDash, isObject } from '@pinefile/utils';
 import { parse, options } from './args';
 import { setupColor } from './color';
-import { configure, getConfig, Config } from './config';
+import { configure, config, Config } from './config';
 import { runTask, validTaskValue } from './task';
 import { loadPineFile, PineFile, findFile, findGlobalFile } from './file';
 import { internalLog } from './logger';
@@ -168,7 +168,7 @@ export const runCLI = async (argv: any[]): Promise<any> => {
       return;
     }
 
-    const config = getConfig();
+    const config = config();
     const configArgs =
       isObject(config.options) && Object.keys(config.options).length
         ? parse(argv, config.options)
