@@ -74,10 +74,12 @@ export type Config = {
  */
 export type ConfigFunction = (cfg: Config) => Config;
 
+const isDev = process.argv.some((a) => a.includes('packages/pine/src/bin.ts'));
+
 let config: Config = {
   dotenv: [],
   env: {},
-  esbuild: true,
+  esbuild: !isDev,
   logLevel: 'info',
   options: {},
   root: '',

@@ -3,7 +3,7 @@
   "version": "1.6.2",
   "description": "Small task runner for node.js",
   "bin": {
-    "pine": "bin/pine"
+    "pine": "./dist/bin.js"
   },
   "homepage": "https://github.com/pinefile/pine",
   "files": [

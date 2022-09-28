@@ -1,14 +1,7 @@
-const isDev = process.env.PINE_ENV === 'development';
+import { log, run, getConfig } from './packages/pine';
+import { execRun } from './packages/monorepo';
 
-// eslint-disable-next-line
-const { log, run, getConfig } = require(`./packages/pine${
-  isDev ? '/src' : ''
-}`);
-
-// eslint-disable-next-line
-const { execRun } = require(`./packages/monorepo${isDev ? '/src' : ''}`);
-
-module.exports = {
+export default {
   build: async () => {
     await run`npm run build`;
   },
