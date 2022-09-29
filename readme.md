@@ -16,7 +16,7 @@ Read the documentation [here](https://pinefile.github.io/docs/)
 
 ## Basic usage
 
-Create `Pinefile` or `pinefile.js`
+Create `pinefile.js` or `pinefile.ts`
 
 ```js
 import { run } from '@pinefile/pine';
