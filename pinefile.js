@@ -1,4 +1,4 @@
-import { log, run, getConfig } from './packages/pine';
+import { log, run, getConfig, tasks } from './packages/pine/src/index.ts';
 import { execRun } from './packages/monorepo';
 
 export default {
