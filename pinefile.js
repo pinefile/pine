@@ -1,5 +1,5 @@
 import { log, run, getConfig, tasks } from './packages/pine/src/index.ts';
-import { execRun } from './packages/monorepo';
+import { execRun } from './packages/monorepo/src/index.ts';
 
 export default {
   build: async () => {

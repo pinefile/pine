@@ -123,7 +123,7 @@ describe('plugins/task', () => {
     expect(typeof t.monorepo.default).toBe('function');
   });
 
-  test.only('should return object with tasks for tasks folder', () => {
+  test('should return object with tasks for tasks folder', () => {
     const t = tasks(`${__dirname}/../fixtures/tasks`);
     expect(Object.keys(t).length).not.toBe(0);
     expect(typeof t.boo.boo.default).toBe('function');
