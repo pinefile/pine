@@ -19,9 +19,9 @@ Read the documentation [here](https://pinefile.github.io/docs/)
 Create `Pinefile` or `pinefile.js`
 
 ```js
-const { run } = require('@pinefile/pine');
+import { run } from '@pinefile/pine';
 
-module.exports = {
+export default {
   build: () => {
     console.log('Building...');
   },
