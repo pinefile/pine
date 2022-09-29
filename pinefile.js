@@ -1,10 +1,18 @@
-import { run } from '@pinefile/pine';
+import { log, run, getConfig, tasks } from './packages/pine/src/index.ts';
+import { execRun } from './packages/monorepo/src/index.ts';
 
 export default {
-  build: () => {
-    console.log('Building...');
+  build: async () => {
+    await run`npm run build`;
   },
-  test: async () => {
-    await run('jest');
+  config: () => {
+    const config = getConfig();
+    log.info(config);
+  },
+  test: async (argv) => {
+    await run`jest ${argv._.join(' ')}`;
+  },
+  tsc: async () => {
+    await execRun`tsc`;
   },
 };
