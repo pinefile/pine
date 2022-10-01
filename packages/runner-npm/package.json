@@ -13,6 +13,9 @@
   "dependencies": {
     "@pinefile/pine": "^1.6.2"
   },
+  "engines": {
+    "node": "^14.18.0 || ^16.14.0 || >=18.0.0"
+  },
   "scripts": {
     "foo": "echo foo"
   }

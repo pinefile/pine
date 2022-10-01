@@ -6,6 +6,9 @@
   "files": [
     "dist"
   ],
+  "engines": {
+    "node": "^14.18.0 || ^16.14.0 || >=18.0.0"
+  },
   "main": "dist/index.js",
   "types": "dist",
   "author": "Fredrik Forsmo <fredrik.forsmo@gmail.com>",
