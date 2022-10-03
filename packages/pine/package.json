@@ -3,12 +3,15 @@
   "version": "1.6.2",
   "description": "Small task runner for node.js",
   "bin": {
-    "pine": "bin/pine"
+    "pine": "./dist/bin.js"
   },
   "homepage": "https://github.com/pinefile/pine",
   "files": [
     "dist"
   ],
+  "engines": {
+    "node": ">=14"
+  },
   "main": "dist/index.js",
   "types": "dist",
   "keywords": [
@@ -29,12 +32,15 @@
   },
   "dependencies": {
     "@pinefile/utils": "^1.2.0",
-    "bach": "^1.2.0",
+    "bach": "^2.0.1",
     "chalk": "^4.1.2",
     "date-fns": "^2.29.3",
-    "dotenv": "^16.0.3",
+    "dotenv": "^16.0.2",
+    "esbuild": "^0.15.9",
+    "esbuild-register": "^3.3.3",
     "execa": "^5.1.1",
+    "glob": "^8.0.3",
     "pify": "^5.0.0",
-    "yargs": "^17.6.0"
+    "yargs": "^17.5.1"
   }
 }

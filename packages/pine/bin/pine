@@ -1,6 +1,0 @@
-#!/usr/bin/env node
-
-const isDev = process.env.PINE_ENV === "development";
-const { api } = require(isDev ? "../src" : "../dist");
-
-api.runCLI(process.argv.slice(2));

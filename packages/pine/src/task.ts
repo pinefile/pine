@@ -137,7 +137,7 @@ const execute = async (
 
   let fn = resolveTask(pinefile, name);
   let fnName = name;
-  let fnExists = false;
+  let fnExists = typeof fn === 'function';
 
   // eslint-disable-next-line prefer-const
   let { runner, options } = getRunner(config);

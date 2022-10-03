@@ -23,6 +23,11 @@ export type Config = {
   env: NodeJS.ProcessEnv;
 
   /**
+   * Use esbuild or not.
+   */
+  esbuild: boolean;
+
+  /**
    * Log level.
    *
    * @default 'info'
@@ -69,9 +74,12 @@ export type Config = {
  */
 export type ConfigFunction = (cfg: Config) => Config;
 
+const isDev = process.argv.some((a) => a.includes('packages/pine/src/bin.ts'));
+
 let config: Config = {
   dotenv: [],
   env: {},
+  esbuild: !isDev,
   logLevel: 'info',
   options: {},
   root: '',

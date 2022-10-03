@@ -22,3 +22,6 @@ export { createLogger, Logger, LoggerOptions } from './logger';
 export * from './plugins/log';
 export { shell, run, ShellOptions } from './plugins/shell';
 export * from './plugins/task';
+
+// external functions.
+export { default as glob } from 'glob';

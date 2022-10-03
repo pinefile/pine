@@ -1,4 +1,4 @@
-import { parallel, series } from '../../src';
+import { parallel, series, tasks } from '../../src';
 import { parsePineFile } from '../../src/file';
 import { delay } from '../utils';
 // @ts-ignore
@@ -115,5 +115,17 @@ describe('plugins/task', () => {
       done();
       expect(output).toEqual(['echo two', 'echo one']);
     });
+  });
+
+  test('should return object with tasks for pinefile', () => {
+    const t = tasks(`${__dirname}/../fixtures/pinefile.tasks.js`);
+    expect(Object.keys(t).length).not.toBe(0);
+    expect(typeof t.monorepo.default).toBe('function');
+  });
+
+  test('should return object with tasks for tasks folder', () => {
+    const t = tasks(`${__dirname}/../fixtures/tasks`);
+    expect(Object.keys(t).length).not.toBe(0);
+    expect(typeof t.boo.boo.default).toBe('function');
   });
 });

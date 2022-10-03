@@ -16,12 +16,12 @@ Read the documentation [here](https://pinefile.github.io/docs/)
 
 ## Basic usage
 
-Create `Pinefile` or `pinefile.js`
+Create `pinefile.js` or `pinefile.ts`
 
 ```js
-const { run } = require('@pinefile/pine');
+import { run } from '@pinefile/pine';
 
-module.exports = {
+export default {
   build: () => {
     console.log('Building...');
   },
