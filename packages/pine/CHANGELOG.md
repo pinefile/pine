@@ -4,7 +4,8 @@
 
 ### Major Changes
 
-- [#157](https://github.com/pinefile/pine/pull/157) [`13fb795`](https://github.com/pinefile/pine/commit/13fb795dbbd114d305fc397582d364d32b882fbe) Thanks [@frozzare](https://github.com/frozzare)! - \* Add `esbuild-register` by default
+- [#157](https://github.com/pinefile/pine/pull/157) [`13fb795`](https://github.com/pinefile/pine/commit/13fb795dbbd114d305fc397582d364d32b882fbe) Thanks [@frozzare](https://github.com/frozzare)!
+  - Add `esbuild-register` by default
   - Add `tasks` function to easier load all tasks in a directory
   - Add export for `glob`
   - Bump dependencies

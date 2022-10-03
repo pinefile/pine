@@ -4,7 +4,8 @@
 
 ### Major Changes
 
-- [#157](https://github.com/pinefile/pine/pull/157) [`a238930`](https://github.com/pinefile/pine/commit/a2389300a3a08278f457cf616f784d288da54f8d) Thanks [@frozzare](https://github.com/frozzare)! - \* Drop support for node 12
+- [#157](https://github.com/pinefile/pine/pull/157) [`a238930`](https://github.com/pinefile/pine/commit/a2389300a3a08278f457cf616f784d288da54f8d) Thanks [@frozzare](https://github.com/frozzare)!
+  - Drop support for node 12
 
 ### Patch Changes
 
