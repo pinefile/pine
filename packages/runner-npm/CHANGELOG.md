@@ -1,5 +1,12 @@
 # @pinefile/runner-npm
 
+## 2.0.1
+
+### Patch Changes
+
+- Updated dependencies [[`a5e9b03`](https://github.com/pinefile/pine/commit/a5e9b0319d13abce2f0688c32ecece215269261d)]:
+  - @pinefile/pine@2.0.1
+
 ## 2.0.0
 
 ### Major Changes
