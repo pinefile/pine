@@ -1,5 +1,11 @@
 # @pinefile/pine
 
+## 2.0.1
+
+### Patch Changes
+
+- [#163](https://github.com/pinefile/pine/pull/163) [`a5e9b03`](https://github.com/pinefile/pine/commit/a5e9b0319d13abce2f0688c32ecece215269261d) Thanks [@frozzare](https://github.com/frozzare)! - Fix bin file for pine
+
 ## 2.0.0
 
 ### Major Changes
