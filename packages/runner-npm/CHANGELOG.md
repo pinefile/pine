@@ -1,5 +1,17 @@
 # @pinefile/runner-npm
 
+## 2.0.0
+
+### Major Changes
+
+- [#157](https://github.com/pinefile/pine/pull/157) [`a238930`](https://github.com/pinefile/pine/commit/a2389300a3a08278f457cf616f784d288da54f8d) Thanks [@frozzare](https://github.com/frozzare)!
+  - Drop support for node 12
+
+### Patch Changes
+
+- Updated dependencies [[`13fb795`](https://github.com/pinefile/pine/commit/13fb795dbbd114d305fc397582d364d32b882fbe)]:
+  - @pinefile/pine@2.0.0
+
 ## 1.4.6
 
 ### Patch Changes
