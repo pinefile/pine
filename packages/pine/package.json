@@ -10,7 +10,7 @@
     "dist"
   ],
   "engines": {
-    "node": ">=14"
+    "node": ">=v16.17.1"
   },
   "main": "dist/index.js",
   "types": "dist",

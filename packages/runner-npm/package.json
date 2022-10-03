@@ -14,7 +14,7 @@
     "@pinefile/pine": "^2.0.1"
   },
   "engines": {
-    "node": ">=14"
+    "node": ">=v16.17.1"
   },
   "scripts": {
     "foo": "echo foo"
