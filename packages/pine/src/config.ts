@@ -1,10 +1,13 @@
 import fs from 'fs';
 import path from 'path';
 import dotenv from 'dotenv';
-import { isObject } from '@pinefile/utils';
+import { isObject, merge } from '@pinefile/utils';
 import { Options } from './args';
+import { findFile } from './file';
 import { LogLevel, setLogger, Logger } from './logger';
 import { Runner } from './runner';
+
+const isDev = process.argv.some((a) => a.includes('packages/pine/src/bin.ts'));
 
 export type Config = {
   /**
@@ -74,18 +77,43 @@ export type Config = {
  */
 export type ConfigFunction = (cfg: Config) => Config;
 
-const isDev = process.argv.some((a) => a.includes('packages/pine/src/bin.ts'));
+let pkgConfig = {};
 
-let config: Config = {
-  dotenv: [],
-  env: {},
-  esbuild: !isDev,
-  logLevel: 'info',
-  options: {},
-  root: '',
-  require: [],
-  task: '',
+/**
+ * Load config from package.json.
+ */
+export const loadPkgConfig = () => {
+  if (Object.keys(pkgConfig).length) {
+    return pkgConfig;
+  }
+
+  const file = findFile('package.json');
+  if (!file) {
+    return pkgConfig;
+  }
+
+  try {
+    // eslint-disable-next-line
+    const pkg = require(file);
+    pkgConfig = typeof pkg === 'object' ? pkg.pine : null || {};
+  } catch (err) {}
+
+  return pkgConfig;
 };
+
+let config: Config = merge<Config>(
+  {
+    dotenv: [],
+    env: {},
+    esbuild: !isDev,
+    logLevel: 'info',
+    options: {},
+    root: '',
+    require: [],
+    task: '',
+  },
+  loadPkgConfig()
+);
 
 const isError = (error: any): error is NodeJS.ErrnoException =>
   error instanceof Error;
