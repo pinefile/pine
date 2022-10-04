@@ -96,6 +96,7 @@ export const loadPkgConfig = () => {
     // eslint-disable-next-line
     const pkg = require(file);
     pkgConfig = typeof pkg === 'object' ? pkg.pine : null || {};
+    // eslint-disable-next-line
   } catch (err) {}
 
   return pkgConfig;
