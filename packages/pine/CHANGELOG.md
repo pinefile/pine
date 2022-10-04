@@ -1,5 +1,11 @@
 # @pinefile/pine
 
+## 2.0.2
+
+### Patch Changes
+
+- [#167](https://github.com/pinefile/pine/pull/167) [`b0e4047`](https://github.com/pinefile/pine/commit/b0e4047cce8a64c1df4720bceafb438f7745184e) Thanks [@frozzare](https://github.com/frozzare)! - Fix so config can be loaded from package.json
+
 ## 2.0.1
 
 ### Patch Changes
