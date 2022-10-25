@@ -10,7 +10,7 @@
     "dist"
   ],
   "engines": {
-    "node": ">=14"
+    "node": ">=v18.11.0"
   },
   "main": "dist/index.js",
   "types": "dist",
