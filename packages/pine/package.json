@@ -37,7 +37,7 @@
     "date-fns": "^2.29.3",
     "dotenv": "^16.0.2",
     "esbuild": "^0.15.13",
-    "esbuild-register": "^3.3.3",
+    "esbuild-register": "^3.4.1",
     "execa": "^5.1.1",
     "glob": "^8.0.3",
     "pify": "^5.0.0",
