@@ -26,7 +26,7 @@
     "@changesets/cli": "^2.25.2",
     "@types/jest": "^29.2.4",
     "@types/node": "^18.8.2",
-    "@types/uuid": "^8.3.4",
+    "@types/uuid": "^9.0.0",
     "@types/yargs": "17.0.16",
     "@typescript-eslint/eslint-plugin": "^5.45.1",
     "@typescript-eslint/parser": "^5.45.1",
