@@ -22,7 +22,7 @@
   "author": "Fredrik Forsmo <fredrik.forsmo@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "@changesets/changelog-github": "^0.4.7",
+    "@changesets/changelog-github": "^0.4.8",
     "@changesets/cli": "^2.25.2",
     "@types/jest": "^29.2.4",
     "@types/node": "^18.8.2",
