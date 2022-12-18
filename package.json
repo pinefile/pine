@@ -23,7 +23,7 @@
   "license": "MIT",
   "devDependencies": {
     "@changesets/changelog-github": "^0.4.8",
-    "@changesets/cli": "^2.25.2",
+    "@changesets/cli": "^2.26.0",
     "@types/jest": "^29.2.4",
     "@types/node": "^18.8.2",
     "@types/uuid": "^9.0.0",
