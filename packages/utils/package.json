@@ -14,6 +14,6 @@
   "author": "Fredrik Forsmo <fredrik.forsmo@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "deepmerge": "^4.2.2"
+    "deepmerge": "^4.3.0"
   }
 }
