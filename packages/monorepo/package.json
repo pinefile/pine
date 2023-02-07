@@ -1,6 +1,6 @@
 {
   "name": "@pinefile/monorepo",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Pine monorepo functions",
   "homepage": "https://github.com/pinefile/pine",
   "files": [
@@ -14,7 +14,7 @@
   "author": "Fredrik Forsmo <fredrik.forsmo@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@pinefile/pine": "^2.0.2",
+    "@pinefile/pine": "^2.0.3",
     "glob": "^8.1.0",
     "multimatch": "5.0.0"
   },

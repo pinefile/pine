@@ -1,5 +1,11 @@
 # @pinefile/utils
 
+## 2.0.1
+
+### Patch Changes
+
+- [#284](https://github.com/pinefile/pine/pull/284) [`e62aed2`](https://github.com/pinefile/pine/commit/e62aed2958897bd34743a7c97ce958ae2067579f) Thanks [@frozzare](https://github.com/frozzare)! - Bump dependencies
+
 ## 2.0.0
 
 ### Major Changes
