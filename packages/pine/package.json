@@ -6,6 +6,7 @@
     "pine": "./dist/bin.js"
   },
   "homepage": "https://github.com/pinefile/pine",
+  "repository": "https://github.com/pinefile/pine",
   "files": [
     "dist"
   ],
