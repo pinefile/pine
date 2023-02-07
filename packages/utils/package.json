@@ -3,6 +3,7 @@
   "version": "2.0.1",
   "description": "Pine task runner utils",
   "homepage": "https://github.com/pinefile/pine",
+  "repository": "https://github.com/pinefile/pine",
   "files": [
     "dist"
   ],

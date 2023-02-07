@@ -3,6 +3,7 @@
   "version": "2.0.3",
   "description": "Pine monorepo functions",
   "homepage": "https://github.com/pinefile/pine",
+  "repository": "https://github.com/pinefile/pine",
   "files": [
     "dist"
   ],
