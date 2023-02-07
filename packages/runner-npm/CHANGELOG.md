@@ -1,5 +1,14 @@
 # @pinefile/runner-npm
 
+## 2.0.3
+
+### Patch Changes
+
+- [#284](https://github.com/pinefile/pine/pull/284) [`e62aed2`](https://github.com/pinefile/pine/commit/e62aed2958897bd34743a7c97ce958ae2067579f) Thanks [@frozzare](https://github.com/frozzare)! - Bump dependencies
+
+- Updated dependencies [[`e62aed2`](https://github.com/pinefile/pine/commit/e62aed2958897bd34743a7c97ce958ae2067579f)]:
+  - @pinefile/pine@2.0.3
+
 ## 2.0.2
 
 ### Patch Changes
