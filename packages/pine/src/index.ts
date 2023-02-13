@@ -4,8 +4,7 @@ import { resolveTask, runTask } from './task';
 import { createRunner } from './runner';
 
 // api functions
-const api = { runCLI, resolveTask, runTask, createRunner, loadPineFile };
-export { api };
+export const api = { runCLI, resolveTask, runTask, createRunner, loadPineFile };
 
 // typescript types
 export { Arguments, Options } from './args';
