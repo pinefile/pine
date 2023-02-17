@@ -8,7 +8,7 @@
     "dist"
   ],
   "engines": {
-    "node": ">=v14.21.3"
+    "node": ">=14.18.0"
   },
   "main": "dist/index.js",
   "types": "dist",
