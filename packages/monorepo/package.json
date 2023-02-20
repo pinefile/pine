@@ -21,5 +21,8 @@
   },
   "devDependencies": {
     "@types/glob": "^8.0.1"
+  },
+  "scripts": {
+    "build": "rimraf ./dist && tsc --build"
   }
 }

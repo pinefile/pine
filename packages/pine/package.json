@@ -43,5 +43,8 @@
     "glob": "^8.1.0",
     "pify": "^5.0.0",
     "yargs": "^17.7.0"
+  },
+  "scripts": {
+    "build": "rimraf ./dist && tsc --build"
   }
 }

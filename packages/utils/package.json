@@ -16,5 +16,8 @@
   "license": "MIT",
   "dependencies": {
     "deepmerge": "^4.3.0"
+  },
+  "scripts": {
+    "build": "rimraf ./dist && tsc --build"
   }
 }

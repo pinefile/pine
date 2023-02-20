@@ -18,6 +18,7 @@
     "node": ">=14.18.0"
   },
   "scripts": {
-    "foo": "echo foo"
+    "foo": "echo foo",
+    "build": "rimraf ./dist && tsc --build"
   }
 }
