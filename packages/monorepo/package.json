@@ -20,6 +20,6 @@
     "multimatch": "5.0.0"
   },
   "devDependencies": {
-    "@types/glob": "^8.0.1"
+    "@types/glob": "^8.1.0"
   }
 }
