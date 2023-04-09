@@ -16,7 +16,7 @@
   "license": "MIT",
   "dependencies": {
     "@pinefile/pine": "^2.0.3",
-    "glob": "^8.1.0",
+    "glob": "^10.0.0",
     "multimatch": "5.0.0"
   },
   "devDependencies": {
