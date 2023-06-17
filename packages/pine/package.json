@@ -36,7 +36,7 @@
     "bach": "^2.0.1",
     "chalk": "^4.1.2",
     "date-fns": "^2.30.0",
-    "dotenv": "^16.2.0",
+    "dotenv": "^16.3.1",
     "esbuild": "^0.18.4",
     "esbuild-register": "^3.4.2",
     "execa": "^5.1.1",
