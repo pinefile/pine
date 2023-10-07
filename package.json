@@ -27,7 +27,7 @@
     "@types/jest": "^29.5.5",
     "@types/node": "^18.13.0",
     "@types/uuid": "^9.0.5",
-    "@types/yargs": "17.0.26",
+    "@types/yargs": "17.0.28",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
     "eslint": "^8.50.0",
