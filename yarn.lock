@@ -1287,10 +1287,10 @@
   resolved "https://registry.yarnpkg.com/@types/normalize-package-data/-/normalize-package-data-2.4.1.tgz#d3357479a0fdfdd5907fe67e17e0a85c906e1301"
   integrity sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==
 
-"@types/pify@^5.0.2":
-  version "5.0.2"
-  resolved "https://registry.yarnpkg.com/@types/pify/-/pify-5.0.2.tgz#315955fa2b7ffd668e62b1f2d6c898602fcdbd57"
-  integrity sha512-+d6bogL6/YV6e/T+JYgVIkLA8rA7mjqiHRCFB/x2RcQBM2GWE1vtYBdWzkPY6NiEEB09pxwyBUi7mH7HJ0G+zQ==
+"@types/pify@^5.0.3":
+  version "5.0.3"
+  resolved "https://registry.yarnpkg.com/@types/pify/-/pify-5.0.3.tgz#2cd7ae71a4f8fdcdbe495c3f4e1e9a376fdc0457"
+  integrity sha512-pfi5GX+1QTZV25QNMUZKf21I0j/6n7YDpzNz1aEh9z4N3jmED81Mhx9+zHrngYPHkad8JOeeFKYj8FjHv9V71A==
 
 "@types/semver@^7.3.12":
   version "7.3.12"
