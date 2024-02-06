@@ -3,7 +3,7 @@
   "version": "2.0.3",
   "description": "Small task runner for node.js",
   "bin": {
-    "pine": "./dist/bin.js"
+    "pine": "./bin.js"
   },
   "homepage": "https://github.com/pinefile/pine",
   "repository": "https://github.com/pinefile/pine",

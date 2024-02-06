@@ -7,17 +7,17 @@
   "version": "0.0.0",
   "scripts": {
     "foo": "echo foo",
-    "build": "yarn clean && yarn compile",
+    "build": "npm run clean && npm run compile",
     "compile": "tsc --build",
-    "postcompile": "yarn workspaces run rimraf src/**/*{.js,.d.ts}",
-    "clean": "yarn workspaces run rimraf -rf ./dist tsconfig.tsbuildinfo",
+    "postcompile": "rimraf -rf ./packages/*/src/**/*{.js,.d.ts}",
+    "clean": "rimraf -rf ./packages/*/dist ./packages/*/tsconfig.tsbuildinfo",
     "pine:prod": "node ./packages/pine/dist/bin.js",
     "pine:dev": "tsx ./packages/pine/src/bin.ts",
     "format": "prettier --write 'packages/**/src/**/*.ts' packages/**/test/**/*.ts",
     "lint": "eslint packages/**/src --ext .ts",
-    "test": "yarn pine:dev test",
-    "ci": "yarn lint && yarn pine:prod test",
-    "release": "yarn build && yarn changeset publish"
+    "test": "npm run pine:dev test",
+    "ci": "npm run lint && npm run pine:prod test",
+    "release": "npm run build && npm run changeset publish"
   },
   "author": "Fredrik Forsmo <fredrik.forsmo@gmail.com>",
   "license": "MIT",
