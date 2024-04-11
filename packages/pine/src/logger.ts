@@ -23,8 +23,9 @@ const LogLevels: Record<LogLevel, number> = {
 const output = (
   type: LogLevel,
   message: Array<string | Error>,
-  options: Partial<LoggerOptions> = {}
+  options: Partial<LoggerOptions> = {},
 ) => {
+  const prefix = options.prefix || `[${getConfig().task}]`;
   const logLevel = options.logLevel
     ? options.logLevel
     : ((
@@ -37,9 +38,7 @@ const output = (
     const date = formatDate(newDate());
     const method = type === 'info' ? 'log' : type;
 
-    const args = [date, options.prefix && options.prefix, ...message].filter(
-      Boolean
-    );
+    const args = [date, prefix, ...message].filter(Boolean);
 
     console[method].apply(null, args);
   }
