@@ -50,6 +50,13 @@ export type Config = {
   options: Options;
 
   /**
+   * Log task name as prefix.
+   *
+   * @default true
+   */
+  prefix: boolean;
+
+  /**
    * Packages to preload before Pinefile is loaded.
    */
   require: string[];
@@ -109,6 +116,7 @@ let config: Config = merge<Config>(
     esbuild: !isDev,
     logLevel: 'info',
     options: {},
+    prefix: true,
     root: '',
     require: [],
     task: '',

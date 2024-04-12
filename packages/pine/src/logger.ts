@@ -25,12 +25,14 @@ const output = (
   message: Array<string | Error>,
   options: Partial<LoggerOptions> = {},
 ) => {
-  const prefix = options.prefix || `[${getConfig().task}]`;
+  const config = getConfig();
+  const prefix =
+    options.prefix || config.prefix ? color.cyan(`[${config.task}]`) : '';
   const logLevel = options.logLevel
     ? options.logLevel
     : ((
         process.env.LOG_LEVEL ||
-        getConfig().logLevel ||
+        config.logLevel ||
         ''
       ).toLowerCase() as LogLevel);
 
