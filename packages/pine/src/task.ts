@@ -2,7 +2,7 @@ import pify from 'pify';
 import { isObject } from '@pinefile/utils';
 import { Arguments } from './args';
 import { color } from './color';
-import { getConfig } from './config';
+import { getConfig, setConfig } from './config';
 import { PineFile } from './file';
 import { getRunner } from './runner';
 import { internalLog, timeInSecs } from './logger';
@@ -52,7 +52,7 @@ const bindTask = (obj: PineFile, task: any): PineFile | boolean => {
             return target[handler]._;
           }
         },
-      })
+      }),
     ),
   };
 };
@@ -75,7 +75,7 @@ export const resolveTask = (obj: PineFile, key: string, sep = ':'): any => {
   const task = properties.reduce<PineFile>(
     (prev: PineFile, cur: string) =>
       (bindTask(prev, prev[cur]) || {}) as PineFile,
-    obj
+    obj,
   );
 
   if (!validTaskValue(task)) {
@@ -131,11 +131,12 @@ const doneify =
 const execute = async (
   pinefile: PineFile,
   name: string,
-  args: Arguments
+  args: Arguments,
+  _fn?: (a: PineFile, b: string, c: Arguments) => void,
 ): Promise<void> => {
   const config = getConfig();
 
-  let fn = resolveTask(pinefile, name);
+  let fn = _fn || resolveTask(pinefile, name);
   let fnName = name;
   let fnExists = typeof fn === 'function';
 
@@ -187,13 +188,17 @@ const execute = async (
           const fn2 = pify(fn, { excludeMain: true });
           const fn2Type = typeof fn2;
           if (fn2Type === 'function') {
-            await fn2(args);
-            done();
+            const fn3 = await fn2(args);
+            if (typeof fn3 === 'function') {
+              await execute(pinefile, '', args, fn3);
+            } else {
+              done();
+            }
           } else {
             throw new Error(
               `Expected task function to be a function, got ${
                 fn2 === null ? 'null' : fn2Type
-              }`
+              }`,
             );
           }
         } catch (err) {
@@ -211,7 +216,10 @@ const execute = async (
   }
 
   const startTime = Date.now();
-  internalLog().info(`Starting ${color.cyan(`'${name}'`)}`);
+  if (name) {
+    internalLog().setOptions({ prefix: name });
+    internalLog().info(`Starting ${color.cyan(`'${name}'`)}`);
+  }
 
   // await for runner if Promise
   if (runner instanceof Promise) {
@@ -223,7 +231,7 @@ const execute = async (
     const beforeType = runner === null ? 'null' : typeof runner;
     runner = () => {
       throw new Error(
-        `Expected return value of runner function to be a function, got ${beforeType}`
+        `Expected return value of runner function to be a function, got ${beforeType}`,
       );
     };
   }
@@ -236,15 +244,19 @@ const execute = async (
   }
 
   return await runner(async (err: any) => {
-    if (err) internalLog().error(err);
+    if (err) {
+      internalLog().error(err);
+    }
 
-    const time = Date.now() - startTime;
-
-    internalLog().info(
-      `Finished ${color.cyan(`'${name}'`)} after ${color.magenta(
-        timeInSecs(time)
-      )}`
-    );
+    if (name) {
+      const time = Date.now() - startTime;
+      internalLog().info(
+        `Finished ${color.cyan(`'${name}'`)} after ${color.magenta(
+          timeInSecs(time),
+        )}`,
+      );
+      internalLog().setOptions({ prefix: '' });
+    }
 
     // execute post* function.
     const postName = getFnName(fnName, 'post');
@@ -267,7 +279,7 @@ const execute = async (
 export const runTask = async (
   pinefile: PineFile,
   name: string,
-  args: Arguments = {}
+  args: Arguments = {},
 ) => {
   return await execute(pinefile, name, args);
 };

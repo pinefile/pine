@@ -3,9 +3,8 @@ import bach from 'bach';
 import fs from 'fs';
 import glob from 'glob';
 import path from 'path';
-import { Arguments } from '../args';
-import { PineFile } from '../file';
 import { runTask } from '../task';
+import { getPluginConfig } from '../plugin';
 
 /**
  * Run tasks that will be executed one after another, in sequential order.
@@ -14,29 +13,25 @@ import { runTask } from '../task';
  *
  * @returns {function|Promise}
  */
-export const series = (...tasks: any[]): any => {
-  if (typeof tasks[0] === 'function') {
-    return new Promise((resolve, reject) => {
-      bach.series(tasks)((err: any, res: any) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(res);
-        }
-      });
-    });
-  }
-
+export const series = async (...tasks: any[]): any => {
   if (Array.isArray(tasks[0])) {
     return series(...tasks[0]);
   }
 
-  return (pinefile: PineFile, _: string, args: Arguments) =>
-    bach.series(
-      ...tasks.map(
-        (task) => (cb: any) => runTask(pinefile, task, args).then(cb)
-      )
-    );
+  const { pinefile, args } = getPluginConfig();
+  const _tasks = tasks.map((task) =>
+    typeof task === 'function' ? task : () => runTask(pinefile, task, args),
+  );
+
+  return new Promise((resolve, reject) => {
+    bach.series(..._tasks)((err: any, res: any) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(res);
+      }
+    });
+  });
 };
 
 /**
@@ -47,28 +42,24 @@ export const series = (...tasks: any[]): any => {
  * @returns {function|Promise}
  */
 export const parallel = (...tasks: any[]): any => {
-  if (typeof tasks[0] === 'function') {
-    return new Promise((resolve, reject) => {
-      bach.parallel(tasks)((err: any, res: any) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(res);
-        }
-      });
-    });
-  }
-
   if (Array.isArray(tasks[0])) {
     return parallel(...tasks[0]);
   }
 
-  return (pinefile: PineFile, _: string, args: Arguments) =>
-    bach.parallel(
-      ...tasks.map(
-        (task) => (cb: any) => runTask(pinefile, task, args).then(cb)
-      )
-    );
+  const { pinefile, args } = getPluginConfig();
+  const _tasks = tasks.map((task) =>
+    typeof task === 'function' ? task : () => runTask(pinefile, task, args),
+  );
+
+  return new Promise((resolve, reject) => {
+    bach.parallel(..._tasks)((err: any, res: any) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(res);
+      }
+    });
+  });
 };
 
 /**
@@ -115,7 +106,7 @@ export const tasks = (filePath: string, exts: string[] = ['js', 'ts']) => {
           Object.keys(prev).length === 0
             ? { [cur]: require(p) }
             : { [cur]: prev },
-        {}
+        {},
       );
     })
     .reduce((prev, cur) => ({ ...prev, ...cur }), {});

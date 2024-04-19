@@ -38,7 +38,7 @@ const output = (
 
   if (LogLevels[logLevel] >= LogLevels[type]) {
     const date = formatDate(newDate());
-    const method = type === 'info' ? 'log' : type;
+    const method = type === 'info' ? 'log' : (type as Log);
 
     const args = [date, prefix, ...message].filter(Boolean);
 
@@ -72,6 +72,10 @@ export class Logger {
 
   error(...message: Array<string | Error>) {
     output('error', message, this.options);
+  }
+
+  setOptions(options: Partial<LoggerOptions>) {
+    this.options = { ...this.options, ...options };
   }
 }
 
