@@ -39,7 +39,7 @@
     "dotenv": "^16.4.5",
     "esbuild": "^0.21.1",
     "esbuild-register": "^3.5.0",
-    "execa": "^5.1.1",
+    "execa": "^9.0.2",
     "glob": "^8.1.0",
     "pify": "^5.0.0",
     "yargs": "^17.7.2"
