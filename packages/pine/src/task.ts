@@ -2,7 +2,7 @@ import pify from 'pify';
 import { isObject } from '@pinefile/utils';
 import { Arguments } from './args';
 import { color } from './color';
-import { getConfig, setConfig } from './config';
+import { getConfig } from './config';
 import { PineFile } from './file';
 import { getRunner } from './runner';
 import { internalLog, timeInSecs } from './logger';

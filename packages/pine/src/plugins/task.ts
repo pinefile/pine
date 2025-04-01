@@ -11,9 +11,9 @@ import { getPluginConfig } from '../plugin';
  *
  * series('clean', 'build')
  *
- * @returns {function|Promise}
+ * @returns {Promise}
  */
-export const series = async (...tasks: any[]): any => {
+export const series = async (...tasks: any[]): Promise<any> => {
   if (Array.isArray(tasks[0])) {
     return series(...tasks[0]);
   }
@@ -39,9 +39,9 @@ export const series = async (...tasks: any[]): any => {
  *
  * parallel('clean', 'build')
  *
- * @returns {function|Promise}
+ * @returns {Promise}
  */
-export const parallel = (...tasks: any[]): any => {
+export const parallel = (...tasks: any[]): Promise<any> => {
   if (Array.isArray(tasks[0])) {
     return parallel(...tasks[0]);
   }

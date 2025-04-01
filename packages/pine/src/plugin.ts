@@ -2,7 +2,12 @@ import { Arguments } from './args';
 import { Config, getConfig } from './config';
 import { PineFile } from './file';
 
-let _pluginConfig = {};
+let _pluginConfig: PluginConfig = {
+  ...getConfig(),
+  pinefile: {} as PineFile,
+  task: 'default',
+  args: {} as Arguments
+};
 
 type PluginConfig = Config & {
   pinefile: PineFile;
@@ -10,7 +15,7 @@ type PluginConfig = Config & {
   args: Arguments;
 };
 
-export const getPluginConfig: PluginConfig = () => ({
+export const getPluginConfig = (): PluginConfig => ({
   ...getConfig(),
   ..._pluginConfig,
 });

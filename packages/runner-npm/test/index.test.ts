@@ -1,7 +1,7 @@
 import { configure } from '@pinefile/pine';
 import { taskExists, runner } from '../src';
 
-let scripts = {};
+let scripts: Record<string, any> = {};
 
 jest.mock('@pinefile/pine', () => {
   const actual = jest.requireActual('@pinefile/pine');
