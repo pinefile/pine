@@ -23,23 +23,24 @@ const LogLevels: Record<LogLevel, number> = {
 const output = (
   type: LogLevel,
   message: Array<string | Error>,
-  options: Partial<LoggerOptions> = {}
+  options: Partial<LoggerOptions> = {},
 ) => {
+  const config = getConfig();
+  const prefix =
+    options.prefix || config.prefix ? color.cyan(`[${config.task}]`) : '';
   const logLevel = options.logLevel
     ? options.logLevel
     : ((
         process.env.LOG_LEVEL ||
-        getConfig().logLevel ||
+        config.logLevel ||
         ''
       ).toLowerCase() as LogLevel);
 
   if (LogLevels[logLevel] >= LogLevels[type]) {
     const date = formatDate(newDate());
-    const method = type === 'info' ? 'log' : type;
+    const method = type === 'info' ? 'log' : (type as Log);
 
-    const args = [date, options.prefix && options.prefix, ...message].filter(
-      Boolean
-    );
+    const args = [date, prefix, ...message].filter(Boolean);
 
     console[method].apply(null, args);
   }
@@ -71,6 +72,10 @@ export class Logger {
 
   error(...message: Array<string | Error>) {
     output('error', message, this.options);
+  }
+
+  setOptions(options: Partial<LoggerOptions>) {
+    this.options = { ...this.options, ...options };
   }
 }
 

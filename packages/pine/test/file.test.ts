@@ -75,9 +75,9 @@ describe('file', () => {
     tests.forEach((test) => {
       const output = test.input
         .split(':')
-        .reduce((prev: any[], cur: string) => {
+        .reduce((prev: Record<string,any>, cur: string) => {
           return prev[cur] || false;
-        }, tasks as any);
+        }, tasks as Record<string,any>);
 
       expect(output as any).toEqual(test.output);
     });

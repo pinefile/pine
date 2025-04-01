@@ -2,7 +2,7 @@ import { configure } from '@pinefile/pine';
 import glob from 'glob';
 import { execRun, findPackages, npmRun } from '../src';
 
-let scripts = {};
+let scripts: Record<string, any> = {};
 
 jest.mock('@pinefile/pine', () => {
   const actual = jest.requireActual('@pinefile/pine') as any;
@@ -51,10 +51,10 @@ describe('monorepo', () => {
     });
 
     expect(scripts["echo 'bar' && echo $PWD"][0]).toContain(
-      'packages/monorepo/test/fixtures/packages/bar'
+      'packages/monorepo/test/fixtures/packages/bar',
     );
     expect(scripts["echo 'foo' && echo $PWD"][0]).toContain(
-      'packages/monorepo/test/fixtures/packages/foo'
+      'packages/monorepo/test/fixtures/packages/foo',
     );
   });
 

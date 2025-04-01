@@ -3,7 +3,7 @@
   "version": "2.0.3",
   "description": "Small task runner for node.js",
   "bin": {
-    "pine": "./dist/bin.js"
+    "pine": "./bin.js"
   },
   "homepage": "https://github.com/pinefile/pine",
   "repository": "https://github.com/pinefile/pine",
@@ -37,7 +37,7 @@
     "chalk": "^4.1.2",
     "date-fns": "^2.30.0",
     "dotenv": "^16.4.7",
-    "esbuild": "^0.21.5",
+    "esbuild": "^0.25.2",
     "esbuild-register": "^3.6.0",
     "execa": "^5.1.1",
     "glob": "^8.1.0",

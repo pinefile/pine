@@ -6,6 +6,7 @@ import { configure, getConfig, Config } from './config';
 import { runTask, validTaskValue } from './task';
 import { loadPineFile, PineFile, findFile, findGlobalFile } from './file';
 import { internalLog } from './logger';
+import { setPluginPinefile } from './plugin';
 
 /**
  * Print help options.
@@ -35,7 +36,7 @@ Options:`);
     console.log(
       `  ${key.alias ? `-${key.alias}, ` : `    `}--${key.flag}${space}${
         opts[key.key].desc
-      }`
+      }`,
     );
   });
 };
@@ -133,7 +134,7 @@ export const runCLI = async (argv: any[]): Promise<any> => {
         internalLog().error(
           global
             ? 'No global pinefile was found in your home folder or the ~/.pine directory.'
-            : 'No pinefile was found.'
+            : 'No pinefile was found.',
         );
       }
       return;
@@ -174,11 +175,15 @@ export const runCLI = async (argv: any[]): Promise<any> => {
         ? parse(argv, config.options)
         : {};
 
-    return await runTask(pineFile, name, {
+    const argsObj = {
       ...args,
       ...configArgs,
       _: args._,
-    });
+    };
+
+    setPluginPinefile(pineFile, name, argsObj);
+
+    return await runTask(pineFile, name, argsObj);
   } catch (err) {
     if (err instanceof Error) {
       internalLog().error(err);

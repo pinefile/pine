@@ -58,7 +58,7 @@ const pkgColor = (p: string) => {
 
 const appendRoot = (root: string, workspaces: string[]) =>
   workspaces.map((workspace: string) =>
-    fs.existsSync(workspace) ? workspace : path.join(root, workspace)
+    fs.existsSync(workspace) ? workspace : path.join(root, workspace),
   );
 
 const mergeConfig = <T>(opts: T): T => {
@@ -85,22 +85,22 @@ const filterPackages = (args: string | string[], pkgNames: string[]) => {
   if (scoped.length > 0) {
     const exclamation = scoped.some((n) => n.startsWith('!'));
     results.push(
-      ...multimatch(pkgNames, [...(exclamation ? ['**'] : []), ...scoped])
+      ...multimatch(pkgNames, [...(exclamation ? ['**'] : []), ...scoped]),
     );
   }
 
   const unscoped = search.filter(
-    (n) => !n.startsWith('@') && !n.startsWith('!@')
+    (n) => !n.startsWith('@') && !n.startsWith('!@'),
   );
 
   if (unscoped.length > 0) {
-    const pkgMap = pkgNames.reduce((prev, cur) => {
+    const pkgMap = pkgNames.reduce((prev: Record<string, any>, cur) => {
       const name = cur.replace(/^@[^/]+\//, '');
       return {
         ...prev,
         [name]: (prev[name] || []).concat(cur),
       };
-    }, {});
+    }, {}) as Record<string, any>;
 
     const exclamation = unscoped.some((n) => n.startsWith('!'));
     const matched = multimatch(Object.keys(pkgMap), [
@@ -144,14 +144,14 @@ export const findPackages = (opts: Partial<FindPackagesOptions> = {}) => {
   const pkgsNames = pkgs.map((p) => p.name);
 
   return filterPackages(options.scope, pkgsNames).map((name) =>
-    pkgs.find((p) => p.name === name)
+    pkgs.find((p) => p.name === name),
   );
 };
 
 export const npmRun = async (
   cmd: string | string[] | TemplateStringsArray,
   opts: Partial<NPMRunOptions> = {},
-  shellOptions: Partial<ShellOptions> = {}
+  shellOptions: Partial<ShellOptions> = {},
 ) => {
   const script = cmd instanceof Array ? cmd.join(' ') : cmd;
   const options = mergeConfig<NPMRunOptions>({
@@ -210,7 +210,7 @@ export const npmRun = async (
 export const execRun = async (
   script: string | string[] | TemplateStringsArray,
   opts: Partial<ExecRunOptions> = {},
-  shellOptions: Partial<ShellOptions> = {}
+  shellOptions: Partial<ShellOptions> = {},
 ) =>
   npmRun(
     script,
@@ -218,5 +218,5 @@ export const execRun = async (
       ...opts,
       exec: true,
     },
-    shellOptions
+    shellOptions,
   );

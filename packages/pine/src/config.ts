@@ -50,6 +50,13 @@ export type Config = {
   options: Options;
 
   /**
+   * Log task name as prefix.
+   *
+   * @default true
+   */
+  prefix: boolean;
+
+  /**
    * Packages to preload before Pinefile is loaded.
    */
   require: string[];
@@ -109,11 +116,12 @@ let config: Config = merge<Config>(
     esbuild: !isDev,
     logLevel: 'info',
     options: {},
+    prefix: true,
     root: '',
     require: [],
     task: '',
   },
-  loadPkgConfig()
+  loadPkgConfig(),
 );
 
 const isError = (error: any): error is NodeJS.ErrnoException =>
@@ -180,7 +188,41 @@ const setEnvironment = (config: Config) => {
   }
 };
 
+/**
+ * Get the configuration.
+ *
+ * @returns {Config}
+ */
 export const getConfig = (): Config => config;
+
+/**
+ * Set the configuration with:
+ *
+ * > A plain JavaScript object, this will be merged into the existing configuration.
+ *
+ *   configure({
+ *     dotenv: ['my.env'],
+ *   })
+ *
+ * > With a function will be given the existing configuration and the task name as a optional argument.
+ * > The function should return a plain JavaScript object which will be merged into the existing configuration.
+ *
+ *   configure((config) => ({
+ *     dotenv: ['my.env'],
+ *   }))
+ *
+ * @param {Config|ConfigFunction} newConfig
+ */
+export const setConfig = (newConfig: Partial<Config> | ConfigFunction) => {
+  if (typeof newConfig === 'function') {
+    newConfig = newConfig(config);
+  }
+
+  config = {
+    ...config,
+    ...(isObject(newConfig) ? newConfig : {}),
+  };
+};
 
 /**
  * Pine can be configured via the configure function, which accepts:
@@ -197,19 +239,13 @@ export const getConfig = (): Config => config;
  *   configure((config) => ({
  *     dotenv: ['my.env'],
  *   }))
+ *
+ * @param {object|function} newConfig
  */
 export const configure = (
-  newConfig: Partial<Config> | ConfigFunction
+  newConfig: Partial<Config> | ConfigFunction,
 ): Config => {
-  if (typeof newConfig === 'function') {
-    newConfig = newConfig(config);
-  }
-
-  config = {
-    ...config,
-    ...(isObject(newConfig) ? newConfig : {}),
-  };
-
+  setConfig(newConfig);
   loadDotenv(config);
   loadModules(config);
   setEnvironment(config);
