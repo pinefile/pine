@@ -1,5 +1,11 @@
 # @pinefile/utils
 
+## 3.0.0
+
+### Major Changes
+
+- [#573](https://github.com/pinefile/pine/pull/573) [`da59e4c`](https://github.com/pinefile/pine/commit/da59e4ce487c7293192c8f7c58c1887b73d72609) Thanks [@frozzare](https://github.com/frozzare)! - Bump node version to 22
+
 ## 2.0.1
 
 ### Patch Changes

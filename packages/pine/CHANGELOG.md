@@ -1,5 +1,18 @@
 # @pinefile/pine
 
+## 3.0.0
+
+### Major Changes
+
+- [#573](https://github.com/pinefile/pine/pull/573) [`da59e4c`](https://github.com/pinefile/pine/commit/da59e4ce487c7293192c8f7c58c1887b73d72609) Thanks [@frozzare](https://github.com/frozzare)! - Bump node version to 22
+
+### Patch Changes
+
+- [#566](https://github.com/pinefile/pine/pull/566) [`70343a1`](https://github.com/pinefile/pine/commit/70343a1f38d719591f1aeaff71255ed3697baa69) Thanks [@frozzare](https://github.com/frozzare)! - Bumped esbuild
+
+- Updated dependencies [[`da59e4c`](https://github.com/pinefile/pine/commit/da59e4ce487c7293192c8f7c58c1887b73d72609)]:
+  - @pinefile/utils@3.0.0
+
 ## 2.0.3
 
 ### Patch Changes

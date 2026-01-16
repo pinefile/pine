@@ -1,6 +1,6 @@
 {
   "name": "@pinefile/pine",
-  "version": "2.0.3",
+  "version": "3.0.0",
   "description": "Small task runner for node.js",
   "bin": {
     "pine": "./dist/bin.js"
@@ -32,7 +32,7 @@
     "@types/yargs": "^17.0.35"
   },
   "dependencies": {
-    "@pinefile/utils": "^2.0.1",
+    "@pinefile/utils": "^3.0.0",
     "bach": "^2.0.1",
     "chalk": "^4.1.2",
     "date-fns": "^2.30.0",
