@@ -18,10 +18,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js 14.x
+      - name: Setup Node.js 22.x
         uses: actions/setup-node@master
         with:
-          node-version: 14.21.3
+          node-version: 22
 
       - name: Install Dependencies
         run: yarn

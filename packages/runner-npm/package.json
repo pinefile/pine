@@ -15,7 +15,7 @@
     "@pinefile/pine": "^2.0.3"
   },
   "engines": {
-    "node": ">=14.21.3"
+    "node": ">=22"
   },
   "scripts": {
     "foo": "echo foo"
