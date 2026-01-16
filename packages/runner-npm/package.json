@@ -1,6 +1,6 @@
 {
   "name": "@pinefile/runner-npm",
-  "version": "2.0.3",
+  "version": "3.0.0",
   "description": "Pine npm runner",
   "homepage": "https://github.com/pinefile/pine",
   "repository": "https://github.com/pinefile/pine",
@@ -12,7 +12,7 @@
   "author": "Fredrik Forsmo <fredrik.forsmo@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@pinefile/pine": "^2.0.3"
+    "@pinefile/pine": "^3.0.0"
   },
   "engines": {
     "node": ">=22"
